@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h1 dir="rtl" class="mr-auto" style="margin-left: 80%;">מנחים</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">שנת התחלה</th>
+              <th scope="col">דואר אלקטרוני</th>
+              <th scope="col">שם משפחה</th>
+              <th scope="col">שם פרטי</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let supervisor of supervisors">
+              <td>
+                <button class="btn-primary mr-1">ערוך פרטים</button>
+                <button class="btn btn-sm btn-danger btn-delete-account">
+                  <span class="spinner-border spinner-border-sm">מחק</span>
+                </button>
+
+              </td>
+              <td>{{supervisor.sinceYear}}</td>
+              <td>{{supervisor.email}}</td>
+              <td>{{supervisor.lastname}}</td>
+              <td>{{supervisor.firstName}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button style="color: white;margin-left: 80%;font-size: 15;" routerLink="add"
+          class="btn btn-sm btn-success mb-2">הוסף
+          מנחה</button>
+
+
+      </div>
+    </div>
+
+
+  </div>
+</div>

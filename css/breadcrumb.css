@@ -1,0 +1,12 @@
+/*******************
+ Breadcrumb and page title
+*******************/
+.page-breadcrumb {
+  padding: 20px 30px 0 30px;
+  margin-top: 15px;
+}
+
+.page-breadcrumb .page-title {
+  margin-bottom: 20px;
+}
+/*# sourceMappingURL=breadcrumb.css.map */

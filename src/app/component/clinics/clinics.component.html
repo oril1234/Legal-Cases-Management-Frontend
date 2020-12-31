@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<h1 dir="rtl" class="mr-auto" style="margin-left: 80%;">קליניקות</h1>
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col"></th>
+							<th scope="col">שנת פתיחה</th>
+							<th scope="col">מנחה</th>
+							<th scope="col">שם</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr *ngFor="let clinic of clinics">
+							<td>
+								<button class="btn-primary mr-1">ערוך פרטים</button>
+								<button class="btn btn-sm btn-danger btn-delete-account">
+									<span class="spinner-border spinner-border-sm">מחק</span>
+								</button>
+
+							</td>
+							<td>{{clinic.yearFounded}}</td>
+							<td>{{getSupervisorNamebyId(clinic.clinicalSupervisorId)}}</td>
+							<td>{{clinic.clinicName}}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<button style="color: white;margin-left: 80%;font-size: 15;" routerLink="add"
+					class="btn btn-sm btn-success mb-2">הוסף
+					קליניקה</button>
+
+
+			</div>
+		</div>
+
+
+	</div>
+</div>

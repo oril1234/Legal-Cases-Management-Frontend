@@ -1,0 +1,118 @@
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="=card-header" style="text-align: right;">
+				<h3>סטודנטים</h3>
+			</div>
+			<div class="card-body">
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col"></th>
+							<th scope="col">דואר אלקטרוני</th>
+							<th scope="col">שם משפחה</th>
+							<th scope="col">שם פרטי</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr *ngFor="let student of students">
+							<td>
+								<button class="btn-primary mr-1">ערוך פרטים</button>
+								<button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
+									<span class="spinner-border spinner-border-sm">מחק</span>
+								</button>
+								<!--Deletr Modal -->
+								<ng-template #deleteModal let-modal>
+									<div class="modal-header">
+										<h4 class="modal-title" id="modal-basic-title">מחיקת סטודנט</h4>
+
+									</div>
+									<div class="modal-body">
+										<p dir="rtl">
+											האם ברצונך למחוק את
+											<span>{{student.firstName}}?</span>
+										</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											(click)="modal.close('Save click');onSave()">מחק</button>
+										<button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
+											(click)="modal.close('Save click');onSave()">ביטול</button>
+									</div>
+								</ng-template>
+
+							</td>
+							<td>{{student.email}}</td>
+							<td>{{student.lastname}}</td>
+							<td>{{student.firstName}}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<button style="color: white;margin-left: 80%;font-size: 15;" class="btn btn-sm btn-success mb-2"
+					(click)="open(addModal,'')">הוסף
+					סטודנט</button>
+
+			</div>
+		</div>
+
+
+	</div>
+	<!--Add Modal -->
+	<ng-template #addModal let-modal>
+		<div class="modal-header">
+			<h4 class="modal-title" id="modal-basic-title">הוספת סטודנט</h4>
+			<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+				(click)="modal.dismiss('Cross click')">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<form dir="rtl" [formGroup]="studentInsertionGroup" style="padding: 0;">
+
+				<label>
+					שם פרטי</label>
+				<input type="text" formControlName="firstName"><br>
+
+
+				<label>
+					שם משפחה</label>
+				<input type="text" formControlName="lastName"> <br>
+				<label>
+					תעודת זהות</label>
+				<input type="text" formControlName="id"><br>
+
+
+				<label>
+					דואר אלקטרוני</label>
+				<input type="text" formControlName="email"> <br>
+				<label>
+					מספר טלפון</label>
+				<input type="text" formControlName="phoneNumber"><br>
+
+
+				<label>
+					מנחה</label>
+				<select style="width: 150px;" formControlName="supervisor">
+					<option *ngFor="let s of supervisors">
+						{{s.firstName}}
+					</option>
+				</select>
+
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-outline-dark"
+				(click)="modal.close('Save click');onSave()">הוסף</button>
+		</div>
+	</ng-template>
+
+
+
+
+	<!--	<button class="btn btn-lg btn-outline-primary" (click)="open1(content1)">Launch demo modal</button>-->
+
+
+</div>

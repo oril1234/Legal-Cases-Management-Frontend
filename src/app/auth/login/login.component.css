@@ -1,0 +1,32 @@
+.login-section {
+  margin: 100px;
+}
+
+.login-section .col-form-label {
+  padding: 0 !important;
+}
+
+.login-failed,
+.register-success {
+  text-align: center;
+  margin: auto;
+  margin-top: 10px;
+  border: 2px solid black;
+  width: 65%;
+  background-color: red;
+}
+
+.login-failed-text,
+.register-success-text {
+  text-align: center;
+  margin-top: 5px;
+  font-weight: bold;
+  color: aliceblue;
+}
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 600px) {
+  .login-section {
+    width: 100%;
+    margin-right: 100px;
+  }
+}

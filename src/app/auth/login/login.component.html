@@ -1,0 +1,52 @@
+<div class="login-section">
+    <div class="row justify-content-center">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="card" style="width: 100%;">
+                <div class="card-header" style="text-align: center">
+                    <h4>התחברות</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="loginForm" (ngSubmit)="login()">
+                        <div class="form-group row">
+                            <label dir="rtl" for="user_name" class="col-md-4 col-form-label text-md-right"
+                                style="padding: 0;">משתמש:</label>
+                            <div class="col-md-6">
+                                <input type="text" id="user_name" class="form-control" [formControlName]="'username'"
+                                    name="user_name" required autofocus>
+                                <span *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched">
+                                    הכנס שם משתמש חוקי
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label dir="rtl" for="password" class="col-md-4 col-form-label text-md-right">סיסמא:</label>
+                            <div class="col-md-6">
+                                <input type="password" id="password" class="form-control" [formControlName]="'password'"
+                                    name="password" required>
+                                <span *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched">
+                                    סיסמא לא יכולה להיות ריקה
+                                </span>
+                            </div>
+                        </div>
+
+                        <span class="col-md-6 offset-md-4">
+                            <button type="submit" class="login btn-primary">
+                                התחבר
+                            </button>
+                        </span>
+                        <div class="login-failed" *ngIf='this.isError'>
+                            <p class="login-failed-text">ההתחברות נכשלה. אנא בדוק שוב את פרטי ההתחברות.</p>
+                        </div>
+                        <div class="login-failed" [ngStyle]="{'background-color': 'green'}"
+                            *ngIf="this.registerSuccessMessage.length > 0">
+                            <p class="register-success-text">{{registerSuccessMessage}}</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>

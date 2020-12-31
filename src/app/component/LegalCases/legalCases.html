@@ -1,0 +1,50 @@
+<div class="row">
+	<div class="col-12">
+		<div class="card" style="overflow:scroll;">
+			<div class="card-body">
+				<h1 dir="rtl" class="mr-auto" style="margin-left: 80%;">פרטי תיקים</h1>
+				<table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
+					<thead style="position: sticky; top: 0">
+						<tr>
+							<th style="position: sticky; top: 0" scope="col"></th>
+							<th style="position: sticky; top: 0" scope="col">מספר תיק</th>
+							<th style="position: sticky; top: 0" scope="col">תאריך הוספה</th>
+							<th style="position: sticky; top: 0" scope="col">נושא</th>
+							<th style="position: sticky; top: 0" scope="col">סטטוס טיפול</th>
+							<th style="position: sticky; top: 0" scope="col">מספר תיק בבית משפט</th>
+							<th style="position: sticky; top: 0" scope="col">קליניקה</th>
+							<th style="position: sticky; top: 0" scope="col">ת.ז לקוח</th>
+							<th style="position: sticky; top: 0" scope="col">סיווג תיק</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let case of cases">
+							<td style="display: flex;">
+								<button style="font-size: 10pt;" class="btn-primary mr-1">ערוך פרטים</button>
+								<button class="btn btn-sm btn-danger btn-delete-account">
+									<span style="font-size: 10pt;" class="spinner-border spinner-border-sm">מחק</span>
+								</button>
+
+							</td>
+							<td>{{case.id}}</td>
+							<td>{{case.dateAdded}}</td>
+							<td>{{case.subject}}</td>
+							<td>{{case.status}}</td>
+							<td>{{case.courtCaseId}}</td>
+							<td>{{case.clinicName}}</td>
+							<td>{{case.clientId}}</td>
+							<td>{{case.type}}</td>
+
+						</tr>
+					</tbody>
+				</table>
+
+				<button style="color: white;margin-left: 80%;font-size: 15;" routerLink="add"
+					class="btn btn-sm btn-success mb-2">הוסף
+					תיק</button>
+			</div>
+		</div>
+	</div>
+
+</div>
