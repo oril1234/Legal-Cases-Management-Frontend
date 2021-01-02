@@ -17,10 +17,12 @@
 
             <tr *ngFor="let supervisor of supervisors">
               <td>
-                <button class="btn-primary mr-1">ערוך פרטים</button>
+                <button class="btn-primary mr-1"><i class="fa fa-edit"></i></button>
                 <button class="btn btn-sm btn-danger btn-delete-account">
-                  <span class="spinner-border spinner-border-sm">מחק</span>
+                  <span class="spinner-border spinner-border-sm"><i class="fa fa-trash-alt"></i></span>
                 </button>
+
+
 
               </td>
               <td>{{supervisor.sinceYear}}</td>

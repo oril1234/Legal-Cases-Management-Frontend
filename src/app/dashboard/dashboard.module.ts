@@ -10,6 +10,10 @@ import { RevenueStaticGraphComponent } from './dashboard-componets/revenue-stati
 import { ProjectMonthComponent } from './dashboard-componets/project-month/project-month.component';
 import { CardsComponent } from './dashboard-componets/cards/cards.component';
 import { ClincsStatisticsComponent } from './dashboard-componets/clincs-statistics/clincs-statistics.component';
+import {DashBoardroutes} from './dashboard-routing.module';
+import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
+import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-dashboard.component';
+import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admin-dashboard.component'
 
 const routes: Routes = [
 	{
@@ -18,7 +22,7 @@ const routes: Routes = [
 			title: 'Dashboard',
 			urls: [
 				{ title: 'Dashboard', url: '/dashboard' },
-				{ title: 'Dashboard' }
+				{ title: 'Dashboard' },
 			]
 		},
 		component: DashboardComponent
@@ -27,6 +31,6 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [FormsModule, CommonModule, RouterModule.forChild(routes), ChartsModule],
-	declarations: [DashboardComponent, DailySalesComponent, WeeklySalesComponent, RevenueStaticGraphComponent, ProjectMonthComponent, CardsComponent, ClincsStatisticsComponent]
+	declarations: [DashboardComponent, DailySalesComponent, WeeklySalesComponent, RevenueStaticGraphComponent, ProjectMonthComponent, CardsComponent, ClincsStatisticsComponent, StudentDashboardComponent, SupervisorDashboardComponent, SuperAdminDashboardComponent]
 })
 export class DashboardModule {}

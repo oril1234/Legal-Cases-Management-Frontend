@@ -9,7 +9,7 @@ import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
 
 @Component({
 	selector: 'app-ngbd-accordion-basic',
-	templateUrl: 'accordion.component.html',
+	templateUrl: 'students.component.html',
 	encapsulation: ViewEncapsulation.None,
 	styles: [`
 	  .dark-modal .modal-content {

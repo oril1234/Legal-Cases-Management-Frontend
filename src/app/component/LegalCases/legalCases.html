@@ -21,10 +21,14 @@
 					<tbody>
 						<tr *ngFor="let case of cases">
 							<td style="display: flex;">
-								<button style="font-size: 10pt;" class="btn-primary mr-1">ערוך פרטים</button>
+								<button style="font-size: 10pt;" class="btn-primary mr-1"><i
+										class="fa fa-edit"></i></button>
 								<button class="btn btn-sm btn-danger btn-delete-account">
-									<span style="font-size: 10pt;" class="spinner-border spinner-border-sm">מחק</span>
+									<span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
+											class="fa fa-trash-alt"></i></span>
 								</button>
+
+
 
 							</td>
 							<td>{{case.id}}</td>

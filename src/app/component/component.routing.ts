@@ -53,7 +53,7 @@ export const ComponentsRoutes: Routes = [
 			},
 
 			{
-				path: 'dropdown',
+				path: 'clinics',
 				component: ClinicsComponent,
 				data: {
 					title: 'Dropdown',
