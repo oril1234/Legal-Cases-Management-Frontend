@@ -1,7 +1,7 @@
 export class Clinic {
 
     clinicName!:string;
-    clinicalSupervisorId!:string;
+    clinicalSupervisorId!:number;
     yearFounded!:number;
 
 

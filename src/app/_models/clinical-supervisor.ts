@@ -1,10 +1,11 @@
 export class ClinicalSupervisor {
-    id!: string;
+    id!: number;
     firstName!: string;
+    password!:string;
     email!: string;
     phoneNumber!: string;
-    clinicalSupervisorId!: string;
     lastname!: string;
+    role!:string;
     sinceYear!:number
 
     constructor(init?:Partial<ClinicalSupervisor>) {

@@ -21,15 +21,86 @@
 					<tbody>
 						<tr *ngFor="let case of cases">
 							<td style="display: flex;">
-								<button style="font-size: 10pt;" class="btn-primary mr-1"><i
-										class="fa fa-edit"></i></button>
-								<button class="btn btn-sm btn-danger btn-delete-account">
+								<button style="font-size: 10pt;" class="btn-primary mr-1"><i class="fa fa-edit"
+										(click)="open(editModal,'')"></i></button>
+
+								<!--Edit Modal -->
+								<ng-template #editModal let-modal>
+									<div class="modal-header">
+										<h4 class="modal-title" id="modal-basic-title">עריכת תיק</h4>
+										<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+											(click)="modal.dismiss('Cross click')">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form dir="rtl" [formGroup]="casesForm" style="padding: 0;">
+											<label>
+												מספר תיק</label>
+											<input type="text" formControlName="id" [(ngModel)]="case.id"><br>
+											<label>
+												נושא</label>
+											<input type="text" formControlName="subject" [(ngModel)]="case.subject"><br>
+
+											<label>
+												תאריך</label>
+											<input type="text" formControlName="dateAdded" [(ngModel)]="case.dateAdded"
+												readonly><br>
+
+											<label>
+												סוג</label>
+											<input type="text" formControlName="type" [(ngModel)]="case.type"><br>
+
+
+											<label>
+												מצב</label>
+											<input type="text" formControlName="status" [(ngModel)]="case.status"> <br>
+											<label>
+												קליניקה</label>
+											<input type="text" formControlName="clinicName"
+												[(ngModel)]="case.clinicName"><br>
+
+
+											<label>
+												תעודת זהות לקוח</label>
+											<input type="text" formControlName="clientId"
+												[(ngModel)]="case.clientId"><br>
+
+											<label>
+												מספר תיק בבית משפט</label>
+											<input type="text" formControlName="courtCaseId"
+												[(ngModel)]="case.courtCaseId"><br>
+
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-outline-dark"
+											(click)="modal.close('Save click');onEdit()">אישור</button>
+									</div>
+								</ng-template>
+								<button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
 									<span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
 											class="fa fa-trash-alt"></i></span>
 								</button>
+								<!--Deletr Modal -->
+								<ng-template #deleteModal let-modal>
+									<div class="modal-header">
+										<h4 class="modal-title" id="modal-basic-title">מחיקת תיק</h4>
 
-
-
+									</div>
+									<div class="modal-body">
+										<p dir="rtl">
+											האם ברצונך למחוק את תיק מספר
+											<span>{{case.id}}?</span>
+										</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											(click)="modal.close('Save click');onDelete(case.id)">מחק</button>
+										<button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
+											(click)="modal.close('Save click')">ביטול</button>
+									</div>
+								</ng-template>
 							</td>
 							<td>{{case.id}}</td>
 							<td>{{case.dateAdded}}</td>
@@ -44,11 +115,55 @@
 					</tbody>
 				</table>
 
-				<button style="color: white;margin-left: 80%;font-size: 15;" routerLink="add"
-					class="btn btn-sm btn-success mb-2">הוסף
-					תיק</button>
+				<button style="color: white;margin-left: 80%;font-size: 15;" class="btn btn-sm btn-success mb-2"
+					(click)="open(addModal,'')">צור תיק</button>
 			</div>
 		</div>
+		<!--Add Modal -->
+		<ng-template #addModal let-modal>
+			<div class="modal-header">
+				<h4 class="modal-title" id="modal-basic-title">יצירת תיק</h4>
+				<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+					(click)="modal.dismiss('Cross click')">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form dir="rtl" [formGroup]="caseForm" style="padding: 0;">
+
+					<label>
+						נושא</label>
+					<input type="text" formControlName="subject"><br>
+
+
+
+					<label>
+						סוג</label>
+					<input type="text" formControlName="caseType"><br>
+
+
+					<label>
+						מצב</label>
+					<input type="text" formControlName="status"> <br>
+					<label>
+						קליניקה</label>
+					<input type="text" formControlName="clinicName"><br>
+
+
+					<label>
+						תעודת זהות לקוח</label>
+					<input type="text" formControlName="clientId"><br>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-dark"
+					(click)="modal.close('Save click');onSave()">הוסף</button>
+			</div>
+		</ng-template>
 	</div>
+
+
+
 
 </div>

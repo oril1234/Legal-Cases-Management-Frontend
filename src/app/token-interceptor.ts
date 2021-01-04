@@ -32,10 +32,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const jwtToken = this.authService.getJwtToken();
 
     if (jwtToken) {
-      console.log(
-        "The value is " +
-          this.addToken(req, jwtToken).headers.get("Authorization")
-      );
+
       return next.handle(this.addToken(req, jwtToken)).pipe(
         catchError((error) => {
           return throwError(error);

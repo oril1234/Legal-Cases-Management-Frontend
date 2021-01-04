@@ -17,12 +17,76 @@
 
             <tr *ngFor="let supervisor of supervisors">
               <td>
-                <button class="btn-primary mr-1"><i class="fa fa-edit"></i></button>
-                <button class="btn btn-sm btn-danger btn-delete-account">
+                <button class="btn-primary mr-1"><i class="fa fa-edit" (click)="open(editModal,'')"></i></button>
+                <button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
                   <span class="spinner-border spinner-border-sm"><i class="fa fa-trash-alt"></i></span>
                 </button>
 
+                <!--Edit Modal -->
+                <ng-template #editModal let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">עריכת מנחה</h4>
+                    <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+                      (click)="modal.dismiss('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form dir="rtl" [formGroup]="supervisorForm" style="padding: 0;">
 
+                      <label>
+                        שם פרטי</label>
+                      <input type="text" formControlName="firstName" [(ngModel)]="supervisor.firstName"><br>
+
+
+                      <label>
+                        שם משפחה</label>
+                      <input type="text" formControlName="lastname" [(ngModel)]="supervisor.lastname"> <br>
+                      <label>
+                        תעודת זהות</label>
+                      <input type="text" formControlName="id" [(ngModel)]="supervisor.id"><br>
+
+
+                      <label>
+                        דואר אלקטרוני</label>
+                      <input type="text" formControlName="email" [(ngModel)]="supervisor.email"> <br>
+                      <label>
+                        מספר טלפון</label>
+                      <input type="text" formControlName="phoneNumber" [(ngModel)]="supervisor.phoneNumber"><br>
+
+
+                      <label>
+                        מנחה</label>
+                      <input type="text" formControlName="sinceYear" [(ngModel)]="supervisor.sinceYear"><br>
+
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark"
+                      (click)="modal.close('Save click');onEdit()">ערוך</button>
+                  </div>
+                </ng-template>
+
+
+                <!--Deletr Modal -->
+                <ng-template #deleteModal let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">מחיקת סטודנט</h4>
+
+                  </div>
+                  <div class="modal-body">
+                    <p dir="rtl">
+                      האם ברצונך למחוק את
+                      <span>{{supervisor.firstName}}?</span>
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger"
+                      (click)="modal.close('Save click');onDelete(supervisor.id)">מחק</button>
+                    <button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
+                      (click)="modal.close('Save click')">ביטול</button>
+                  </div>
+                </ng-template>
 
               </td>
               <td>{{supervisor.sinceYear}}</td>
@@ -33,8 +97,8 @@
           </tbody>
         </table>
 
-        <button style="color: white;margin-left: 80%;font-size: 15;" routerLink="add"
-          class="btn btn-sm btn-success mb-2">הוסף
+        <button style="color: white;margin-left: 80%;font-size: 15;" class="btn btn-sm btn-success mb-2"
+          (click)="open(addModal,'')">הוסף
           מנחה</button>
 
 
@@ -43,4 +107,48 @@
 
 
   </div>
+
+  <!--Add Modal -->
+  <ng-template #addModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">הוספת מנחה</h4>
+      <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+        (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form dir="rtl" [formGroup]="supervisorForm" style="padding: 0;">
+
+        <label>
+          שם פרטי</label>
+        <input type="text" formControlName="firstName"><br>
+
+
+        <label>
+          שם משפחה</label>
+        <input type="text" formControlName="lastname"> <br>
+        <label>
+          תעודת זהות</label>
+        <input type="text" formControlName="id"><br>
+
+
+        <label>
+          דואר אלקטרוני</label>
+        <input type="text" formControlName="email"> <br>
+        <label>
+          מספר טלפון</label>
+        <input type="text" formControlName="phoneNumber"><br>
+
+
+        <label>
+          משנת</label>
+        <input type="text" formControlName="sinceYear"><br>
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click');onSave()">הוסף</button>
+    </div>
+  </ng-template>
 </div>

@@ -1,10 +1,10 @@
 export class LegalCase {
-    id!: string;
+    id!: number;
     dateAdded!: Date;
     subject!: string;
     status!: string;
-    courtCaseId!: string;
+    courtCaseId!: number;
     clinicName!: string;
-    clientId!:string;
+    clientId!:number;
     type!:string
 }

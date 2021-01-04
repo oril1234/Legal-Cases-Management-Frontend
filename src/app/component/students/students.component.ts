@@ -31,7 +31,7 @@ export class StudentsComponent {
 	studentInsertionGroup = new FormGroup({
 		id:new FormControl(''),
 		firstName: new FormControl(''),
-		lastName: new FormControl(''),
+		lastname: new FormControl(''),
 		email:new FormControl(''),
 		password: new FormControl(''),
 		phoneNumber: new FormControl(''),
@@ -82,9 +82,9 @@ getAllSuperVisors()
 	open(content:string,student:Student) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+			this.studentInsertionGroup.controls['firstName'].setValue("Yeah");
 		}, (reason) => {
 			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-			alert(this.closeResult)
 
 		});
 		
@@ -113,8 +113,41 @@ getAllSuperVisors()
 			password:"password",
 			email:this.studentInsertionGroup.get("email")?.value,
 			phoneNumber:this.studentInsertionGroup.get("phoneNumber")?.value,
+			clinicalSupervisorName:"123"
+		 });
+
+		 this.dashboardService.addNewStudent(student).subscribe(
+			 data=>{
+				 console.log("data of add is "+data);
+
+			 }
+			 
+		 )
+	}
+
+	onDelete(id:string)
+	{
+		this.dashboardService.deleteStudent(id).subscribe(
+
+		);
+	}
+
+	onEdit()
+	{
+		const student = <Student>({
+			id:this.studentInsertionGroup.get("id")?.value,
+			firstName:this.studentInsertionGroup.get("firstName")?.value,
+			lastname:this.studentInsertionGroup.get("lastname")?.value,
+			password:"password",
+			email:this.studentInsertionGroup.get("email")?.value,
+			phoneNumber:this.studentInsertionGroup.get("phoneNumber")?.value,
 			clinicalSupervisorName:this.studentInsertionGroup.get("supervisor")?.value
 		 });
+
+		 this.dashboardService.editStudent(student).subscribe(
+		
+			 
+		 )
 	}
 
 }

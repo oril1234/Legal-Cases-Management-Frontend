@@ -19,7 +19,60 @@
 
 						<tr *ngFor="let student of students">
 							<td>
-								<button class="btn-primary mr-1"><i class="fa fa-edit"></i></button>
+								<button class="btn-primary mr-1" (click)="open(editModal,'')"><i
+										class="fa fa-edit"></i></button>
+								<!--Edit Modal -->
+								<ng-template #editModal let-modal>
+									<div class="modal-header">
+										<h4 class="modal-title" id="modal-basic-title">עריכת סטודנט</h4>
+										<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+											(click)="modal.dismiss('Cross click')">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form dir="rtl" [formGroup]="studentInsertionGroup" style="padding: 0;">
+
+											<label>
+												שם פרטי</label>
+											<input type="text" formControlName="firstName"
+												[(ngModel)]="student.firstName"><br>
+
+
+											<label>
+												שם משפחה</label>
+											<input type="text" formControlName="lastname"
+												[(ngModel)]="student.lastname"> <br>
+											<label>
+												תעודת זהות</label>
+											<input type="text" formControlName="id" [(ngModel)]="student.id"><br>
+
+
+											<label>
+												דואר אלקטרוני</label>
+											<input type="text" formControlName="email" [(ngModel)]="student.email"> <br>
+											<label>
+												מספר טלפון</label>
+											<input type="text" formControlName="phoneNumber"
+												[(ngModel)]="student.phoneNumber"><br>
+
+
+											<label>
+												מנחה</label>
+											<select style="width: 150px;" formControlName="supervisor"
+												[(ngModel)]="student.supervisor">
+												<option *ngFor="let s of supervisors">
+													{{s.firstName}} {{s.lastname}}
+												</option>
+											</select>
+
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-outline-dark"
+											(click)="modal.close('Save click');onEdit()">ערוך</button>
+									</div>
+								</ng-template>
 								<button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
 									<span class="spinner-border spinner-border-sm"><i
 											class="fa fa-trash-alt"></i></span>
@@ -40,9 +93,9 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-danger"
-											(click)="modal.close('Save click');onSave()">מחק</button>
+											(click)="modal.close('Save click');onDelete(student.id)">מחק</button>
 										<button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
-											(click)="modal.close('Save click');onSave()">ביטול</button>
+											(click)="modal.close('Save click')">ביטול</button>
 									</div>
 								</ng-template>
 
@@ -82,7 +135,7 @@
 
 				<label>
 					שם משפחה</label>
-				<input type="text" formControlName="lastName"> <br>
+				<input type="text" formControlName="lastname"> <br>
 				<label>
 					תעודת זהות</label>
 				<input type="text" formControlName="id"><br>

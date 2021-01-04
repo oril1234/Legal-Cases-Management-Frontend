@@ -16,25 +16,110 @@
 
 						<tr *ngFor="let clinic of clinics">
 							<td>
-								<button class="btn-primary mr-1"><i class="fa fa-edit"></i>
+								<button class="btn-primary mr-1" (click)="open(editModal,'')"><i
+										class="fa fa-edit"></i></button>
+								<!--Edit Modal -->
+								<ng-template #editModal let-modal>
+									<div class="modal-header">
+										<h4 class="modal-title" id="modal-basic-title"> עריכת קליניקה</h4>
+										<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+											(click)="modal.dismiss('Cross click')">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form dir="rtl" [formGroup]="clinicsForm" style="padding: 0;">
 
+											<label>
+												שם </label>
+											<input type="text" formControlName="clinicName"
+												[(ngModel)]="clinic.clinicName"><br>
+
+
+											<label>
+												מנחה</label>
+											<select style="width: 150px;" formControlName="clinicalSupervisor"
+												[(ngModel)]="clinic.clinicalSupervisorId">
+												<option *ngFor="let s of supervisors">
+													{{s.id}}
+												</option>
+											</select>
+
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-outline-dark"
+											(click)="modal.close('Save click');onEdit(clinic)">ערוך</button>
+									</div>
+								</ng-template>
+
+
+								<button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
+									<span class="spinner-border spinner-border-sm"><i
+											class="fa fa-trash-alt"></i></span>
 								</button>
-								<button class="btn btn-sm btn-danger btn-delete-account">
-									<i class="fa fa-trash-alt"></i>
-								</button>
+								<!--Deletr Modal -->
+								<ng-template #deleteModal let-modal>
+									<div class="modal-header">
+										<h4 class="modal-title" id="modal-basic-title">מחיקת קליניקה</h4>
+
+									</div>
+									<div class="modal-body">
+										<p dir="rtl">
+											האם ברצונך למחוק את
+											<span>{{clinic.clinicName}}?</span>
+										</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											(click)="modal.close('Save click');onDelete(student.id)">מחק</button>
+										<button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
+											(click)="modal.close('Save click')">ביטול</button>
+									</div>
+								</ng-template>
 
 							</td>
 							<td>{{clinic.yearFounded}}</td>
-							<td>{{getSupervisorNamebyId(clinic.clinicalSupervisorId)}}</td>
+							<td>{{clinic.clinicalSupervisorId}}</td>
 							<td>{{clinic.clinicName}}</td>
 						</tr>
 					</tbody>
 				</table>
 
-				<button style="color: white;margin-left: 80%;font-size: 15;" routerLink="add"
-					class="btn btn-sm btn-success mb-2">הוסף
+				<button style="color: white;margin-left: 80%;font-size: 15;" class="btn btn-sm btn-success mb-2"
+					(click)="open(addModal,'')">צור
 					קליניקה</button>
+				<!--Add Modal -->
+				<ng-template #addModal let-modal>
+					<div class="modal-header">
+						<h4 class="modal-title" id="modal-basic-title">יצירת תיק</h4>
+						<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+							(click)="modal.dismiss('Cross click')">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form dir="rtl" [formGroup]="clinicsForm" style="padding: 0;">
 
+							<label>
+								שם הקליניקה</label>
+							<input type="text" formControlName="clinicName"><br>
+							<label>
+								מנחה</label>
+							<select style="width: 150px;" formControlName="clinicalSupervisor">
+								<option *ngFor="let s of supervisors">
+									{{s.id}}
+								</option>
+							</select>
+
+
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-dark"
+							(click)="modal.close('Save click');onSave()">הוסף</button>
+					</div>
+				</ng-template>
 
 			</div>
 		</div>
