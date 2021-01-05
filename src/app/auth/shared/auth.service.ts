@@ -1,9 +1,10 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { LoginRequestPayload } from '../login/login-request.payload';
 import { LoginResponse } from '../login/login-response.payload';
 import { map, tap } from 'rxjs/operators';
+import {Roles} from '../../_models/roles.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -18,25 +19,22 @@ export class AuthService {
     username: this.getUserName()
   }
 */
+
+
+role = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
+
   constructor(private httpClient: HttpClient) {
   }
+
+
 
 
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
     return this.httpClient.post<LoginResponse>('http://localhost:9090/authenticate',
       loginRequestPayload).pipe(map(data => {
-        
-        console.log(data.token);
 
         localStorage.setItem('authenticationToken', data.token);
-        /*
-        this.localStorage.store('username', data.username);
-        this.localStorage.store('refreshToken', data.refreshToken);
-        this.localStorage.store('expiresAt', data.expiresAt);
 
-        this.loggedIn.emit(true);
-        this.username.emit(data.username);
-        */
         return true;
       }));
   }

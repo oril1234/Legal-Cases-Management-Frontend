@@ -3,6 +3,8 @@ import { ROUTES } from './menu-items';
 import { RouteInfo } from './sidebar.metadata';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Roles } from 'src/app/_models/roles.enum';
+import { AuthService } from 'src/app/auth/shared/auth.service';
 declare var $: any;
 
 @Component({
@@ -13,6 +15,9 @@ export class SidebarComponent implements OnInit {
   showMenu = '';
   showSubMenu = '';
   public sidebarnavItems: RouteInfo[]=[];
+  currentRole:Roles=Roles.STUDENT
+
+
   // this is for the open close
   addExpandClass(element: any) {
     if (element === this.showMenu) {
@@ -25,11 +30,19 @@ export class SidebarComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authservice:AuthService
   ) {}
 
   // End open close
   ngOnInit() {
-    this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
+    this.router.events.subscribe()
+    this.authservice.role.asObservable().subscribe(
+      value=>{
+        this.currentRole=value;
+        this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem.role.includes(value));
+      }
+    )
+    
   }
 }

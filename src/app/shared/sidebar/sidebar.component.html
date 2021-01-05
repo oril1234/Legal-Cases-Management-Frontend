@@ -14,6 +14,14 @@
                 <i [ngClass]="[sidebarnavItem.icon]"></i>
                 <span class="hide-menu">{{sidebarnavItem.title}}</span>
             </a>
+            <ul class="nav">
+                <li routerLinkActive="active" *ngFor="let childmenu of sidebarnavItem.submenu" class=" nav-item">
+                    <a class="nav-link" [routerLink]="[childmenu.path]">
+                        <i class="material-icons">{{childmenu.icon}}</i>
+                        <p>{{childmenu.title}}</p>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </nav>

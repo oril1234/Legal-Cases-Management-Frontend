@@ -1,3 +1,4 @@
+import { Roles } from 'src/app/_models/roles.enum';
 import { RouteInfo } from './sidebar.metadata';
 
 export const ROUTES: RouteInfo[] = [
@@ -7,7 +8,8 @@ export const ROUTES: RouteInfo[] = [
     icon: 'mdi mdi-file',
     class: '',
     extralink: false,
-    submenu: []
+    submenu: [],
+    role:[Roles.STUDENT]
   },
   {
     path: '',
@@ -15,7 +17,8 @@ export const ROUTES: RouteInfo[] = [
     icon: 'mdi mdi-dots-horizontal',
     class: 'nav-small-cap',
     extralink: true,
-    submenu: []
+    submenu: [],
+    role:[Roles.STUDENT]
   },
   {
     path: '/component/students',
@@ -23,7 +26,17 @@ export const ROUTES: RouteInfo[] = [
     icon: 'mdi mdi-account-box',
     class: '',
     extralink: false,
-    submenu: []
+    submenu: [],
+    role:[Roles.SUPERVISOR]
+  },
+  {
+    path: '/component/students',
+    title: 'סטודנטים בקליניקה',
+    icon: 'mdi mdi-account-box',
+    class: '',
+    extralink: false,
+    submenu: [],
+    role:[Roles.STUDENT]
   },
   {
     path: '/component/supervisors',
@@ -31,15 +44,26 @@ export const ROUTES: RouteInfo[] = [
     icon: 'mdi mdi-message-bulleted',
     class: '',
     extralink: false,
-    submenu: []
+    submenu: [],
+    role:[Roles.SUPERADMIN]
   },
   {
     path: '/component/legalCases',
-    title: 'תיקים ',
+    title: 'תיקים בקליניקה',
     icon: 'mdi mdi-view-carousel',
     class: '',
     extralink: false,
-    submenu: []
+    submenu: [],
+    role:[Roles.SUPERVISOR]
+  },
+  {
+    path: '/component/legalCases',
+    title: ' תיקים שלי',
+    icon: 'mdi mdi-view-carousel',
+    class: '',
+    extralink: false,
+    submenu: [],
+    role:[Roles.STUDENT]
   },
   {
     path: '/component/clinics',
@@ -47,7 +71,17 @@ export const ROUTES: RouteInfo[] = [
     icon: 'mdi mdi-arrange-bring-to-front',
     class: '',
     extralink: false,
-    submenu: []
+    submenu: [],
+    role:[Roles.SUPERADMIN]
+  },
+  {
+    path: '/component/clinics',
+    title: 'הקליניקה',
+    icon: 'mdi mdi-arrange-bring-to-front',
+    class: '',
+    extralink: false,
+    submenu: [],
+    role:[Roles.STUDENT,Roles.SUPERVISOR]
   },
   {
     path: '/component/modal',
@@ -55,8 +89,18 @@ export const ROUTES: RouteInfo[] = [
     icon: 'mdi mdi-tablet',
     class: '',
     extralink: false,
-    submenu: []
+    submenu: [],
+    role:[Roles.SUPERVISOR,Roles.SUPERADMIN]
   },
+  {
+    path: '/component/modal',
+    title: 'הסעות',
+    icon: 'mdi mdi-tablet',
+    class: '',
+    extralink: false,
+    submenu: [],
+    role:[Roles.SUPERVISOR,Roles.STUDENT]
+  }
 
   /*
   {

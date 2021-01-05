@@ -1,6 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
 import {DashboardService} from '../dashboard.service'
-import { BetweenDates } from '../_models/between-dates';
 // import { ChartsModule } from 'ng2-charts';
 declare var require: any;
 @Component({
@@ -110,10 +109,11 @@ export class DashboardComponent implements AfterViewInit {
   {
     let date1=new Date();
     let date2=new Date();
-    let bDate=new BetweenDates();
-    bDate.startDate=date1;
-    bDate.endDate=date2;
+    //let bDate=new BetweenDates();
+    //bDate.startDate=date1;
+    //bDate.endDate=date2;
 
+    /*
     this.dashservice.numberOfCasesToCourtInAllClinicsBetween2Dates(bDate).subscribe(
       data=>{
         console.log("Data is "+data)
@@ -124,6 +124,7 @@ export class DashboardComponent implements AfterViewInit {
       }
 
     )
+    */
   }
 
 

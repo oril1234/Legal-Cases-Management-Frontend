@@ -14,20 +14,9 @@ export class WeeklySalesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllSClosedCases()
 
   }
 
-  getAllSClosedCases()
-  {
-    this.dashboardService.getNumberOfClosedCasesThisYear().subscribe( data =>{
-      this.closedCasesNumber=data;
-      
-    },
-    error => console.log(error)
-    );
 
-
-  }
 
 }
