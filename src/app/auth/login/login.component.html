@@ -1,21 +1,26 @@
+<div class="testing">
+
 <div class="login-section">
+    <div class="row" style="height: 20px;">
+
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <div class="card" style="width: 100%;">
-                <div class="card-header" style="text-align: center">
-                    <h4>התחברות</h4>
+            <div class="card" style="width: 100%; opacity: 95%;"><img src="https://i.ibb.co/rZYtqrr/logouni.png" width="79" height="89">
+                <div class="card-header" style="text-align: center; color:black; opacity: 70%;">
+                    <h4><b>התחברות</b></h4>
                 </div>
                 <div class="card-body">
                     <form [formGroup]="loginForm" (ngSubmit)="login()">
                         <div class="form-group row">
                             <label dir="rtl" for="user_name" class="col-md-4 col-form-label text-md-right"
-                                style="padding: 0;">משתמש:</label>
+                                style="padding: 0;">מספר ת.ז:</label>
                             <div class="col-md-6">
                                 <input type="text" id="user_name" class="form-control" [formControlName]="'username'"
                                     name="user_name" required autofocus>
                                 <span *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched">
-                                    הכנס שם משתמש חוקי
+                                    הכנס מספר ת.ז חוקי
                                 </span>
                             </div>
                         </div>
@@ -26,18 +31,18 @@
                                 <input type="password" id="password" class="form-control" [formControlName]="'password'"
                                     name="password" required>
                                 <span *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched">
-                                    סיסמא לא יכולה להיות ריקה
+                                    הסיסמא לא יכולה להיות ריקה
                                 </span>
                             </div>
                         </div>
 
-                        <span class="col-md-6 offset-md-4">
-                            <button type="submit" class="login btn-primary">
+                        <span class="col-md-6 offset-md-4"> 
+                            <button type="submit" class="login btn-primary btn" id="login_button"><span>
                                 התחבר
-                            </button>
+                            </span></button>
                         </span>
                         <div class="login-failed" *ngIf='this.isError'>
-                            <p class="login-failed-text">ההתחברות נכשלה. אנא בדוק שוב את פרטי ההתחברות.</p>
+                            <p class="login-failed-text"> ההתחברות נכשלה. אנא בדוק שוב את פרטי ההתחברות.  </p>
                         </div>
                         <div class="login-failed" [ngStyle]="{'background-color': 'green'}"
                             *ngIf="this.registerSuccessMessage.length > 0">
@@ -49,4 +54,5 @@
         </div>
         <div class="col-md-3"></div>
     </div>
+</div>
 </div>
