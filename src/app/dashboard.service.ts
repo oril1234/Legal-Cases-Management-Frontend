@@ -59,6 +59,13 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 
   }
 
+  getAllStudentsInMyClinic(id:number)
+  {
+    let myUrl=`http://localhost:9090/api/v1/student/clinic/${id}/getall`
+    return this.http.get<Student[]>(`${myUrl}`); 
+
+  }
+
   getStudentsNum()
   {
     let myUrl="http://localhost:9090/api/v1/student/total";
@@ -230,7 +237,14 @@ getNumberOfCasesPerStudentByClinic(clinicName:string)
 {
   let myUrl=`http://localhost:9090/api/v1/clinic/${clinicName}/legalCasesPerStudent`;
   return this.http.get<LegalCaseCounter[]>(`${myUrl}`);
-} 
+}
+
+getAllCasesAssignedToStudennt(id:number)
+{
+  let myUrl=`http://localhost:9090/api/v1/caseAssigned/student/${id}`;
+  return this.http.get<LegalCase[]>(`${myUrl}`);
+
+}
 
 
 getNumberOfCasesByChosenClinic(clinicName:string)
@@ -241,9 +255,12 @@ getNumberOfCasesByChosenClinic(clinicName:string)
 
 selectAllLegalCasesInCourt()
 {
-  let myUrl=`http://localhost:9090/api/v1/legalcase/clinic/allInCourt`;
+  let myUrl=`http://localhost:9090/api/v1/legalcase/allInCourt`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
 }
+
+
+
 
 selectAllLegalCasesInCourtBelongingToClinic(clinicName:string)
 {
@@ -277,6 +294,9 @@ getNumberOfResearchesInAChosenClinic(clinicName:string)
   let myUrl=`http://localhost:9090/api/v1/research/clinic/total/${clinicName}`;
   return this.http.get<number>(`${myUrl}`);
 }
+
+
+
 
 
 }

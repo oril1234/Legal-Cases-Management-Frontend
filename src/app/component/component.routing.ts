@@ -27,6 +27,20 @@ export const ComponentsRoutes: Routes = [
 					]
 				}
 			},
+
+			{
+				path: 'students/:clinic',
+				component:StudentsComponent,
+				data: {
+					title: 'Students',
+					urls: [
+						{ title: 'Dashboard', url: '/dashboard' },
+						{ title: 'ngComponent' },
+						{ title: 'Accordion' }
+					]
+				}
+			},
+
 			{
 				path: 'supervisors',
 				component: SupervisorsComponent,
@@ -41,6 +55,18 @@ export const ComponentsRoutes: Routes = [
 			},
 			{
 				path: 'legalCases',
+				component: LegalCasesComponent,
+				data: {
+					title: 'Carousel',
+					urls: [
+						{ title: 'Dashboard', url: '/dashboard' },
+						{ title: 'ngComponent' },
+						{ title: 'Carousel' }
+					]
+				}
+			},
+			{
+				path: 'legalCases/:status',
 				component: LegalCasesComponent,
 				data: {
 					title: 'Carousel',

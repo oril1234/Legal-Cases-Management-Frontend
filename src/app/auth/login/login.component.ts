@@ -5,6 +5,7 @@ import { AuthService } from '../shared/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { throwError } from 'rxjs';
+import { Roles } from 'src/app/_models/roles.enum';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
       });
     
       this.loginRequestPayload = {
-      username: '',
+      username: 0,
       password: ''
     };
   
@@ -49,16 +50,41 @@ export class LoginComponent implements OnInit {
     this.loginRequestPayload.username = this.loginForm.get('username')!.value;
     this.loginRequestPayload.password = this.loginForm.get('password')!.value;
 
-    this.authService.login(this.loginRequestPayload).subscribe(data => {
-     
-      this.isError = false;
-      this.router.navigateByUrl('');
-      this.toastr.success('Login Successful');
-    }, error => {
-      
-      this.isError = true;
-      throwError(error);
-    }); 
+    this.authService.login(this.loginRequestPayload).subscribe(
+      data=>{
+        this.authService.getRole( this.loginRequestPayload.username).subscribe(
+          data=>{
+            
+            //Assign role according to result
+            switch(data[0])
+            {
+              case "Student":
+              alert(data[0])
+              this.authService.changeRole(Roles.STUDENT);
+              localStorage.setItem("Role","0");
+                break;
+              case "Admin":
+                this.authService.changeRole(Roles.SUPERADMIN);
+                localStorage.setItem("Role","1");
+                break;
+  
+              case "Super Admin":
+                this.authService.changeRole(Roles.SUPERVISOR);
+                localStorage.setItem("Role","2");
+                break;
+                      
+            }
+            this.isError = false;
+            this.router.navigateByUrl('');
+            this.toastr.success('Login Successful');
+          }
+        )
+
+
+
+  
+      }
+    )
   }
 
 }

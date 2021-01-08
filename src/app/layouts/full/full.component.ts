@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import {Roles} from '../../_models/roles.enum'
 import {AuthService} from '../../auth/shared/auth.service'
+import jwt_decode from "jwt-decode"
 declare var $: any;
 
 @Component({
@@ -29,10 +30,21 @@ export class FullComponent implements OnInit {
   }
 
   ngOnInit() {
+    
     if (this.router.url === '/') {
       this.router.navigate(['/starter']);
+      
     }
-    this.authservice.role.asObservable().subscribe(
+    this.authservice.getRole(315696888).subscribe(
+      data=>
+      {
+      },
+      err=>
+      {
+      }
+    )
+
+    this.authservice.roles.asObservable().subscribe(
       value =>{
         this.currentRole=value;
       }
@@ -68,4 +80,5 @@ export class FullComponent implements OnInit {
       default:
     }
   }
+  
 }

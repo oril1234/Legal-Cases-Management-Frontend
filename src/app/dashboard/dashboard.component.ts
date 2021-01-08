@@ -15,6 +15,7 @@ export class DashboardComponent implements AfterViewInit {
   activeClinicsNum=0;
   supervisorsNum=0;
   casesReceivedThisYearNum=0;
+  currentRole:number=parseInt(localStorage.getItem("Role")+"")
   constructor(public dashservice:DashboardService) {
     this.subtitle = 'This is some text within a card block.';
     this.getStudentsNum()

@@ -5,6 +5,8 @@ import { LoginRequestPayload } from '../login/login-request.payload';
 import { LoginResponse } from '../login/login-response.payload';
 import { map, tap } from 'rxjs/operators';
 import {Roles} from '../../_models/roles.enum';
+import jwt_decode from 'jwt-decode';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +23,14 @@ export class AuthService {
 */
 
 
-role = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
+roles = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
 
   constructor(private httpClient: HttpClient) {
+  }
+
+  changeRole(role:Roles)
+  {
+    this.roles.next(role);
   }
 
 
@@ -32,11 +39,16 @@ role = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
     return this.httpClient.post<LoginResponse>('http://localhost:9090/authenticate',
       loginRequestPayload).pipe(map(data => {
-
+        
         localStorage.setItem('authenticationToken', data.token);
-
         return true;
       }));
+  }
+
+  //Gertting the role of the user
+  getRole(userName:number)
+  {
+    return this.httpClient.get<string[]>(`http://localhost:9090/api/v1/person/role/${userName}`);
   }
 
   getJwtToken() {
@@ -79,6 +91,9 @@ role = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
   }
 */
   isLoggedIn(): boolean {
-    return this.getJwtToken() != null;
+   let token=this.getJwtToken();
+   if(token == null)
+      return false;
+   return true; 
   }
 }

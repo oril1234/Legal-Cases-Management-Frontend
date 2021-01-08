@@ -1,7 +1,7 @@
-import { Roles } from 'src/app/_models/roles.enum';
+import { Roles } from '../../_models/roles.enum';
 import { RouteInfo } from './sidebar.metadata';
 
-export const ROUTES: RouteInfo[] = [
+export const STUDENT_ROUTES: RouteInfo[] = [
   {
     path: '/dashboard',
     title: 'Dashboard',
@@ -9,9 +9,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN],
-    params:"",
-    hasSub:false
+    role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN]
   },
   {
     path: '',
@@ -20,20 +18,16 @@ export const ROUTES: RouteInfo[] = [
     class: 'nav-small-cap',
     extralink: true,
     submenu: [],
-    role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN],
-    params:"",
-    hasSub:false
+    role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN]
   },
   {
     path: '/component/students',
-    title: 'סטודנטים בקליניקות',
+    title: 'סטודנטים',
     icon: 'mdi mdi-account-box',
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.SUPERADMIN],
-    params:"",
-    hasSub:true
+    role:[Roles.SUPERVISOR]
   },
   {
     path: '/component/students',
@@ -42,9 +36,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.STUDENT],
-    params:"",
-    hasSub:false
+    role:[Roles.STUDENT]
   },
   {
     path: '/component/supervisors',
@@ -53,20 +45,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.SUPERADMIN],
-    params:"",
-    hasSub:false
-  },
-  {
-    path: '/component/legalCases',
-    title: 'תיקים בקליניקות',
-    icon: 'mdi mdi-view-carousel',
-    class: '',
-    extralink: false,
-    submenu: [],
-    role:[Roles.SUPERADMIN],
-    params:"",
-    hasSub:true
+    role:[Roles.SUPERADMIN]
   },
   {
     path: '/component/legalCases',
@@ -75,9 +54,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.SUPERVISOR],
-    params:"",
-    hasSub:true
+    role:[Roles.SUPERVISOR]
   },
   {
     path: '/component/legalCases',
@@ -86,9 +63,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.STUDENT],
-    params:"",
-    hasSub:true
+    role:[Roles.STUDENT,Roles.SUPERADMIN,Roles.SUPERVISOR]
   },
   {
     path: '/component/clinics',
@@ -97,9 +72,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.SUPERADMIN],
-    params:"",
-    hasSub:false
+    role:[Roles.SUPERADMIN]
   },
   {
     path: '/component/clinics',
@@ -108,9 +81,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.STUDENT,Roles.SUPERVISOR],
-    params:"",
-    hasSub:false
+    role:[Roles.STUDENT,Roles.SUPERVISOR]
   },
   {
     path: '/component/modal',
@@ -119,9 +90,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.SUPERVISOR,Roles.SUPERADMIN],
-    params:"",
-    hasSub:false
+    role:[Roles.SUPERVISOR,Roles.SUPERADMIN]
   },
   {
     path: '/component/modal',
@@ -130,9 +99,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.SUPERVISOR,Roles.STUDENT],
-    params:"",
-    hasSub:false
+    role:[Roles.SUPERVISOR,Roles.STUDENT]
   }
 
   /*

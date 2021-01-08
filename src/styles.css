@@ -22,3 +22,15 @@ input.ng-invalid.ng-touched {
   padding: 3px 16px;
   opacity: 1;
 }
+
+.dark-modal .modal-content {
+  direction: rtr;
+  width: 60%;
+  background-color: yellow;
+}
+.dark-modal .close {
+  color: black;
+}
+.light-blue-backdrop {
+  background-color: #5cb3fd;
+}

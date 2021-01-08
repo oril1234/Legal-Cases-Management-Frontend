@@ -1,1 +1,8 @@
-/* No CSS *//*# sourceMappingURL=custom.css.map */
+.modal-header {
+  background-color: aqua;
+}
+
+.modal-content {
+  width: 400px;
+}
+/*# sourceMappingURL=custom.css.map */

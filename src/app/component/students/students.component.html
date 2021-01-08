@@ -1,4 +1,4 @@
-<div class="row">
+<div style="margin-top: 10%;" class="row">
 	<div class="col-12">
 		<div class="card">
 			<div class="=card-header" style="text-align: right;">
@@ -9,7 +9,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th scope="col"></th>
+							<th *ngIf="currentRole!=0" scope="col"></th>
 							<th scope="col">דואר אלקטרוני</th>
 							<th scope="col">שם משפחה</th>
 							<th scope="col">שם פרטי</th>
@@ -18,7 +18,7 @@
 					<tbody>
 
 						<tr *ngFor="let student of students">
-							<td>
+							<td *ngIf="currentRole!=0">
 								<button class="btn-primary mr-1" (click)="open(editModal,'')"><i
 										class="fa fa-edit"></i></button>
 								<!--Edit Modal -->
@@ -107,8 +107,8 @@
 					</tbody>
 				</table>
 
-				<button style="color: white;margin-left: 80%;font-size: 15;" class="btn btn-sm btn-success mb-2"
-					(click)="open(addModal,'')">הוסף
+				<button *ngIf="currentRole!=0" style="color: white;margin-left: 80%;font-size: 15;"
+					class="btn btn-sm btn-success mb-2" (click)="open(addModal,'')">הוסף
 					סטודנט</button>
 
 			</div>

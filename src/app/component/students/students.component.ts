@@ -5,29 +5,25 @@ import { Student } from 'src/app/_models/student';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Roles } from 'src/app/_models/roles.enum';
+import jwt_decode from 'jwt-decode';
+import { errorObject } from 'rxjs/internal-compatibility';
+
 
 
 @Component({
 	selector: 'app-ngbd-accordion-basic',
 	templateUrl: 'students.component.html',
 	encapsulation: ViewEncapsulation.None,
-	styles: [`
-	  .dark-modal .modal-content {
-		direction:rtr;
-		width:60%
-	  }
-	  .dark-modal .close {
-		color: black;
-	  }
-	  .light-blue-backdrop {
-		background-color: #5cb3fd;
-	  }
-	`]
+	styles: []
 })
 export class StudentsComponent {
 	students!:Student[];
 	supervisors!:ClinicalSupervisor[];
 	closeResult='';
+	currentRole:number=parseInt(localStorage.getItem("Role")+"")
+	currentClinic=""
 	studentInsertionGroup = new FormGroup({
 		id:new FormControl(''),
 		firstName: new FormControl(''),
@@ -41,9 +37,22 @@ export class StudentsComponent {
 	  });
 	  
 
-	constructor(private dashboardService:DashboardService,private modalService: NgbModal)
-	 {
-		 this.getAllStudents();
+	constructor(private dashboardService:DashboardService,private modalService: NgbModal,
+		private route:ActivatedRoute, private router:Router) {
+			//Allowing reload component
+			this.router.routeReuseStrategy.shouldReuseRoute = () =>
+			{
+				return false;
+			}
+			if (this.route.snapshot.paramMap.get('clinic')) {
+				this.currentClinic=this.route.snapshot.paramMap.get('clinic')+"";
+				
+		   }
+		   else
+		   {
+		   }
+		   
+		 this.getStudents();
 		 this.getAllSuperVisors();
 	 }
 	beforeChange($event: NgbPanelChangeEvent) {
@@ -59,8 +68,43 @@ export class StudentsComponent {
 	disabled = false;
 
 
-	getAllStudents()
+	getStudents()
 	{
+		if(this.currentRole==Roles.STUDENT)
+		{
+			let decoded=JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""));
+			let id:number=parseInt(JSON.parse(decoded).sub);
+			this.dashboardService.getAllStudentsInMyClinic(id).subscribe(
+			
+				data=>
+				{
+					this.students=data;
+				},
+				err=>
+				{
+					
+				}
+
+			)
+		}
+		if(this.currentRole==Roles.SUPERADMIN)
+		{
+			let decoded=JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""));
+			let id:number=parseInt(JSON.parse(decoded).sub);
+			this.dashboardService.getAllStudentsInChosenClinic(this.currentClinic).subscribe(
+			
+				data=>
+				{
+					this.students=data;
+				},
+				err=>
+				{
+					
+				}
+
+			)
+		}
+		/*
 		this.dashboardService.getAllStudents().subscribe(
 		data=> {
 			this.students=data;
@@ -68,6 +112,7 @@ export class StudentsComponent {
 		
 
 			);
+			*/
 	}
 
 getAllSuperVisors()

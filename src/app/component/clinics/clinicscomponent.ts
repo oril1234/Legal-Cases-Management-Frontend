@@ -10,6 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './clinics.component.html'
 })
 export class ClinicsComponent {
+  currentRole=parseInt(localStorage.getItem("Role")+"");
   clinics!:Clinic[]
   supervisors!:ClinicalSupervisor[];
   closeResult=""
@@ -51,14 +52,15 @@ constructor(private dashboardService:DashboardService,private modalService:NgbMo
 
   getAllClinics()
   {
-		this.dashboardService.getAllClinic().subscribe(
-			data=> {
-				this.clinics=data;
 
-			}
-			
-	
-				);
+        this.dashboardService.getAllClinic().subscribe(
+          data=> {
+            this.clinics=data;
+          
+    
+          }
+        )
+
 
   }
 

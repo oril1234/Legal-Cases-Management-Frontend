@@ -8,6 +8,9 @@ import { LegalCase } from 'src/app/_models/legal-case';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Clinic } from 'src/app/_models/clinic';
+import jwt_decode from "jwt-decode";
+import { ActivatedRoute } from '@angular/router';
+
 
 
 
@@ -20,8 +23,10 @@ import { Clinic } from 'src/app/_models/clinic';
 export class LegalCasesComponent {
 	cases!:LegalCase[];
 	clinics!:Clinic[];
+	currenntRole=parseInt(localStorage.getItem('Role')+"");
 
     closeResult="";
+	currentStatus=""
 
 	casesForm = new FormGroup({
 		id:new FormControl(''),
@@ -35,7 +40,12 @@ export class LegalCasesComponent {
 
 	  });
 
-	constructor(private dashboardService: DashboardService,private modalService: NgbModal) {
+	constructor(private dashboardService: DashboardService,private modalService: NgbModal,private route:ActivatedRoute
+		) {
+	
+			if (this.route.snapshot.paramMap.get('clinic')) {
+				this.currentStatus=this.route.snapshot.paramMap.get('clinic')+"";
+			}
 		this.getAllClinics();
 		this.getAllCases();
 
@@ -55,12 +65,40 @@ export class LegalCasesComponent {
 
 	getAllCases()
 	{
-		this.dashboardService.getAllCases().subscribe(
-			data=> {
-				this.cases=data;
-				console.log(this.cases)
-			}
-				);
+		let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
+		
+		if (this.route.snapshot.paramMap.get('clinic')) {
+			
+			if (this.route.snapshot.paramMap.get('status')=='allInCourt')
+			this.dashboardService.selectAllLegalCasesInCourt().subscribe(
+				data=> {
+					this.cases=data;
+					console.log(this.cases)
+				}
+					);
+			else{
+				this.dashboardService.selectAllLegalCasesNotInCourt().subscribe(
+					data=> {
+						this.cases=data;
+						console.log(this.cases)
+					}
+						);
+			}		
+		}
+
+		else
+		{
+			this.dashboardService.getAllCases().subscribe(
+				data=> {
+					this.cases=data;
+					console.log(this.cases)
+				}
+					);
+		}
+
+		
+
+
 	}
 
 
@@ -90,6 +128,7 @@ export class LegalCasesComponent {
 		}
 	
 
+		//Invoked when adding new case
 	onSave()
 	{
 
@@ -110,6 +149,7 @@ export class LegalCasesComponent {
 	}
 
   
+	//Invoked for deleting case
 	onDelete(id:string)
 	{
 		
@@ -118,6 +158,8 @@ export class LegalCasesComponent {
 		);
 	}
 
+
+	//Invoked for updating a case
 	onEdit()
 	{
 		const legalCase:LegalCase=new LegalCase();
@@ -129,7 +171,6 @@ export class LegalCasesComponent {
 		legalCase.clinicName=this.casesForm.get("clinicName")?.value+"";
 		legalCase.clientId=parseInt(this.casesForm.get("clientId")?.value+"");
 		legalCase.type=this.casesForm.get("type")?.value+"";
-		alert(legalCase.type)
 		
 		this.dashboardService.editCase(legalCase).subscribe(
 		

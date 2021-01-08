@@ -1,10 +1,13 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { ROUTES } from './menu-items';
 import { RouteInfo } from './sidebar.metadata';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute,ParamMap } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Roles } from 'src/app/_models/roles.enum';
 import { AuthService } from 'src/app/auth/shared/auth.service';
+import jwt_decode from 'jwt-decode'
+import { DashboardService } from 'src/app/dashboard.service';
+import { Clinic } from 'src/app/_models/clinic';
 declare var $: any;
 
 @Component({
@@ -15,7 +18,9 @@ export class SidebarComponent implements OnInit {
   showMenu = '';
   showSubMenu = '';
   public sidebarnavItems: RouteInfo[]=[];
-  currentRole:Roles=Roles.STUDENT
+  currentRole:Roles=parseInt(localStorage.getItem("Role")+"");
+  showSub=false;
+  clinics!:Clinic[];
 
 
   // this is for the open close
@@ -31,16 +36,31 @@ export class SidebarComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private route: ActivatedRoute,
-    private authservice:AuthService
-  ) {}
+    private authservice:AuthService,
+    private dashboardService:DashboardService
+  ) {
+
+    if(this.currentRole==2)
+    {
+      this.getAllClinics();
+    }
+  }
 
   // End open close
   ngOnInit() {
-    this.router.events.subscribe()
-    this.authservice.role.asObservable().subscribe(
-      value=>{
-        this.currentRole=value;
-        this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem.role.includes(value));
+   
+    
+    let a=JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""));
+    let decoded=JSON.parse(a);
+        this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem.role.includes(this.currentRole));
+  }
+
+  getAllClinics()
+  {
+    this.dashboardService.getAllClinic().subscribe(
+      data=>
+      {
+        this.clinics=data;
       }
     )
     

@@ -1,1 +1,26 @@
 // In this scss you can overwrite all our scss, we suggested you to add your scss into this, so whenever the update comes it will not affect your code.
+.modal-header {
+  background-color: aqua;
+}
+
+.modal-content {
+  width: 400px;
+}
+
+.btn-outline-primary {
+  border-width: 0;
+}
+.btn-outline-primary:hover {
+  background-color: transparent;
+}
+.btn-outline-primary:active {
+  background-color: transparent !important;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+.dropdown-menu.show {
+  display: block;
+  position: fixed;
+  width: 400px;
+}

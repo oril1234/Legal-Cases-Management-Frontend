@@ -14,6 +14,8 @@ export class ClincsStatisticsComponent implements OnInit {
   clinics!:Clinic[];
   //casesNumber:casesNumByClinic[]=[];
   casesNumber: Array<any> = [];
+  
+  //Bar charts of clinic
   clinicChart!:Chart
 
     
