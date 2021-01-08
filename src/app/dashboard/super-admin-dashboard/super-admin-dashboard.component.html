@@ -1,9 +1,9 @@
 <div style="margin-top: 7%;" class="row">
     <div class="col-md-6">
-        <app-weekly-sales [dashboardService]="dashservice"></app-weekly-sales>
+        <app-close-cases></app-close-cases>
     </div>
     <div class="col-md-6">
-        <app-weekly-sales [dashboardService]="dashservice"></app-weekly-sales>
+        <app-close-cases></app-close-cases>
     </div>
 </div>
 
@@ -20,7 +20,7 @@
     <div class="col-md-6 col-lg-3 col-xlg-3">
         <div class="card bg-info">
             <div class="box bg-info text-center">
-                <h1 class="font-light text-white">{{casesReceivedThisYearNum}}</h1>
+                <h1 class="font-light text-white">{{casesReceivedThisYearNumber}}</h1>
                 <h6 class="text-white">סך הכל פניות</h6>
             </div>
         </div>
@@ -28,7 +28,7 @@
     <div class="col-md-6 col-lg-3 col-xlg-3">
         <div class="card bg-primary">
             <div class="box text-center">
-                <h1 class="font-light text-white">{{supervisorsNum}}</h1>
+                <h1 class="font-light text-white">{{supervisorsNumber}}</h1>
                 <h6 class="text-white">סך הכל מנחים</h6>
             </div>
         </div>
@@ -36,7 +36,7 @@
     <div class="col-md-6 col-lg-3 col-xlg-3">
         <div class="card bg-success">
             <div class="box text-center">
-                <h1 class="font-light text-white">{{activeClinicsNum}}</h1>
+                <h1 class="font-light text-white">{{activeClinicsNumber}}</h1>
                 <h6 class="text-white">קליניקות פעילות</h6>
             </div>
         </div>
@@ -44,7 +44,7 @@
     <div class="col-md-6 col-lg-3 col-xlg-3">
         <div class="card bg-warning">
             <div class="box text-center">
-                <h1 class="font-light text-white">{{studentsNum}}</h1>
+                <h1 class="font-light text-white">{{studentsNumber}}</h1>
                 <h6 class="text-white">סך הכל סטודנטים</h6>
             </div>
         </div>

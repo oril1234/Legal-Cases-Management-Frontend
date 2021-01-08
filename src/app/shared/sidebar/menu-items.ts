@@ -133,17 +133,21 @@ export const ROUTES: RouteInfo[] = [
     role:[Roles.SUPERVISOR,Roles.STUDENT],
     params:"",
     hasSub:false
-  }
+  },
 
-  /*
+
   {
     path: '/component/pagination',
     title: 'מחקר',
     icon: 'mdi mdi-backburger',
     class: '',
     extralink: false,
-    submenu: []
-  },
+    submenu: [],
+    role:[Roles.SUPERVISOR,Roles.STUDENT],
+    params:"",
+    hasSub:false
+  }
+    /*
   {
     path: '/component/poptool',
     title: 'הסעות',
