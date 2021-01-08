@@ -1,0 +1,109 @@
+
+
+  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>
+          &nbsp;&nbsp;Upload File
+        </ng-template>
+        <div>
+          <div class="columns">
+            <div class="column is-one-third">
+              <div class="field">
+                <div class="file has-name is-primary is-fullwidth">
+                  <label class="file-label">
+                    <input
+                      class="file-input"
+                      type="file"
+                      name="file"
+                      #fileInput
+                      (change)="onChange(fileInput.files[0])"
+                    />
+
+                  </label>
+                </div>
+              </div>
+          
+              <article class="message" *ngIf="infoMessage">
+                <div class="message-body">
+                  {{ infoMessage }}
+                </div>
+              </article>
+          
+              <div class="field" *ngIf="!infoMessage">
+                <div class="control">
+                  <progress
+                    class="progress is-primary"
+                    [attr.value]="progress"
+                    max="100"
+                  ></progress>
+                </div>
+              </div>
+          
+              <div class="field">
+                <div class="control">
+                  <button
+                    class="button is-primary"
+                    (click)="onUpload()"
+                    [attr.disabled]="isUploading ? '' : null"
+                  >
+                    Upload
+                  </button>
+                  <input class="ng-hide" id="input-file-id" multiple type="file" />
+                  <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label>
+
+                </div>
+              </div>
+            </div>
+        
+          </div>
+
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" label="&nbsp;&nbsp;Assign Fields">
+      <form [formGroup]="secondFormGroup">
+        <div>
+          <table class="table col-md-5">
+            <thead>
+              <tr>
+                <th scope="col">עמודה מיובאת</th>
+                <th scope="col">עמודת יעד</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{result_data?.id}}</td>
+                <td>id (תעודת זהות)</td>
+              </tr>
+              <tr>
+                <td>{{result_data?.email}}</td>
+                <td>email (כתובת מייל)</td>
+              </tr>
+              <tr>
+                <td>{{result_data?.firstName}}</td>
+                <td>firstName (שם פרטי)</td>
+              </tr>
+              <tr>
+                <td>{{result_data?.lastName}}</td>
+                <td>lastName (שם משפחה)</td>
+              </tr>
+              <tr>
+                <td>{{result_data?.phoneNumber}}</td>
+                <td>phoneNumber (מספר פלאפון)</td>
+              </tr>
+              <button mat-button matStepperNext>המשך</button>
+          </tbody>
+        </table>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button (click)="confirmUpload()">סיום</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>

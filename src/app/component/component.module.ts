@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,10 +9,10 @@ import { ComponentsRoutes } from './component.routing';
 import { StudentsComponent } from './students/students.component';
 import { SupervisorsComponent } from './supervisors/supervisors.component';
 import { LegalCasesComponent } from './LegalCases/legalCases.component';
-
+import { CsvImportComponent } from './csvimport/csvimport.component';
 import { ClinicsComponent } from './clinics/clinicscomponent';
-
-
+import { MatSliderModule } from '@angular/material/slider';
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   imports: [
@@ -20,15 +20,16 @@ import { ClinicsComponent } from './clinics/clinicscomponent';
     RouterModule.forChild(ComponentsRoutes),
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    MatSliderModule,
+    MatStepperModule,
   ],
   declarations: [
     StudentsComponent,
     SupervisorsComponent,
     LegalCasesComponent,
     ClinicsComponent,
-
-    
+    CsvImportComponent,
   ]
 })
 export class ComponentsModule {}

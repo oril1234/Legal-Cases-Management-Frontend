@@ -124,6 +124,17 @@ export const ROUTES: RouteInfo[] = [
     hasSub:false
   },
   {
+    path: '/component/csvimport',
+    title: 'העלאת CSV',
+    icon: 'mdi mdi-tablet',
+    class: '',
+    extralink: false,
+    submenu: [],
+    role:[Roles.SUPERVISOR,Roles.SUPERADMIN],
+    params:"",
+    hasSub:false
+  },
+  {
     path: '/component/modal',
     title: 'הסעות',
     icon: 'mdi mdi-tablet',

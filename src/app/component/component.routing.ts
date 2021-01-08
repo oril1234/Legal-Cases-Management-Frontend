@@ -7,6 +7,7 @@ import { SupervisorsComponent } from './supervisors/supervisors.component';
 import { LegalCasesComponent } from './LegalCases/legalCases.component';
 
 import { ClinicsComponent } from './clinics/clinicscomponent';
+import { CsvImportComponent } from './csvimport/csvimport.component';
 
 
 
@@ -81,6 +82,18 @@ export const ComponentsRoutes: Routes = [
 			{
 				path: 'clinics',
 				component: ClinicsComponent,
+				data: {
+					title: 'Dropdown',
+					urls: [
+						{ title: 'Dashboard', url: '/dashboard' },
+						{ title: 'ngComponent' },
+						{ title: 'Dropdown' }
+					]
+				}
+			},
+			{
+				path: 'csvimport',
+				component: CsvImportComponent,
 				data: {
 					title: 'Dropdown',
 					urls: [
