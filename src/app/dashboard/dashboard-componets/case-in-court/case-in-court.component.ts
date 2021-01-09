@@ -33,11 +33,9 @@ this.getNumberOfCasesInCouret();
     this.dashboardService.numberOfCasesToCourtInAllClinicsBetween2Dates(between).subscribe(
       data=>{
         this.caseInCourtNumber=data;
-        alert("HI!")
       },
       err=>
       {
-        alert("error!")
       }
 
     )

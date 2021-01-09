@@ -86,7 +86,8 @@
                 <!-- item-->
                 <a href="" class="link" data-toggle="tooltip" title="Settings"><i class="ti-settings"></i></a>
                 <!-- item-->
-                <a href="" class="link" data-toggle="tooltip" title="Email"><span class="badge">
+                <a href="" class="link" data-toggle="tooltip" title="Email"><span *ngIf="notificationsNumber!=0"
+                        class="badge">
                         {{notificationsNumber}}
                     </span><i class="fas fa-bell"></i></a>
                 <!-- item-->
