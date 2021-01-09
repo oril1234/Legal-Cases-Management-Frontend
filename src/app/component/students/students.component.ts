@@ -40,17 +40,12 @@ export class StudentsComponent {
 	constructor(private dashboardService:DashboardService,private modalService: NgbModal,
 		private route:ActivatedRoute, private router:Router) {
 			//Allowing reload component
-			this.router.routeReuseStrategy.shouldReuseRoute = () =>
-			{
-				return false;
-			}
+
 			if (this.route.snapshot.paramMap.get('clinic')) {
 				this.currentClinic=this.route.snapshot.paramMap.get('clinic')+"";
 				
 		   }
-		   else
-		   {
-		   }
+
 		   
 		 this.getStudents();
 		 this.getAllSuperVisors();
@@ -70,10 +65,14 @@ export class StudentsComponent {
 
 	getStudents()
 	{
+		
 		if(this.currentRole==Roles.STUDENT)
 		{
 			let decoded=JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""));
 			let id:number=parseInt(JSON.parse(decoded).sub);
+			
+
+	
 			this.dashboardService.getAllStudentsInMyClinic(id).subscribe(
 			
 				data=>
@@ -89,8 +88,8 @@ export class StudentsComponent {
 		}
 		if(this.currentRole==Roles.SUPERADMIN)
 		{
-			let decoded=JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""));
-			let id:number=parseInt(JSON.parse(decoded).sub);
+
+			
 			this.dashboardService.getAllStudentsInChosenClinic(this.currentClinic).subscribe(
 			
 				data=>
@@ -99,7 +98,6 @@ export class StudentsComponent {
 				},
 				err=>
 				{
-					
 				}
 
 			)

@@ -58,7 +58,6 @@ export class FullComponent implements OnInit {
       },
       err=>
       {
-        
       }
     )
   

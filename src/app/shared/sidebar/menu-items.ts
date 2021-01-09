@@ -42,7 +42,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.STUDENT],
+    role:[Roles.STUDENT,Roles.SUPERVISOR],
     params:"",
     hasSub:false
   },

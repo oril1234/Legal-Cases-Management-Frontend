@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth/shared/auth.service';
 import jwt_decode from 'jwt-decode'
 import { DashboardService } from 'src/app/dashboard.service';
 import { Clinic } from 'src/app/_models/clinic';
+
 declare var $: any;
 
 @Component({

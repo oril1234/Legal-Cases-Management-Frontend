@@ -92,7 +92,7 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
   {
 
     let myUrl=`http://localhost:9090/api/v1/student/clinic/total/${clinicName}`;
-    return this.http.get<number>(`${myUrl}`); 
+    //return this.http.post<number>(`${myUrl}`); 
   }        
   
   
@@ -180,6 +180,13 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
   {
     let myUrl="http://localhost:9090/api/v1/clinic"
     return this.http.get<Clinic[]>(`${myUrl}`); 
+
+  }
+
+  getClinicNameBySupervisorId(id:number)
+  {
+    let myUrl=`http://localhost:9090/api/v1/clinic/name/${id}`
+    return this.http.get<string>(`${myUrl}`); 
 
   }
 

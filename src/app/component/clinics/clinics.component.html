@@ -1,4 +1,5 @@
-<br><ol class="breadcrumb mb-2">
+<br>
+<ol class="breadcrumb mb-2">
 	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
 	<li class="breadcrumb-item active">Clinics</li>
 </ol>
@@ -24,7 +25,7 @@
 										class="fa fa-edit"></i></button>
 								<!--Edit Modal -->
 								<ng-template #editModal let-modal>
-									<div class="modal-header" >
+									<div class="modal-header">
 										<h4 class="modal-title" id="modal-basic-title"> עריכת קליניקה</h4>
 										<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
 											(click)="modal.dismiss('Cross click')">
@@ -32,7 +33,7 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form dir="rtl" [formGroup]="clinicsForm" style="padding: 0;" >
+										<form dir="rtl" [formGroup]="clinicsForm" style="padding: 0;">
 
 											<label>
 												שם </label>
@@ -83,14 +84,14 @@
 								</ng-template>
 
 							</td>
-							<td>{{clinic.yearFounded}}</td>
-							<td>{{clinic.clinicalSupervisorId}}</td>
-							<td>{{clinic.clinicName}}</td>
+							<td style="text-align:right;">{{clinic.yearFounded}}</td>
+							<td style="text-align:right;">{{clinic.clinicalSupervisorId}}</td>
+							<td style="text-align:right;">{{clinic.clinicName}}</td>
 						</tr>
 					</tbody>
 				</table>
 
-				<button style="color: white;margin-left: 91%;font-size: 21;" class="btn btn-success btn-rounded"
+				<button style="color: white;font-size: 21;float:right" class="btn btn-success btn-rounded"
 					(click)="open(addModal,'')">צור קליניקה חדשה</button>
 				<!--Add Modal -->
 				<ng-template #addModal let-modal>
