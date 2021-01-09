@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit {
             switch(data[0])
             {
               case "Student":
-              alert(data[0])
               this.authService.changeRole(Roles.STUDENT);
               localStorage.setItem("Role","0");
                 break;

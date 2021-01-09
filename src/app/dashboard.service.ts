@@ -304,8 +304,10 @@ getNumberOfResearchesInAChosenClinic(clinicName:string)
 
 ///////////////////////Notifications////////////////////////
 
-getNotificationsByPersonID()
+getNotificationsByPersonID(id:number)
 {
+  let myUrl=`http://localhost:9090/api/v1/notificationManager/total/${id}`;
+  return this.http.get<number>(`${myUrl}`);
 
 }
 

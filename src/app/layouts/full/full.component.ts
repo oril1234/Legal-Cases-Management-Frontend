@@ -5,6 +5,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import {Roles} from '../../_models/roles.enum'
 import {AuthService} from '../../auth/shared/auth.service'
 import jwt_decode from "jwt-decode"
+import { DashboardService } from 'src/app/dashboard.service';
 declare var $: any;
 
 @Component({
@@ -16,7 +17,10 @@ export class FullComponent implements OnInit {
 
 	public config: PerfectScrollbarConfigInterface = {};
 
-  constructor(public router: Router,private authservice:AuthService) {}
+
+  notificationsNumber=0;
+
+  constructor(public router: Router,private authservice:AuthService,private dashBoardService:DashboardService) {}
 
   public innerWidth: number=0;
   public defaultSidebar='';
@@ -31,26 +35,33 @@ export class FullComponent implements OnInit {
 
   ngOnInit() {
     
+    this.getNotifications();
     if (this.router.url === '/') {
       this.router.navigate(['/starter']);
       
     }
-    this.authservice.getRole(315696888).subscribe(
-      data=>
-      {
+   
+ 
+    this.defaultSidebar = this.sidebartype;
+    this.handleSidebar();
+  }
+
+  getNotifications()
+  {
+    let decoded=jwt_decode(localStorage.getItem("authenticationToken")+"")
+    let id:number=parseInt(JSON.parse(JSON.stringify(decoded)).sub);
+    
+    this.dashBoardService.getNotificationsByPersonID(id).subscribe(
+      data=>{
+        this.notificationsNumber=data;
+        
       },
       err=>
       {
+        
       }
     )
-
-    this.authservice.roles.asObservable().subscribe(
-      value =>{
-        this.currentRole=value;
-      }
-    )
-    this.defaultSidebar = this.sidebartype;
-    this.handleSidebar();
+  
   }
 
   @HostListener('window:resize', ['$event'])
