@@ -43,7 +43,7 @@
 
         </div>
 
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext>המשך</button>
       </div>
     </form>
   </mat-step>
@@ -78,20 +78,19 @@
               <td>{{result_data?.phoneNumber}}</td>
               <td>phoneNumber (מספר פלאפון)</td>
             </tr>
-            <button mat-button matStepperNext>המשך</button>
+              <tr>
+                <td>{{result_data?.clinicalSupervisorId}}</td>
+                <td>clinicalSupervisorId (מספר מנחה)</td>
+              </tr>
+            <button mat-button matStepperNext (click)="confirmUpload()">אשר פרטים</button>
           </tbody>
         </table>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
-      <button mat-button (click)="confirmUpload()">סיום</button>
-    </div>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+
   </mat-step>
 </mat-horizontal-stepper>
-<div style="background-color: aqua;width:60px;height: 60px;">
-  <igx-datePicker id="date-picker" [value]="date"></igx-datePicker>
-</div>

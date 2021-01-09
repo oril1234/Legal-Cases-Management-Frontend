@@ -1,23 +1,36 @@
 import { UploaderService } from "../../services/uploader.service";
 import {FormBuilder} from "@angular/forms";
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { DashboardService } from "src/app/dashboard.service";
+import {  HttpParams, HttpClient } from '@angular/common/http';
+import { tap } from "rxjs/operators";
+import { MatStepper } from '@angular/material/stepper';
+ 
 @Component({
 	selector: 'stepper-overview-example',
 	templateUrl: 'csvimport.component.html',
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['stepper-overview-example.css'],
 }) 
-export class CsvImportComponent implements OnInit {
+export class CsvImportComponent implements OnInit { 
+
+
+	goBack(){
+		this.myStepper.previous();
+	}
+
+	goForward(){
+		this.myStepper.next();
+	}
 
 	isLinear = true;
 	firstFormGroup: FormGroup;
 	secondFormGroup: FormGroup;
-
-	constructor(private _formBuilder: FormBuilder, private uploader: UploaderService) {}
+	constructor(private http:HttpClient, private dashboardService: DashboardService, private _formBuilder: FormBuilder, private uploader: UploaderService) {}
 
 	ngOnInit() {
+		
 		this.firstFormGroup = this._formBuilder.group({
 		firstCtrl: ['', Validators.required]
 		});
@@ -28,10 +41,12 @@ export class CsvImportComponent implements OnInit {
 		this.uploader.progressSource.subscribe(progress => {
 			this.progress = progress;
 		  });
+
+
   	}
 
 	result_data: any = "";
-
+	@ViewChild('stepper') private myStepper: MatStepper;
 	progress: number;
 	infoMessage: any;
 	isUploading: boolean = false;
@@ -66,7 +81,7 @@ export class CsvImportComponent implements OnInit {
 	  this.infoMessage = null;
 	  this.progress = 0;
 	  this.isUploading = true;
-  
+	 
 	  this.uploader.upload(this.file).subscribe(message => {
 		this.isUploading = false;
 		this.prepareData(message);
@@ -75,7 +90,13 @@ export class CsvImportComponent implements OnInit {
 	} 
 
 	confirmUpload() {
-		this.uploader.confirmUpload(this.remote_file_url);
+		let res = this.uploader.confirmupload(this.remote_file_url).subscribe(
+			(res) => {
+				let resJSON = JSON.parse(JSON.stringify(res));
+				console.log(resJSON);
+			
+			}
+		);
 	}
 
 }

@@ -75,7 +75,7 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
   //For getting supervisors' details according to student id
   getStudentsClinicalSupervisorDetails(id:number)
   {
-    let myUrl="api/v1/student/{id}/supervisor";
+    let myUrl="http://localhost:9090/api/v1/student/{id}/supervisor";
     return this.http.get<number>(`${myUrl}`); 
     
   }
@@ -83,7 +83,7 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
   //Get all the students that are in a specific clinic
   getAllStudentsInChosenClinic(clinicName:string)
   {
-    let myUrl=`api/v1/student/clinic/${clinicName}"`;
+    let myUrl=`http://localhost:9090/api/v1/student/clinic/${clinicName}"`;
     return this.http.get<Student[]>(`${myUrl}`); 
   }
   
@@ -91,7 +91,7 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
   getNumberOfStudentsInAChosenClinic(clinicName:string)
   {
 
-    let myUrl=`api/v1/student/clinic/total/${clinicName}`;
+    let myUrl=`http://localhost:9090/api/v1/student/clinic/total/${clinicName}`;
     return this.http.get<number>(`${myUrl}`); 
   }        
   
@@ -189,6 +189,12 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
     let myUrl="http://localhost:9090/api/v1/clinic"
     return this.http.post<Clinic[]>(`${myUrl}`,clinic); 
 
+  }
+    
+  confirmFileUpload(file_path:string)
+  {
+    let myUrl="http://localhost:9090/api/v1/import/confirm-upload"
+    return this.http.get(`${myUrl}`); 
   }
 
   deleteClinic(id:number)

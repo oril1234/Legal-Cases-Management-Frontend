@@ -36,40 +36,44 @@ export class UploaderService {
     );
   }
 
-  processProgress(envelope: any): void {
-    if (typeof envelope === "number") {
-      this.progressSource.next(envelope);
-    }
-  }
-
-  private getEventMessage(event: HttpEvent<any>, file: File) {
-    switch (event.type) { 
-      case HttpEventType.Sent:
-        return `Uploading file "${file.name}" of size ${file.size}.`;
-      case HttpEventType.UploadProgress:
-        return Math.round((100 * event.loaded) / event.total);
-      case HttpEventType.Response:
-        return event.body;
-      default:
-        return `File "${file.name}" surprising upload event: ${event.type}.`;
-    }
-  }
-
-  confirmUpload(file_path: string) {
-
+  confirmupload(file_path: string) {
     let formData = new FormData();
     formData.append("File", file_path);
 
     const req = new HttpRequest(
       "POST",
-      "http://localhost:9090/api/v1/import/upload-file",
+      "http://localhost:9090/api/v1/import/confirm-upload",
       formData,
       {
         reportProgress: true
       }
     );
 
+    return this.http.request(req).pipe(
+      map(event => this.getEventMessage(event, file_path)),
+      tap((envelope: any) => this.processProgress(envelope)),
+      last()
+    );
     
-
   }
+
+  processProgress(envelope: any): void {
+    if (typeof envelope === "number") {
+      this.progressSource.next(envelope);
+    }
+  }
+
+  private getEventMessage(event: HttpEvent<any>, file: any) {
+    switch (event.type) { 
+      case HttpEventType.Sent:
+        return `Uploading file`;
+      case HttpEventType.UploadProgress:
+        return Math.round((100 * event.loaded) / event.total);
+      case HttpEventType.Response:
+        return event.body;
+      default:
+        return `File "${file}" surprising upload event: ${event.type}.`;
+    }
+  }
+
 }
