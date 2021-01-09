@@ -1,16 +1,20 @@
-<div style="margin-top: 10%;" class="row">
+<br><ol class="breadcrumb mb-2">
+	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+	<li class="breadcrumb-item active">Supervisors</li>
+</ol>
+<div style="margin-top: 1%;" class="row">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h1 dir="rtl" class="mr-auto" style="margin-left: 80%;">מנחים</h1>
+        <h1 dir="rtl" class="mr-auto"  style="text-align:right;">מנחים</h1>
         <table class="table">
           <thead>
             <tr>
-              <th scope="col"></th>
-              <th scope="col">שנת התחלה</th>
-              <th scope="col">דואר אלקטרוני</th>
-              <th scope="col">שם משפחה</th>
-              <th scope="col">שם פרטי</th>
+              <th scope="col"  style="text-align:right;"></th>
+              <th scope="col"  style="text-align:right;">שנת התחלה</th>
+              <th scope="col"  style="text-align:right;">דואר אלקטרוני</th>
+              <th scope="col"  style="text-align:right;">שם משפחה</th>
+              <th scope="col"  style="text-align:right;">שם פרטי</th>
             </tr>
           </thead>
           <tbody>
@@ -97,10 +101,8 @@
           </tbody>
         </table>
 
-        <button style="color: white;margin-left: 80%;font-size: 15;" class="btn btn-sm btn-success mb-2"
-          (click)="open(addModal,'')">הוסף
-          מנחה</button>
-
+        <button style="color: white;margin-left: 91%;font-size: 21;" class="btn btn-success btn-rounded"
+				(click)="open(addModal,'')">הוסף מנחה חדש</button>
 
       </div>
     </div>
@@ -118,7 +120,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <form dir="rtl" [formGroup]="supervisorForm" style="padding: 0;">
+      <form dir="rtl" [formGroup]="supervisorForm" style="text-align:right; padding: 0;">
 
         <label>
           שם פרטי</label>
@@ -148,7 +150,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click');onSave()">הוסף</button>
+      <button type="button" class="btn btn-rounded btn-primary" (click)="modal.close('Save click');onSave()">הוסף</button>
     </div>
   </ng-template>
 </div>

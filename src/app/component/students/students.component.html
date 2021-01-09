@@ -1,8 +1,12 @@
-<div style="margin-top: 10%;" class="row">
+<br><ol class="breadcrumb mb-2">
+	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+	<li class="breadcrumb-item active">Students</li>
+</ol>
+<div style="margin-top: 1%;" class="row">
 	<div class="col-12">
 		<div class="card">
-			<div class="=card-header" style="text-align: right;">
-				<h3>סטודנטים</h3>
+			<div class="=card-header" style="text-align: right;"><br>
+				<h1>סטודנטים </h1>
 			</div>
 			<div class="card-body">
 
@@ -10,9 +14,9 @@
 					<thead>
 						<tr>
 							<th *ngIf="currentRole!=0" scope="col"></th>
-							<th scope="col">דואר אלקטרוני</th>
-							<th scope="col">שם משפחה</th>
-							<th scope="col">שם פרטי</th>
+							<th scope="col" style="text-align:right;">דואר אלקטרוני</th>
+							<th scope="col" style="text-align:right;">שם משפחה</th>
+							<th scope="col" style="text-align:right;">שם פרטי</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -105,10 +109,10 @@
 							<td>{{student.firstName}}</td>
 						</tr>
 					</tbody>
-				</table>
+				</table><br>
 
-				<button *ngIf="currentRole!=0" style="color: white;margin-left: 80%;font-size: 15;"
-					class="btn btn-sm btn-success mb-2" (click)="open(addModal,'')">הוסף
+				<button *ngIf="currentRole!=0" style="color: white;margin-left: 90%;font-size: 15;"
+					class="btn btn-primary btn-rounded btn-success mb-2" (click)="open(addModal,'')">הוסף
 					סטודנט</button>
 
 			</div>

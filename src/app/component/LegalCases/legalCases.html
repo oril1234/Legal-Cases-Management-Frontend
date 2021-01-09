@@ -1,20 +1,24 @@
-<div style="margin-top: 10%;" class="row">
+<br><ol class="breadcrumb mb-2">
+	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+	<li class="breadcrumb-item active">Legal Cases</li>
+</ol>
+<div style="margin-top: 1%;" class="row">
 	<div class="col-12">
 		<div class="card" style="overflow:scroll;">
 			<div class="card-body">
-				<h1 dir="rtl" class="mr-auto" style="margin-left: 80%;">פרטי תיקים</h1>
+				<h1 dir="rtl" class="mr-auto" style="text-align: right;">פרטי תיקים</h1>
 				<table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
 					<thead style="position: sticky; top: 0">
 						<tr>
-							<th style="position: sticky; top: 0" scope="col"></th>
-							<th style="position: sticky; top: 0" scope="col">מספר תיק</th>
-							<th style="position: sticky; top: 0" scope="col">תאריך הוספה</th>
-							<th style="position: sticky; top: 0" scope="col">נושא</th>
-							<th style="position: sticky; top: 0" scope="col">סטטוס טיפול</th>
-							<th style="position: sticky; top: 0" scope="col">מספר תיק בבית משפט</th>
-							<th style="position: sticky; top: 0" scope="col">קליניקה</th>
-							<th style="position: sticky; top: 0" scope="col">ת.ז לקוח</th>
-							<th style="position: sticky; top: 0" scope="col">סיווג תיק</th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;"></th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">מספר תיק</th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">תאריך הוספה</th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">נושא</th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">סטטוס טיפול</th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">מספר תיק בבית משפט</th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">קליניקה</th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">ת.ז לקוח</th>
+							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">סיווג תיק</th>
 
 						</tr>
 					</thead>
@@ -82,7 +86,7 @@
 									<span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
 											class="fa fa-trash-alt"></i></span>
 								</button>
-								<!--Deletr Modal -->
+								<!--Delete Modal -->
 								<ng-template #deleteModal let-modal>
 									<div class="modal-header">
 										<h4 class="modal-title" id="modal-basic-title">מחיקת תיק</h4>
@@ -115,7 +119,7 @@
 					</tbody>
 				</table>
 
-				<button style="color: white;margin-left: 80%;font-size: 15;" class="btn btn-sm btn-success mb-2"
+				<button style="color: white;margin-left: 90%;font-size: 15;" class="btn btn-rounded btn-success mb-2"
 					(click)="open(addModal,'')">צור תיק</button>
 			</div>
 		</div>

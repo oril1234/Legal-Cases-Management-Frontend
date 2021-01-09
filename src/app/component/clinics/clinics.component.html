@@ -1,26 +1,30 @@
-<div style="margin-top: 10%;" class="row">
+<br><ol class="breadcrumb mb-2">
+	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+	<li class="breadcrumb-item active">Clinics</li>
+</ol>
+<div style="margin-top: 1%;" class="row">
 	<div class="col-12">
 		<div class="card">
 			<div class="card-body">
-				<h1 dir="rtl" class="mr-auto" style="margin-left: 80%;">קליניקות</h1>
+				<h1 dir="rtl" class="mr-auto" style="text-align:right;">קליניקות</h1><br>
 				<table class="table">
 					<thead>
 						<tr>
-							<th scope="col"></th>
-							<th scope="col">שנת פתיחה</th>
-							<th scope="col">מנחה</th>
-							<th scope="col">שם</th>
+							<th scope="col" style="text-align:right;"></th>
+							<th scope="col" style="text-align:right;">שנת פתיחה</th>
+							<th scope="col" style="text-align:right;">מנחה</th>
+							<th scope="col" style="text-align:right;">שם</th>
 						</tr>
 					</thead>
 					<tbody>
 
 						<tr *ngFor="let clinic of clinics">
-							<td>
+							<td style="text-align:right;">
 								<button class="btn-primary mr-1" (click)="open(editModal,'')"><i
 										class="fa fa-edit"></i></button>
 								<!--Edit Modal -->
 								<ng-template #editModal let-modal>
-									<div class="modal-header">
+									<div class="modal-header" >
 										<h4 class="modal-title" id="modal-basic-title"> עריכת קליניקה</h4>
 										<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
 											(click)="modal.dismiss('Cross click')">
@@ -28,7 +32,7 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form dir="rtl" [formGroup]="clinicsForm" style="padding: 0;">
+										<form dir="rtl" [formGroup]="clinicsForm" style="padding: 0;" >
 
 											<label>
 												שם </label>
@@ -58,7 +62,7 @@
 									<span class="spinner-border spinner-border-sm"><i
 											class="fa fa-trash-alt"></i></span>
 								</button>
-								<!--Deletr Modal -->
+								<!--Delete Modal -->
 								<ng-template #deleteModal let-modal>
 									<div class="modal-header">
 										<h4 class="modal-title" id="modal-basic-title">מחיקת קליניקה</h4>
@@ -86,9 +90,8 @@
 					</tbody>
 				</table>
 
-				<button style="color: white;margin-left: 80%;font-size: 15;" class="btn btn-sm btn-success mb-2"
-					(click)="open(addModal,'')">צור
-					קליניקה</button>
+				<button style="color: white;margin-left: 91%;font-size: 21;" class="btn btn-success btn-rounded"
+					(click)="open(addModal,'')">צור קליניקה חדשה</button>
 				<!--Add Modal -->
 				<ng-template #addModal let-modal>
 					<div class="modal-header">
