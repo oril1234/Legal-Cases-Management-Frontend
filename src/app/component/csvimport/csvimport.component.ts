@@ -13,6 +13,7 @@ import { MatStepper } from '@angular/material/stepper';
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['stepper-overview-example.css'],
 }) 
+
 export class CsvImportComponent implements OnInit { 
 
 	goBack(){
@@ -40,7 +41,6 @@ export class CsvImportComponent implements OnInit {
 		this.uploader.progressSource.subscribe(progress => {
 			this.progress = progress;
 		  });
-
 
   	}
 
