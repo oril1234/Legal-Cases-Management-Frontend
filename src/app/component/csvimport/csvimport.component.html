@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
+<div class="container-fluid"><br><mat-horizontal-stepper [linear]="isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>
@@ -10,7 +10,7 @@
             <div class="field">
               <div class="file has-name is-primary is-fullwidth">
                 <label class="file-label">
-                  <input class="file-input" type="file" name="file" #fileInput
+                  <input class="file-input btn-secondary" type="file" name="file" #fileInput
                     (change)="onChange(fileInput.files[0])" />
 
                 </label>
@@ -25,25 +25,23 @@
 
             <div class="field" *ngIf="!infoMessage">
               <div class="control">
-                <progress class="progress is-primary" [attr.value]="progress" max="100"></progress>
+                <progress class="progress-lg" style="width: 21%" [attr.value]="progress" max="100"></progress>
               </div>
             </div>
 
             <div class="field">
-              <div class="control">
-                <button class="button is-primary" (click)="onUpload()" [attr.disabled]="isUploading ? '' : null">
+              <div class="control"><br><br>
+                <button class="btn btn-rounded btn-outline-success" (click)="onUpload()" [attr.disabled]="isUploading ? '' : null">
                   Upload
                 </button>
-                <input class="ng-hide" id="input-file-id" multiple type="file" />
-                <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label>
 
               </div>
             </div>
           </div>
 
         </div>
-
-        <button mat-button matStepperNext>המשך</button>
+        <br><br><br>
+        <button mat-button matStepperNext class="btn btn-block btn-primary btn-rounded">המשך</button><br>
       </div>
     </form>
   </mat-step>
@@ -53,8 +51,8 @@
         <table class="table col-md-5">
           <thead>
             <tr>
-              <th scope="col">עמודה מיובאת</th>
-              <th scope="col">עמודת יעד</th>
+              <th scope="col">Exported Column</th>
+              <th scope="col">Matching Student Column</th>
             </tr>
           </thead>
           <tbody>
@@ -82,15 +80,16 @@
                 <td>{{result_data?.clinicalSupervisorId}}</td>
                 <td>clinicalSupervisorId (מספר מנחה)</td>
               </tr>
-            <button mat-button matStepperNext (click)="confirmUpload()">אשר פרטים</button>
-          </tbody>
-        </table>
+              <br><br>
+            </tbody>
+          </table>
+          <button mat-button matStepperNext class="btn btn-block" (click)="confirmUpload()">אשר פרטים</button>
         </div>
       </form>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
+      <ng-template matStepLabel>&nbsp;&nbsp;Done</ng-template>
       <p>You are now done.</p>
-
+      <br><br><br><br>
   </mat-step>
-</mat-horizontal-stepper>
+</mat-horizontal-stepper></div>

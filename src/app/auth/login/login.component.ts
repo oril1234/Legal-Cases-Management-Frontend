@@ -7,11 +7,12 @@ import { ToastrService } from 'ngx-toastr';
 import { throwError } from 'rxjs';
 import { Roles } from 'src/app/_models/roles.enum';
 
-@Component({
+@Component({ 
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
