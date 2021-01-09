@@ -127,7 +127,6 @@ getAllSuperVisors()
 	open(content:string,student:Student) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
-			this.studentInsertionGroup.controls['firstName'].setValue("Yeah");
 		}, (reason) => {
 			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 

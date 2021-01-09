@@ -1,5 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/dashboard.service';
+import {  ReactiveFormsModule,FormsModule} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-close-cases',
@@ -9,12 +13,23 @@ import { DashboardService } from 'src/app/dashboard.service';
 export class CloseCasesComponent implements OnInit {
 
   closedCasesNumber:number=0;
+  closeResult=""
+	datesGroup=new FormGroup({
+    startDate:new FormControl(''),
+    endDate: new FormControl(''),
+
+
+    });
+
   constructor(private dashboardService:DashboardService) { 
+  
+  
     this.getClosedCasesLastPastYear();
   }
 
 
   ngOnInit(): void {
+ 
   }
 
   getClosedCasesLastPastYear()
@@ -28,6 +43,7 @@ export class CloseCasesComponent implements OnInit {
       }
     )
   }
+
 
 }
 

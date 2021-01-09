@@ -5,6 +5,7 @@ import { ClinicalSupervisor } from './_models/clinical-supervisor';
 import { LegalCase } from './_models/legal-case';
 import { Clinic } from './_models/clinic';
 import { LegalCaseCounter } from './_models/legal-case-counter';
+import {BetweenDates} from './_models/between-dates';
 
 
 
@@ -36,16 +37,15 @@ numberOfCasesReceivedThisPastYearByClinic(clinicName: string)
 
 //in superadmin dashboard- The number of cases between 2 dates in all the clinic
 //TODO:
-
-/*
+ 
 numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 {
 
-  let httpParams = new HttpParams();
-  httpParams.append("betweenDates",JSON.stringify(range));
-  return this.http.get<number>("http://localhost:9090/api/v1/legalcase/casesBetween",{ params: httpParams });
+
+  return this.http.post<number>("http://localhost:9090/api/v1/legalcase/casesBetween",range);
 }
-*/
+
+
 
 /**
  * [19:46, 2.1.2021] גילית: numberOfCasesToCourtInChosenClinicBetween2Dates: api/v1/legalcase/casesBetween/{clinicName}
@@ -295,6 +295,15 @@ getNumberOfResearchesInAChosenClinic(clinicName:string)
   return this.http.get<number>(`${myUrl}`);
 }
 
+
+///////////////////////Notifications////////////////////////
+
+getNotificationsByPersonID()
+{
+
+}
+
+/////////////////End Notifications///////////////////////////
 
 
 
