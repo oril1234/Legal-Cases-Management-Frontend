@@ -3,6 +3,15 @@ import { RouteInfo } from './sidebar.metadata';
 
 export const STUDENT_ROUTES: RouteInfo[] = [
   {
+    path: '',
+    title: 'סטטיסטיקות',
+    icon: 'mdi mdi-dots-horizontal',
+    class: 'nav-small-cap',
+    extralink: true,
+    submenu: [],
+    role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN]
+  },
+  {
     path: '/dashboard',
     title: 'Dashboard',
     icon: 'mdi mdi-file',

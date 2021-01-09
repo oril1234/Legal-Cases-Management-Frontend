@@ -40,7 +40,7 @@ export class CsvImportComponent implements OnInit {
 
 		this.uploader.progressSource.subscribe(progress => {
 			this.progress = progress;
-		  });
+		  }); 
 
   	}
 
