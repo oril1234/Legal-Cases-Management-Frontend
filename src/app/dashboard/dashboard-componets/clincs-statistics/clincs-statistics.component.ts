@@ -90,7 +90,10 @@ export class ClincsStatisticsComponent implements OnInit {
                         }]
                     },
                     options: {
-                        scales: {
+                      events: [],
+                      responsive:true,
+                      onResize:null,	 
+                      scales: {
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true
@@ -103,7 +106,7 @@ export class ClincsStatisticsComponent implements OnInit {
                                     if (/\s/.test(<string>label)) {
                                       return (<string>label).split(" ");
                                     }else{
-                                      return (<string>label);
+                                      return (<string>label).split(" ");
                                     }              
                                   }
                                 }

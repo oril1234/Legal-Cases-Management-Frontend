@@ -10,6 +10,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Clinic } from 'src/app/_models/clinic';
 import jwt_decode from "jwt-decode";
 import { ActivatedRoute } from '@angular/router';
+import {Client} from '../../_models/client'
+
 
 
 
@@ -27,6 +29,7 @@ export class LegalCasesComponent {
 
     closeResult="";
 	currentStatus=""
+	currentClient:Client
 
 	casesForm = new FormGroup({
 		id:new FormControl(''),
@@ -43,8 +46,8 @@ export class LegalCasesComponent {
 	constructor(private dashboardService: DashboardService,private modalService: NgbModal,private route:ActivatedRoute
 		) {
 	
-			if (this.route.snapshot.paramMap.get('clinic')) {
-				this.currentStatus=this.route.snapshot.paramMap.get('clinic')+"";
+			if (this.route.snapshot.paramMap.get('status')) {
+				this.currentStatus=this.route.snapshot.paramMap.get('')+"";
 			}
 		this.getAllClinics();
 		this.getAllCases();
@@ -67,7 +70,6 @@ export class LegalCasesComponent {
 	{
 		let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
 		
-		if (this.route.snapshot.paramMap.get('clinic')) {
 			
 			if (this.route.snapshot.paramMap.get('status')=='allInCourt')
 			this.dashboardService.selectAllLegalCasesInCourt().subscribe(
@@ -76,7 +78,7 @@ export class LegalCasesComponent {
 					console.log(this.cases)
 				}
 					);
-			else{
+			else if(this.route.snapshot.paramMap.get('status')=='notInCourt') {
 				this.dashboardService.selectAllLegalCasesNotInCourt().subscribe(
 					data=> {
 						this.cases=data;
@@ -84,18 +86,6 @@ export class LegalCasesComponent {
 					}
 						);
 			}		
-		}
-
-		else
-		{
-			this.dashboardService.getAllCases().subscribe(
-				data=> {
-					this.cases=data;
-					console.log(this.cases)
-				}
-					);
-		}
-
 		
 
 
@@ -178,6 +168,16 @@ export class LegalCasesComponent {
 		 )
 		 
 		
+	}
+
+	showDetails(id:number)
+	{
+		this.dashboardService.getClientNyId(id).subscribe(
+			data=>
+			{
+				this.currentClient=data;
+			}
+		)
 	}
 
 

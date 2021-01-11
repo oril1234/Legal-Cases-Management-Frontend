@@ -15,6 +15,7 @@ import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admi
 import { StudentsStatisticsComponent } from './dashboard-componets/students-statistics/students-statistics.component';
 import { CloseCasesComponent } from './dashboard-componets/close-cases/close-cases.component';
 import { CaseInCourtComponent } from './dashboard-componets/case-in-court/case-in-court.component'
+import { NotificationsComponent } from '../notifications/notifications.component';
 
 const routes: Routes = [
 	{
@@ -28,10 +29,7 @@ const routes: Routes = [
 		},
 		component: DashboardComponent
 	},
-	{
-		path:"student_dashboard",
-		component: StudentDashboardComponent
-	}
+	{path:'notifications', component:NotificationsComponent},
 ];
 
 @NgModule({

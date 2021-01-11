@@ -1,8 +1,3 @@
-// In this scss you can overwrite all our scss, we suggested you to add your scss into this, so whenever the update comes it will not affect your code.
-.modal-header {
-  background-color: aqua;
-}
-
 .modal-content {
   width: 400px;
 }
@@ -28,4 +23,9 @@
   background-color: red;
   color: white;
   border-radius: 100%;
+}
+
+.close {
+  outline: none;
+  box-shadow: none;
 }

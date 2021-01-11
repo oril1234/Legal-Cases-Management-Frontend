@@ -15,7 +15,9 @@ export class StudentsStatisticsComponent implements OnInit {
     //Bar charts of students
     studentsChart!:Chart
 
-  constructor(private dashboardService:DashboardService) { }
+  constructor(private dashboardService:DashboardService) {
+    this.getAllClinics()
+   }
 
   ngOnInit(): void {
   }
@@ -24,7 +26,9 @@ export class StudentsStatisticsComponent implements OnInit {
   {
     this.dashboardService.getNumberOfCasesPerStudentByClinic("הקליניקה לזכויות אדם").subscribe(
 			data=> {
+        
 				this.lcaseCounter=data;
+        
 
         let studentsData:number[]=[];
         let studentsLabels:string[]=[];

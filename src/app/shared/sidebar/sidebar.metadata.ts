@@ -10,5 +10,6 @@ export interface RouteInfo
   submenu: RouteInfo[];
   role: Roles[];
   params:string
-  hasSub:boolean
+  hasSub:boolean,
+  showSub:boolean
 }

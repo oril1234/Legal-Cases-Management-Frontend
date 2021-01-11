@@ -20,18 +20,28 @@ export class SupervisorDashboardComponent implements OnInit {
 
   constructor(private dashBoardService:DashboardService) {
     
-    
-    
+    this.numberOfClinicsToCourt2Dates();
+    /*
     this.getTotalNumberOfStudentsInClinic();
     this.getTotalNumberOfStudentsInClinic();
     this.getTotalNumberOfStudentsInClinic();
     this.getTotalNumberOfStudentsInClinic();
-    
+    */
    }
 
   ngOnInit(): void {
   }
 
+
+  numberOfClinicsToCourt2Dates()
+  {
+    this.dashBoardService.numberOfCasesToCourtInChosenClinicBetween2Dates().subscribe(
+      data=>{
+      },
+      error=>{
+      }
+    )
+  }
 
   getClinicNameBySupervisor()
   {
@@ -42,7 +52,7 @@ export class SupervisorDashboardComponent implements OnInit {
       data=>
       {
         this.clinicName=data;
-        
+
       }
 
     )

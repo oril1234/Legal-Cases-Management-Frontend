@@ -3,42 +3,24 @@
         <li class="nav-devider"></li>
         <!-- First level menu -->
         <li class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title"
-            *ngFor="let sidebarnavItem of sidebarnavItems"
-            [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
+            *ngFor="let sidebarnavItem of sidebarnavItems">
             <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true">{{sidebarnavItem.title}}</div>
             <a class="sidebar-link waves-effect waves-dark"
-                [routerLink]="sidebarnavItem.class === '' ? [sidebarnavItem.path] : null"
-                [ngClass]="[sidebarnavItem.class]" *ngIf="!sidebarnavItem.extralink && !sidebarnavItem.hasSub
-                ;" (click)="addExpandClass(sidebarnavItem.title)"
-                [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
+                [routerLink]="sidebarnavItem.class === '' && !sidebarnavItem.hasSub ? [sidebarnavItem.path] : null"
+                [ngClass]="[sidebarnavItem.class]" *ngIf="!sidebarnavItem.extralink
+                ;" (click)="addExpandClass(sidebarnavItem.title);toggleDropDown(sidebarnavItem)">
                 <i [ngClass]="[sidebarnavItem.icon]"></i>
                 <span class="hide-menu">{{sidebarnavItem.title}}</span>
             </a>
 
-            <div style="padding: 14px 35px 14px 8px;" *ngIf="sidebarnavItem.path=='/component/legalCases'" ngbDropdown
-                role="group" aria-label="Button group with nested dropdown">
-                <a ngbDropdownToggle> <i style="color: gray;" [ngClass]="[sidebarnavItem.icon]"></i>
-                    <span style="margin-left: 10px; color: gray;" class="hide-menu">{{sidebarnavItem.title}}</span></a>
-                <div class="dropdown-menu" ngbDropdownMenu>
-                    <button [routerLink]="sidebarnavItem.path+'/allInCourt'" ngbDropdownItem>תיקים בטיפול בית
-                        משפט</button>
-                    <button [routerLink]="sidebarnavItem.path+'/notInCourt'" ngbDropdownItem>תיקים לא בטיפול בית
-                        משפט</button>
-                    <button ngbDropdownItem>ניירות עמדה</button>
-                    <button ngbDropdownItem>מסמכי מדיניות</button>
-                </div>
-            </div>
+            <div *ngIf="sidebarnavItem.showSub">
+                <a class="sidebar-link waves-effect waves-dark" *ngFor="let submenuItem of sidebarnavItem.submenu"
+                    [routerLink]="submenuItem.path" [ngClass]="[sidebarnavItem.class]"
+                    (click)="addExpandClass(sidebarnavItem.title)"
+                    [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">
 
-
-            <div style="padding: 14px 35px 14px 8px;" *ngIf="sidebarnavItem.title=='סטודנטים בקליניקות'" ngbDropdown
-                role="group" aria-label="Button group with nested dropdown">
-                <a ngbDropdownToggle> <i style="color: gray;" [ngClass]="[sidebarnavItem.icon]"></i>
-                    <span style="margin-left: 10px; color: gray;" class="hide-menu">{{sidebarnavItem.title}}</span></a>
-                <div class="dropdown-menu" ngbDropdownMenu>
-                    <button style="white-space: normal;" *ngFor="let clinic of clinics"
-                        [routerLink]="sidebarnavItem.path+'/'+clinic.clinicName"
-                        ngbDropdownItem>{{clinic.clinicName}}</button>
-                </div>
+                    <span class="hide-menu">{{submenuItem.title}}</span>
+                </a>
             </div>
 
 

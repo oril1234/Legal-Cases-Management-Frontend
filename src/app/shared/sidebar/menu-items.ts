@@ -11,7 +11,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/dashboard',
@@ -22,7 +23,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '',
@@ -33,7 +35,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/component/students',
@@ -44,7 +47,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERADMIN],
     params:"",
-    hasSub:true
+    hasSub:true,
+    showSub:false
   },
   {
     path: '/component/students',
@@ -55,7 +59,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT,Roles.SUPERVISOR],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/component/supervisors',
@@ -66,7 +71,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERADMIN],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/component/legalCases',
@@ -77,7 +83,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERADMIN],
     params:"",
-    hasSub:true
+    hasSub:true,
+    showSub:false
   },
   {
     path: '/component/legalCases',
@@ -88,7 +95,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERVISOR],
     params:"",
-    hasSub:true
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/component/legalCases',
@@ -99,7 +107,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT],
     params:"",
-    hasSub:true
+    hasSub:true,
+    showSub:false
   },
   {
     path: '/component/clinics',
@@ -110,7 +119,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERADMIN],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/component/clinics',
@@ -121,7 +131,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT,Roles.SUPERVISOR],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/component/modal',
@@ -132,7 +143,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/component/csvimport',
@@ -143,7 +155,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
   {
     path: '/component/modal',
@@ -154,7 +167,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERVISOR,Roles.STUDENT],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   },
 
 
@@ -167,7 +181,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.SUPERVISOR,Roles.STUDENT],
     params:"",
-    hasSub:false
+    hasSub:false,
+    showSub:false
   }
     /*
   {

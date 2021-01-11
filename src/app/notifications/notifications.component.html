@@ -1,0 +1,17 @@
+<div style="margin-top:7%;" class="container">
+    <div class="row">
+        <div *ngFor="let notification of notifications" class="col-10">
+            <div class="card" style="width: 100%; opacity: 95%;margin-top:0%;margin-bottom: 0;">
+                <div class="card-body">
+                    <h4 style="float: right;">
+                        התקבל עדכון מ<b>{{notification.sourceId}}</b>
+                    </h4>
+                    <h4>{{notification.details}}</h4>
+                    <br>
+                    <hr>
+                </div>
+            </div>
+
+
+        </div>
+    </div>

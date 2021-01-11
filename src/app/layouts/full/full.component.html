@@ -64,7 +64,7 @@
                 <div class="profile-img"> <img src="assets/images/users/1.jpg" alt="user" /> </div>
                 <!-- User profile text-->
                 <div class="profile-text" ngbDropdown display="static">
-                    <a href="javascript:void(0)" class="dropdown-toggle link u-dropdown" ngbDropdownToggle>הרן רייכמן
+                    <a href="javascript:void(0)" class="dropdown-toggle link u-dropdown" ngbDropdownToggle>{{fullName}}
                         <span class="caret"></span></a>
                     <div class="dropdown-menu" ngbDropdownMenu>
                         <a href="#" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
@@ -86,12 +86,13 @@
                 <!-- item-->
                 <a href="" class="link" data-toggle="tooltip" title="Settings"><i class="ti-settings"></i></a>
                 <!-- item-->
-                <a href="" class="link" data-toggle="tooltip" title="Email"><span *ngIf="notificationsNumber!=0"
-                        class="badge">
+                <a routerLink="/dashboard/notifications" class="link" data-toggle="tooltip" title="Email"><span
+                        *ngIf="notificationsNumber!=0" class="badge">
                         {{notificationsNumber}}
                     </span><i class="fas fa-bell"></i></a>
                 <!-- item-->
-                <a href="" class="link" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
+                <a href="" (click)="logout()" class="link" data-toggle="tooltip" title="Logout"><i
+                        class="mdi mdi-power"></i></a>
 
             </div>
         </div>

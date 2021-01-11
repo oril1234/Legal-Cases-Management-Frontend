@@ -57,7 +57,9 @@ constructor(private dashboardService:DashboardService,private modalService:NgbMo
           data=> {
             this.clinics=data;
           
-    
+          },
+          err=>
+          {
           }
         )
 

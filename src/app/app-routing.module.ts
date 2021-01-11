@@ -7,7 +7,7 @@ import {AuthGuard} from './auth/auth.guard'
 import { SuperAdminDashboardComponent } from './dashboard/super-admin-dashboard/super-admin-dashboard.component';
 import { StudentDashboardComponent } from './dashboard/student-dashboard/student-dashboard.component';
 import { SupervisorDashboardComponent } from './dashboard/supervisor-dashboard/supervisor-dashboard.component';
-
+import { NotificationsComponent } from './notifications/notifications.component';
 export const Approutes: Routes = [
 
   {
@@ -15,11 +15,6 @@ export const Approutes: Routes = [
     path: '',
     component: FullComponent,
     children: [
-      {path:"studentDSB",
-      component:StudentDashboardComponent},
-      {path:"supervisortDSB",
-      component:SupervisorDashboardComponent},
-      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
       
       {
         path: 'dashboard',
@@ -32,6 +27,7 @@ export const Approutes: Routes = [
     ]
   },
   {path:'login', component:LoginComponent },
+  
  
   {
     path: '**',

@@ -33,6 +33,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { LoginComponent } from './auth/login/login.component';
 import { ToastrModule } from 'ngx-toastr';
 import { IgxDatePickerModule } from "igniteui-angular";
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 
@@ -52,6 +53,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		SidebarComponent,
 		BreadcrumbComponent,
 		LoginComponent,
+		NotificationsComponent,
 	],
 	imports: [
 		CommonModule,

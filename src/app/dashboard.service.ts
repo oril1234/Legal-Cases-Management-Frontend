@@ -6,6 +6,7 @@ import { LegalCase } from './_models/legal-case';
 import { Clinic } from './_models/clinic';
 import { LegalCaseCounter } from './_models/legal-case-counter';
 import {BetweenDates} from './_models/between-dates';
+import { Client } from './_models/client';
 
 
 
@@ -47,15 +48,33 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 
 
 
-/**
- * [19:46, 2.1.2021] גילית: numberOfCasesToCourtInChosenClinicBetween2Dates: api/v1/legalcase/casesBetween/{clinicName}
-*/
+numberOfCasesToCourtInChosenClinicBetween2Dates()
+{
+  let clinicName="הקליניקה לזכויות האדם"
+  let myUrl=`http://localhost:9090/api/api/v1/legalcase/casesBetween/${clinicName}`;
+  let range=new BetweenDates();
+  range.startDate=new Date('2020-1-1');
+  range.endDate=new Date('2021-1-1');
+
+  return this.http.post<number>(`${myUrl}`,range);
+  
+
+
+}
+
 
 
   getAllStudents()
   {
     let myUrl="http://localhost:9090/api/v1/student"
     return this.http.get<Student[]>(`${myUrl}`); 
+
+  }
+
+  getPersonFullNameById(id:number)
+  {
+    let myUrl=`http://localhost:9090/api/v1/person/fullName/${id}`
+    return this.http.get<string[]>(`${myUrl}`); 
 
   }
 
@@ -83,16 +102,16 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
   //Get all the students that are in a specific clinic
   getAllStudentsInChosenClinic(clinicName:string)
   {
-    let myUrl=`http://localhost:9090/api/v1/student/clinic/${clinicName}"`;
-    return this.http.get<Student[]>(`${myUrl}`); 
+    let myUrl=`http://localhost:9090/api/v1/student/clinic/getAllClinicsStudents"`;
+    return this.http.post<Student[]>(`${myUrl}`,clinicName); 
   }
   
   //Number of students in a specific clinic
   getNumberOfStudentsInAChosenClinic(clinicName:string)
   {
 
-    let myUrl=`http://localhost:9090/api/v1/student/clinic/total/${clinicName}`;
-    //return this.http.post<number>(`${myUrl}`); 
+    let myUrl=`http://localhost:9090/api/v1/student/clinic/totalNumberOfStudents`;
+    return this.http.post<number>(`${myUrl}`,clinicName); 
   }        
   
   
@@ -183,6 +202,11 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 
   }
 
+  getclinicNameBySupervisorId(id:number)
+  {
+
+  }
+
   getClinicNameBySupervisorId(id:number)
   {
     let myUrl=`http://localhost:9090/api/v1/clinic/name/${id}`
@@ -249,13 +273,20 @@ getAllInactiveClinicsList()
 getNumberOfCasesPerStudentByClinic(clinicName:string)
 {
   let myUrl=`http://localhost:9090/api/v1/clinic/${clinicName}/legalCasesPerStudent`;
-  return this.http.get<LegalCaseCounter[]>(`${myUrl}`);
+  return this.http.post<LegalCaseCounter[]>(`${myUrl}`,clinicName);
 }
 
 getAllCasesAssignedToStudennt(id:number)
 {
   let myUrl=`http://localhost:9090/api/v1/caseAssigned/student/${id}`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
+
+}
+
+getNumberOfCasesAssignedToStudent(id:number)
+{
+  let myUrl=`http://localhost:9090/api/v1/caseAssigned/total/student/${id}`;
+  return this.http.get<number>(`${myUrl}`);
 
 }
 
@@ -311,16 +342,28 @@ getNumberOfResearchesInAChosenClinic(clinicName:string)
 
 ///////////////////////Notifications////////////////////////
 
-getNotificationsByPersonID(id:number)
+getNotificationsNumberByPersonID(id:number)
 {
   let myUrl=`http://localhost:9090/api/v1/notificationManager/total/${id}`;
   return this.http.get<number>(`${myUrl}`);
 
 }
 
+getNotificationsByPersonID(id:number)
+{
+  let myUrl=`http://localhost:9090/api/v1/notificationManager/${id}`;
+  return this.http.get<Notification[]>(`${myUrl}`);
+
+}
+
+
 /////////////////End Notifications///////////////////////////
 
+getClientNyId(id:number)
+{
+  let myUrl=`http://localhost:9090/api/v1/client/${id}`;
+  return this.http.get<Client>(`${myUrl}`);
 
-
+}
 
 }

@@ -95,9 +95,11 @@ export class StudentsComponent {
 				data=>
 				{
 					this.students=data;
+					alert("hello!")
 				},
 				err=>
 				{
+					alert("bye!")
 				}
 
 			)

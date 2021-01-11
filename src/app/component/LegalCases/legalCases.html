@@ -1,4 +1,5 @@
-<br><ol class="breadcrumb mb-2">
+<br>
+<ol class="breadcrumb mb-2">
 	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
 	<li class="breadcrumb-item active">Legal Cases</li>
 </ol>
@@ -10,15 +11,15 @@
 				<table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
 					<thead style="position: sticky; top: 0">
 						<tr>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;"></th>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">מספר תיק</th>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">תאריך הוספה</th>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">נושא</th>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">סטטוס טיפול</th>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">מספר תיק בבית משפט</th>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">קליניקה</th>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">ת.ז לקוח</th>
-							<th style="position: sticky; top: 0" scope="col" style="text-align: right;">סיווג תיק</th>
+							<th style="position: sticky; top: 0;text-align: right;" scope="col"></th>
+							<th style="position: sticky; top: 0;" scope="col">מספר תיק</th>
+							<th style="position: sticky; top: 0" scope="col">תאריך הוספה</th>
+							<th style="position: sticky; top: 0" scope="col">נושא</th>
+							<th style="position: sticky; top: 0" scope="col">סטטוס טיפול</th>
+							<th style="position: sticky; top: 0" scope="col">מספר תיק בבית משפט</th>
+							<th style="position: sticky; top: 0" scope="col">קליניקה</th>
+							<th style="position: sticky; top: 0" scope="col">פרטי לקוח</th>
+							<th style="position: sticky; top: 0" scope="col">סיווג תיק</th>
 
 						</tr>
 					</thead>
@@ -112,7 +113,8 @@
 							<td>{{case.status}}</td>
 							<td>{{case.courtCaseId}}</td>
 							<td>{{case.clinicName}}</td>
-							<td>{{case.clientId}}</td>
+							<td><button class="btn btn-primary"
+									(click)="open(detailsModal,'');showDetails(case.clientId)">הצג</button></td>
 							<td>{{case.type}}</td>
 
 						</tr>
@@ -165,6 +167,58 @@
 					(click)="modal.close('Save click');onSave()">הוסף</button>
 			</div>
 		</ng-template>
+
+		<ng-template #detailsModal let-modal>
+			<div class="modal-header">
+				<h4 class="modal-title" id="modal-basic-title">פרטי לקוח</h4>
+				<button style="margin-left: 0;border-width: 0; outline: none;
+				box-shadow: none;" type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-6">
+						<span>שם פרטי:</span>
+					</div>
+					<div class="col-6">
+						<span>{{currentClient.firstName}}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<span>שם משפחה:</span>
+					</div>
+					<div class="col-6">
+						<span>{{currentClient.lastname}}</span>
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<span>דואר אלקטרוני:</span>
+					</div>
+					<div class="col-6">
+						<span>{{currentClient.email}}</span>
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<span>מספר טלפון:</span>
+					</div>
+					<div class="col-6">
+						<span>{{currentClient.phoneNumber}}</span>
+					</div>
+
+				</div>
+
+
+			</div>
+			<div class="modal-footer">
+			</div>
+		</ng-template>
+
 	</div>
 
 

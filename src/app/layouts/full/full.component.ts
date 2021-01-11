@@ -20,7 +20,13 @@ export class FullComponent implements OnInit {
 
   notificationsNumber=0;
 
-  constructor(public router: Router,private authservice:AuthService,private dashBoardService:DashboardService) {}
+  constructor(public router: Router,private authservice:AuthService,private dashBoardService:DashboardService) {
+    if(localStorage.getItem("authenticationToken")!=null)
+  {
+    this.getFullName();
+    this.getNotifications();
+  }
+  }
 
   public innerWidth: number=0;
   public defaultSidebar='';
@@ -28,6 +34,7 @@ export class FullComponent implements OnInit {
   public expandLogo = false;
   public sidebartype = 'full';
   currentRole:Roles=Roles.STUDENT;
+  fullName:string
 
   Logo() {
     this.expandLogo = !this.expandLogo;
@@ -35,7 +42,7 @@ export class FullComponent implements OnInit {
 
   ngOnInit() {
     
-    this.getNotifications();
+    //this.getNotifications();
     if (this.router.url === '/') {
       this.router.navigate(['/starter']);
       
@@ -51,7 +58,7 @@ export class FullComponent implements OnInit {
     let decoded=jwt_decode(localStorage.getItem("authenticationToken")+"")
     let id:number=parseInt(JSON.parse(JSON.stringify(decoded)).sub);
     
-    this.dashBoardService.getNotificationsByPersonID(id).subscribe(
+    this.dashBoardService.getNotificationsNumberByPersonID(id).subscribe(
       data=>{
         this.notificationsNumber=data;
         
@@ -61,6 +68,21 @@ export class FullComponent implements OnInit {
       }
     )
   
+  }
+
+  getFullName()
+  {
+    let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
+    this.dashBoardService. getPersonFullNameById(id).subscribe(
+      data=>{
+        this.fullName=data[0];
+
+      },
+      err=>
+      {
+       
+      }
+    )
   }
 
   @HostListener('window:resize', ['$event'])
@@ -75,6 +97,13 @@ export class FullComponent implements OnInit {
     } else {
       this.sidebartype = this.defaultSidebar;
     }
+  }
+
+  logout()
+  {
+    localStorage.removeItem("Role");
+    localStorage.removeItem("authenticationToken");
+    this.router.navigate(['/login']);
   }
 
   toggleSidebarType() {
