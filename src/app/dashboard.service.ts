@@ -39,6 +39,7 @@ numberOfCasesReceivedThisPastYearByClinic(clinicName: string)
 //in superadmin dashboard- The number of cases between 2 dates in all the clinic
 //TODO:
  
+
 numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 {
 
@@ -48,19 +49,19 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 
 
 
+/*
 numberOfCasesToCourtInChosenClinicBetween2Dates()
 {
   let clinicName="הקליניקה לזכויות האדם"
-  let myUrl=`http://localhost:9090/api/api/v1/legalcase/casesBetween/${clinicName}`;
+  let myUrl=`http://localhost:9090/api/v1/legalcase/casesBetween/${clinicName}`;
   let range=new BetweenDates();
   range.startDate=new Date('2020-1-1');
   range.endDate=new Date('2021-1-1');
 
   return this.http.post<number>(`${myUrl}`,range);
   
-
-
 }
+*/
 
 
 
@@ -83,6 +84,11 @@ numberOfCasesToCourtInChosenClinicBetween2Dates()
     let myUrl=`http://localhost:9090/api/v1/student/clinic/${id}/getall`
     return this.http.get<Student[]>(`${myUrl}`); 
 
+  }
+
+  getNumberOfStudentsInMyClinic()
+  {
+    
   }
 
   getStudentsNum()
@@ -210,11 +216,10 @@ numberOfCasesToCourtInChosenClinicBetween2Dates()
   getClinicNameBySupervisorId(id:number)
   {
     let myUrl=`http://localhost:9090/api/v1/clinic/name/${id}`
-    return this.http.get<string>(`${myUrl}`); 
+    return this.http.get<string[]>(`${myUrl}`); 
 
   }
 
-  
   addNewClinic(clinic:Clinic)
   {
     let myUrl="http://localhost:9090/api/v1/clinic"
@@ -273,7 +278,7 @@ getAllInactiveClinicsList()
 getNumberOfCasesPerStudentByClinic(clinicName:string)
 {
   let myUrl=`http://localhost:9090/api/v1/clinic/${clinicName}/legalCasesPerStudent`;
-  return this.http.post<LegalCaseCounter[]>(`${myUrl}`,clinicName);
+  return this.http.get<LegalCaseCounter[]>(`${myUrl}`);
 }
 
 getAllCasesAssignedToStudennt(id:number)
