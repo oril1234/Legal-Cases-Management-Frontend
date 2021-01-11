@@ -25,11 +25,9 @@ export class NotificationsComponent implements OnInit {
     this.dashBoardService.getNotificationsByPersonID(id).subscribe(
       data=>{
         this.notifications=data;
-        alert(data.length)
 
       },
       err=>{
-        alert("error")
       }
     )
   }

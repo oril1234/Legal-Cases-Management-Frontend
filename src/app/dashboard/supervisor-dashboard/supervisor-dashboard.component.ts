@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/dashboard.service';
 import jwt_decode from 'jwt-decode'
+import { Student } from 'src/app/_models/student';
 
 
 @Component({
@@ -21,8 +22,9 @@ export class SupervisorDashboardComponent implements OnInit {
   constructor(private dashBoardService:DashboardService) {
     
     this.numberOfClinicsToCourt2Dates();
-    /*
+    
     this.getTotalNumberOfStudentsInClinic();
+    /*
     this.getTotalNumberOfStudentsInClinic();
     this.getTotalNumberOfStudentsInClinic();
     this.getTotalNumberOfStudentsInClinic();
@@ -35,14 +37,17 @@ export class SupervisorDashboardComponent implements OnInit {
 
   numberOfClinicsToCourt2Dates()
   {
+    /*
     this.dashBoardService.numberOfCasesToCourtInChosenClinicBetween2Dates().subscribe(
       data=>{
       },
       error=>{
       }
     )
+    */
   }
 
+  /*
   getClinicNameBySupervisor()
   {
     let decoded=jwt_decode(localStorage.getItem("authenticationToken")+"")
@@ -58,12 +63,17 @@ export class SupervisorDashboardComponent implements OnInit {
     )
 
   }
+  */
 
   getTotalNumberOfStudentsInClinic()
   {
-    this.dashBoardService.getStudentsNum().subscribe(
+    let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
+
+    this.dashBoardService.getAllStudents().subscribe(
       data=>{
-        this.studentsNumber=data;
+        let students:Student[]=data.filter(student=>student.clinicalSupervisorName==id);
+        
+        this.studentsNumber=students.length;
       }
     )
   }

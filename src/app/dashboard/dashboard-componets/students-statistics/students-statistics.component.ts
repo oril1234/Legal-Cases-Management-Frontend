@@ -4,6 +4,7 @@ import { StudentsComponent } from 'src/app/component/students/students.component
 import { DashboardService } from 'src/app/dashboard.service';
 import { LegalCaseCounter } from 'src/app/_models/legal-case-counter';
 import { Student } from 'src/app/_models/student';
+import jwt_decode from 'jwt-decode'
 
 @Component({
   selector: 'app-students-statistics',
@@ -14,6 +15,7 @@ export class StudentsStatisticsComponent implements OnInit {
   lcaseCounter:LegalCaseCounter[]=[];
     //Bar charts of students
     studentsChart!:Chart
+    clinicName:string=""
 
   constructor(private dashboardService:DashboardService) {
     this.getAllClinics()
@@ -24,78 +26,95 @@ export class StudentsStatisticsComponent implements OnInit {
 
   getAllClinics()
   {
-    this.dashboardService.getNumberOfCasesPerStudentByClinic("הקליניקה לזכויות אדם").subscribe(
-			data=> {
+    let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
+    this.dashboardService.getClinicNameBySupervisorId(id).subscribe(
+      data1=>{
+        this.clinicName=data1[0];
+      },
+      err=>{
         
-				this.lcaseCounter=data;
-        
 
-        let studentsData:number[]=[];
-        let studentsLabels:string[]=[];
-        this.lcaseCounter.forEach(element=>
-          {
-            studentsData.push(element.amountOfCases);
-            studentsLabels.push(element.studentName);
-          })
-
-          var myChart = new Chart("clinicChart", {
-            type: 'bar',
-            data: {
-                labels: studentsLabels,
-                datasets: [{
-                    label: '',
-                    data: studentsData,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }],
-                    xAxes: [
-                      {
-                        ticks: {
-                          /*
-                          callback: function(label, index, labels) {
-                            if (/\s/.test(<string>label)) {
-                              return (<string>label).split(" ");
-                            }else{
-                              return (<string>label);
-                            }              
+      },
+      ()=>{
+        this.dashboardService.getNumberOfCasesPerStudentByClinic(this.clinicName).subscribe(
+          data=> {
+            
+            this.lcaseCounter=data;
+    
+            let studentsData:number[]=[];
+            let studentsLabels:string[]=[];
+            this.lcaseCounter.forEach(element=>
+              {
+                studentsData.push(element.amountOfCases);
+                studentsLabels.push(element.name);
+                
+              })
+              
+              var myChart = new Chart("clinicChart", {
+                type: 'bar',
+                data: {
+                    labels: studentsLabels,
+                    datasets: [{
+                        label: '',
+                        data: studentsData,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+    
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [
+                          {
+                            ticks: {
+                              /*
+                              callback: function(label, index, labels) {
+                                if (/\s/.test(<string>label)) {
+                                  return (<string>label).split(" ");
+                                }else{
+                                  return (<string>label);
+                                }              
+                              }
+                              */
+                            }
                           }
-                          */
-                        }
-                      }
-                    ]
+                        ]
+                    }
                 }
+            });
+            this.studentsChart=myChart;
+    
+            },
+            err=>{
+              
             }
-        });
-        this.studentsChart=myChart;
-
-        }
+        )
+      }
     )
+    
+
             
 
 

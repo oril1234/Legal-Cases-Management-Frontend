@@ -1,5 +1,5 @@
 export class LegalCaseCounter {
-    studentName!:string;
+    name!:string;
    amountOfCases!:number;
 
 }

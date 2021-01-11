@@ -4,7 +4,4 @@ export class Clinic {
     clinicalSupervisorId!:number;
     yearFounded!:number;
 
-
-
-
 }
