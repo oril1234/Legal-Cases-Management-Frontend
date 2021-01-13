@@ -39,42 +39,39 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form dir="rtl" [formGroup]="casesForm" style="padding: 0;">
+										<form dir="rtl" style="padding: 0;">
 											<label>
 												מספר תיק</label>
-											<input type="text" formControlName="id" [(ngModel)]="case.id"><br>
+											<input type="text" name="id" [(ngModel)]="case.id"><br>
 											<label>
 												נושא</label>
-											<input type="text" formControlName="subject" [(ngModel)]="case.subject"><br>
+											<input type="text" name="subject" [(ngModel)]="case.subject"><br>
 
 											<label>
 												תאריך</label>
-											<input type="text" formControlName="dateAdded" [(ngModel)]="case.dateAdded"
+											<input type="text" name="dateAdded" [(ngModel)]="case.dateAdded"
 												readonly><br>
 
 											<label>
 												סוג</label>
-											<input type="text" formControlName="type" [(ngModel)]="case.type"><br>
+											<input type="text" name="type" [(ngModel)]="case.type"><br>
 
 
 											<label>
 												מצב</label>
-											<input type="text" formControlName="status" [(ngModel)]="case.status"> <br>
+											<input type="text" name="status" [(ngModel)]="case.status"> <br>
 											<label>
 												קליניקה</label>
-											<input type="text" formControlName="clinicName"
-												[(ngModel)]="case.clinicName"><br>
+											<input type="text" name="clinicName" [(ngModel)]="case.clinicName"><br>
 
 
 											<label>
 												תעודת זהות לקוח</label>
-											<input type="text" formControlName="clientId"
-												[(ngModel)]="case.clientId"><br>
+											<input type="text" name="clientId" [(ngModel)]="case.clientId"><br>
 
 											<label>
 												מספר תיק בבית משפט</label>
-											<input type="text" formControlName="courtCaseId"
-												[(ngModel)]="case.courtCaseId"><br>
+											<input type="text" name="courtCaseId" [(ngModel)]="case.courtCaseId"><br>
 
 										</form>
 									</div>
@@ -83,6 +80,7 @@
 											(click)="modal.close('Save click');onEdit()">אישור</button>
 									</div>
 								</ng-template>
+
 								<button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
 									<span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
 											class="fa fa-trash-alt"></i></span>
@@ -135,30 +133,51 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form dir="rtl" [formGroup]="caseForm" style="padding: 0;">
+				<form dir="rtl" style="padding: 0;">
+					<div class="row">
+						<div class="col-6"> <label>
+								נושא</label></div>
+						<div class="col-6">
+							<input [(ngModel)]="addedCase.subject" type="text" name="subject">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<label>
+								סוג</label>
+						</div>
+						<div class="col-6">
+							<input [(ngModel)]="addedCase.type" type="text" name="type">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<label>
+								מצב</label>
+						</div>
+						<div class="col-6">
+							<input [(ngModel)]="addedCase.status" type="text" name="status">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<label>
+								קליניקה</label>
 
-					<label>
-						נושא</label>
-					<input type="text" formControlName="subject"><br>
-
-
-
-					<label>
-						סוג</label>
-					<input type="text" formControlName="caseType"><br>
-
-
-					<label>
-						מצב</label>
-					<input type="text" formControlName="status"> <br>
-					<label>
-						קליניקה</label>
-					<input type="text" formControlName="clinicName"><br>
-
-
-					<label>
-						תעודת זהות לקוח</label>
-					<input type="text" formControlName="clientId"><br>
+						</div>
+						<div class="col-6">
+							<input [(ngModel)]="addedCase.clinicName" type="text" name="clinicName">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<label>
+								תעודת זהות לקוח</label>
+						</div>
+						<div class="col-6">
+							<input [(ngModel)]="addedCase.clientId" type="text" name="clientId">
+						</div>
+					</div>
 
 				</form>
 			</div>

@@ -7,8 +7,11 @@ import { Clinic } from './_models/clinic';
 import { LegalCaseCounter } from './_models/legal-case-counter';
 import {BetweenDates} from './_models/between-dates';
 import { Client } from './_models/client';
+import { Research } from './_models/research';
+import { NotificationtsToUsers } from './_models/notification';
+import { NotificationManager } from './_models/notification-manager';
 
-
+NotificationManager
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +66,13 @@ numberOfCasesToCourtInChosenClinicBetween2Dates()
 }
 */
 
+getAllPersons()
+{
+  
+  let myUrl="http://localhost:9090/api/v1/person"
+  return this.http.get<Student[]>(`${myUrl}`); 
+
+}
 
 
   getAllStudents()
@@ -88,7 +98,7 @@ numberOfCasesToCourtInChosenClinicBetween2Dates()
 
   getNumberOfStudentsInMyClinic()
   {
-    
+
   }
 
   getStudentsNum()
@@ -124,8 +134,9 @@ numberOfCasesToCourtInChosenClinicBetween2Dates()
 
   addNewStudent(student:Student)
   {
+
     let myUrl="http://localhost:9090/api/v1/student"
-    return this.http.post<Student[]>(`${myUrl}`,student); 
+    return this.http.post(`${myUrl}`,student); 
 
   }
 
@@ -210,6 +221,17 @@ numberOfCasesToCourtInChosenClinicBetween2Dates()
 
   getclinicNameBySupervisorId(id:number)
   {
+    
+    let myUrl=`http://localhost:9090/api/v1/student/${id}/supervisor`
+    return this.http.get<ClinicalSupervisor>(`${myUrl}`); 
+
+
+  }
+
+  getStudentClinicalSupervisorByStudentId(id:number)
+  {
+    let myUrl=`http://localhost:9090/api/v1/student/${id}/supervisor`
+    return this.http.get<ClinicalSupervisor>(`${myUrl}`); 
 
   }
 
@@ -275,9 +297,9 @@ getAllInactiveClinicsList()
 /*In clinical supervisor dashboard- get students name in
   a clinic and number of cases assigned to them
 */ 
-getNumberOfCasesPerStudentByClinic(clinicName:string)
+getNumberOfCasesPerStudentBySupervisorId(id:number)
 {
-  let myUrl=`http://localhost:9090/api/v1/clinic/${clinicName}/legalCasesPerStudent`;
+  let myUrl=`http://localhost:9090/api/v1/clinic/${id}/legalCasesPerStudent`;
   return this.http.get<LegalCaseCounter[]>(`${myUrl}`);
 }
 
@@ -361,6 +383,20 @@ getNotificationsByPersonID(id:number)
 
 }
 
+addNotification(notification:NotificationtsToUsers){
+  let myUrl=`http://localhost:9090/api/v1/notification`;
+  return this.http.post<string[]>(`${myUrl}`,notification);
+
+
+}
+
+mapNotificationToUser(notifictionManager:NotificationManager)
+{
+  let myUrl=`http://localhost:9090/api/v1/notificationManager`;
+  return this.http.post(`${myUrl}`,notifictionManager);
+
+}
+
 
 /////////////////End Notifications///////////////////////////
 
@@ -370,5 +406,19 @@ getClientNyId(id:number)
   return this.http.get<Client>(`${myUrl}`);
 
 }
+
+
+
+
+
+/////////////////////////Research///////////////////
+
+getAllResearches()
+{
+  let myUrl=`http://localhost:9090/api/v1/research`;
+  return this.http.get<Research[]>(`${myUrl}`);
+
+}
+/////////////////////End Research////////////////////
 
 }

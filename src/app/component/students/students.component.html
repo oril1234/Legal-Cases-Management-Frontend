@@ -1,4 +1,5 @@
-<br><ol class="breadcrumb mb-2">
+<br>
+<ol class="breadcrumb mb-2">
 	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
 	<li class="breadcrumb-item active">Students</li>
 </ol>
@@ -14,6 +15,7 @@
 					<thead>
 						<tr>
 							<th *ngIf="currentRole!=0" scope="col"></th>
+							<th scope="col" style="text-align:right;">מספר טלפון</th>
 							<th scope="col" style="text-align:right;">דואר אלקטרוני</th>
 							<th scope="col" style="text-align:right;">שם משפחה</th>
 							<th scope="col" style="text-align:right;">שם פרטי</th>
@@ -34,47 +36,68 @@
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<div class="modal-body">
-										<form dir="rtl" [formGroup]="studentInsertionGroup" style="padding: 0;">
+									<div class="modal-body" style="width: 300px;">
+										<form dir="rtl">
+											<div class="row">
+												<div class="col-6">
+													<label>
+														שם פרטי</label>
+												</div>
+												<div class="col-6">
+													<input type="text" [(ngModel)]="student.firstName" name="firstName">
+												</div>
 
-											<label>
-												שם פרטי</label>
-											<input type="text" formControlName="firstName"
-												[(ngModel)]="student.firstName"><br>
+											</div>
+											<div class="row">
+												<div class="col-6">
+													<label>
+														שם משפחה</label>
+												</div>
+												<div class="col-6">
+													<input name="lastName" type="text" [(ngModel)]="student.lastname">
+												</div>
 
-
-											<label>
-												שם משפחה</label>
-											<input type="text" formControlName="lastname"
-												[(ngModel)]="student.lastname"> <br>
-											<label>
-												תעודת זהות</label>
-											<input type="text" formControlName="id" [(ngModel)]="student.id"><br>
-
-
-											<label>
-												דואר אלקטרוני</label>
-											<input type="text" formControlName="email" [(ngModel)]="student.email"> <br>
-											<label>
-												מספר טלפון</label>
-											<input type="text" formControlName="phoneNumber"
-												[(ngModel)]="student.phoneNumber"><br>
+											</div>
 
 
-											<label>
-												מנחה</label>
-											<select style="width: 150px;" formControlName="supervisor"
-												[(ngModel)]="student.supervisor">
-												<option *ngFor="let s of supervisors">
-													{{s.firstName}} {{s.lastname}}
-												</option>
-											</select>
+											<div class="row">
+												<div class="col-6">
+													<label>
+														דואר אלקטרוני</label>
+												</div>
+												<div class="col-6">
+													<input name="email" type="text" [(ngModel)]="student.email">
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-6">
+													<label>
+														מספר טלפון</label>
+												</div>
+												<div class="col-6">
+													<input name="phoneNumber" type="text"
+														[(ngModel)]="student.phoneNumber"><br>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-6">
+													<label>
+														מנחה</label>
+												</div>
+												<div class="col-6">
+													<input name="supervisorName" type="text"
+														[(ngModel)]="supervisorName" disabled><br>
+												</div>
+											</div>
+
 
 										</form>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-outline-dark"
-											(click)="modal.close('Save click');onEdit()">ערוך</button>
+											(click)="modal.close('Save click');onEdit(student)">ערוך</button>
 									</div>
 								</ng-template>
 								<button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
@@ -104,9 +127,10 @@
 								</ng-template>
 
 							</td>
-							<td>{{student.email}}</td>
-							<td>{{student.lastname}}</td>
-							<td>{{student.firstName}}</td>
+							<td style="text-align:right;">{{student.phoneNumber}}</td>
+							<td style="text-align:right;">{{student.email}}</td>
+							<td style="text-align:right;">{{student.lastname}}</td>
+							<td style="text-align:right;">{{student.firstName}}</td>
 						</tr>
 					</tbody>
 				</table><br>
@@ -129,37 +153,69 @@
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
-		<div class="modal-body">
-			<form dir="rtl" [formGroup]="studentInsertionGroup" style="padding: 0;">
+		<div class="modal-body" style="width: 300px;">
+			<form style="padding-left: 0;" dir="rtl">
+				<div class="row">
+					<div class="col-6">
+						<label>
+							שם פרטי</label>
+					</div>
+					<div class="col-6">
+						<input type="text" [(ngModel)]="addedStudent.firstName" name="firstName">
+					</div>
 
-				<label>
-					שם פרטי</label>
-				<input type="text" formControlName="firstName"><br>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<label>
+							שם משפחה</label>
+					</div>
+					<div class="col-6">
+						<input name="lastName" type="text" [(ngModel)]="addedStudent.lastname">
+					</div>
 
+				</div>
 
-				<label>
-					שם משפחה</label>
-				<input type="text" formControlName="lastname"> <br>
-				<label>
-					תעודת זהות</label>
-				<input type="text" formControlName="id"><br>
+				<div class="row">
+					<div class="col-6">
+						<label>
+							תעודת זהות</label>
+					</div>
+					<div class="col-6">
+						<label>
+							<input name="id" type="number" [(ngModel)]="addedStudent.id"></label>
+					</div>
+				</div>
 
+				<div class="row">
+					<div class="col-6">
+						<label>
+							דואר אלקטרוני</label>
+					</div>
+					<div class="col-6">
+						<input name="email" type="text" [(ngModel)]="addedStudent.email">
+					</div>
+				</div>
 
-				<label>
-					דואר אלקטרוני</label>
-				<input type="text" formControlName="email"> <br>
-				<label>
-					מספר טלפון</label>
-				<input type="text" formControlName="phoneNumber"><br>
+				<div class="row">
+					<div class="col-6">
+						<label>
+							מספר טלפון</label>
+					</div>
+					<div class="col-6">
+						<input name="phoneNumber" type="text" [(ngModel)]="addedStudent.phoneNumber"><br>
+					</div>
+				</div>
 
-
-				<label>
-					מנחה</label>
-				<select style="width: 150px;" formControlName="supervisor">
-					<option *ngFor="let s of supervisors">
-						{{s.firstName}}
-					</option>
-				</select>
+				<div class="row">
+					<div class="col-6">
+						<label>
+							מנחה</label>
+					</div>
+					<div class="col-6">
+						<input name="supervisorName" type="text" [(ngModel)]="supervisorName" disabled><br>
+					</div>
+				</div>
 
 			</form>
 		</div>

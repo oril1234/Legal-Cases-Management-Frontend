@@ -1,11 +1,13 @@
 export class Student {
-    id!: number;
-    firstName!: string;
-    lastname!: string;
-    password!:string;
-    email!: string;
-    phoneNumber!: string;
-    clinicalSupervisorName!: string;
+    id: number;
+    password: string;
+    firstName: string;
+    lastname: string;
+    email: string;
+    phoneNumber:string;
+    role: string;
+    clinicalSupervisorId:number;
+    
     
 
     constructor(init?:Partial<Student>) {

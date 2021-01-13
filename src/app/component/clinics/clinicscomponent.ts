@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/dashboard.service';
 import { Clinic } from 'src/app/_models/clinic';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dropdown-basic',
   templateUrl: './clinics.component.html'
 })
-export class ClinicsComponent {
+export class ClinicsComponent  implements OnInit {
   currentRole=parseInt(localStorage.getItem("Role")+"");
   clinics!:Clinic[]
   supervisors!:ClinicalSupervisor[];
@@ -21,11 +22,14 @@ export class ClinicsComponent {
     yearFounded:new FormControl('')
 
 	  });
-constructor(private dashboardService:DashboardService,private modalService:NgbModal)
+constructor(private dashboardService:DashboardService,private modalService:NgbModal,private router: Router)
 {
   this.getSupervisors();
   this.getAllClinics();
   
+}
+public ngOnInit(): void {
+  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 }
 
 	  	//Modal methodd

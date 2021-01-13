@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ThemeService } from 'ng2-charts';
 import { DashboardService } from 'src/app/dashboard.service';
 import jwt_decode from 'jwt-decode'
+import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
 
 
 
@@ -12,11 +13,14 @@ import jwt_decode from 'jwt-decode'
 })
 export class StudentDashboardComponent implements OnInit {
 
-  casesAssignedStudentNumber:number=0
+  casesAssignedStudentNumber:number=0;
+  supervisor!:ClinicalSupervisor
 
   constructor(private dashboardService:DashboardService) {
     this.getAllMyCases();
     this.getNumberOfCasesByChosenClinic();
+    this.getClinicalSupervisor();
+    
    }
 
   ngOnInit(): void {
@@ -34,9 +38,25 @@ export class StudentDashboardComponent implements OnInit {
      }
    )
   }
+
+
+
   getNumberOfCasesByChosenClinic()
   {
-    //this.
+    
+  }
+
+
+  getClinicalSupervisor()
+  {
+    let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
+    this.dashboardService.getStudentClinicalSupervisorByStudentId(id).subscribe(
+      data=>{
+        this.supervisor=data;
+      },
+      err=>{
+      }
+    )
   }
   
 

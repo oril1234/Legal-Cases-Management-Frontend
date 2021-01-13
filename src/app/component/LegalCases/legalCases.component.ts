@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild,OnInit } from '@angular/core';
 import { NgbCarouselConfig, NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -9,8 +9,9 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
 import { FormControl, FormGroup } from '@angular/forms';
 import { Clinic } from 'src/app/_models/clinic';
 import jwt_decode from "jwt-decode";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {Client} from '../../_models/client'
+import { Roles } from 'src/app/_models/roles.enum';
 
 
 
@@ -22,14 +23,24 @@ import {Client} from '../../_models/client'
 	templateUrl: './legalCases.html',
 	providers: [NgbCarouselConfig]
 })
-export class LegalCasesComponent {
+export class LegalCasesComponent implements OnInit{
 	cases!:LegalCase[];
 	clinics!:Clinic[];
 	currenntRole=parseInt(localStorage.getItem('Role')+"");
-
     closeResult="";
 	currentStatus=""
 	currentClient:Client
+	userId = parseInt(
+		JSON.parse(
+		  JSON.stringify(
+			jwt_decode(localStorage.getItem("authenticationToken") + "")
+		  )
+		).sub);
+
+	addedCase:LegalCase=new LegalCase()
+	edittedCase:LegalCase=new LegalCase()	
+
+
 
 	casesForm = new FormGroup({
 		id:new FormControl(''),
@@ -43,16 +54,26 @@ export class LegalCasesComponent {
 
 	  });
 
-	constructor(private dashboardService: DashboardService,private modalService: NgbModal,private route:ActivatedRoute
+	constructor(private dashboardService: DashboardService,private modalService: NgbModal,
+		private route:ActivatedRoute,
+		private router: Router
 		) {
 	
 			if (this.route.snapshot.paramMap.get('status')) {
 				this.currentStatus=this.route.snapshot.paramMap.get('')+"";
 			}
-		this.getAllClinics();
-		this.getAllCases();
+		if(this.currenntRole==Roles.SUPERVISOR)
+		{
+			this.getAllClinics();
+		}
+		else
+			this.getAllCases();
 
 	}
+	public ngOnInit(): void {
+		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+	
+	  }
 
 
 	//Getting all the clinics for assigning new cases to specific clinic
@@ -61,6 +82,9 @@ export class LegalCasesComponent {
 		this.dashboardService.getAllClinic().subscribe(
 			data=>{
 				this.clinics=data;
+				this.clinics=this.clinics.filter(clinic=>clinic.clinicalSupervisorId==this.userId);
+				this.getAllCases();
+				
 			}
 		)
 
@@ -68,7 +92,6 @@ export class LegalCasesComponent {
 
 	getAllCases()
 	{
-		let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
 		
 			
 			if (this.route.snapshot.paramMap.get('status')=='allInCourt')
@@ -85,7 +108,19 @@ export class LegalCasesComponent {
 						console.log(this.cases)
 					}
 						);
-			}		
+			}
+
+			
+			else if(this.currenntRole==Roles.SUPERVISOR)
+			{
+				this.dashboardService.getAllCases().subscribe(
+					data=> {
+						this.cases=data;
+						this.cases=this.cases.filter(lCase=>lCase.clinicName==this.clinics[0].clinicName);
+
+					}
+						);
+			}
 		
 
 
@@ -142,7 +177,6 @@ export class LegalCasesComponent {
 	//Invoked for deleting case
 	onDelete(id:string)
 	{
-		
 		this.dashboardService.deleteCase(parseInt(id)).subscribe(
 
 		);

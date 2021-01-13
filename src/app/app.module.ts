@@ -1,8 +1,14 @@
 // import * as $ from 'jquery';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
+
 import {
 	CommonModule,
+	DatePipe,
 	LocationStrategy,
 	PathLocationStrategy
 } from '@angular/common';
@@ -34,6 +40,14 @@ import { LoginComponent } from './auth/login/login.component';
 import { ToastrModule } from 'ngx-toastr';
 import { IgxDatePickerModule } from "igniteui-angular";
 import { NotificationsComponent } from './notifications/notifications.component';
+5
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';  
+import { from } from 'rxjs';
+import { NwCalendarModule } from 'nw-calendar';
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+
+
+
 
 
 
@@ -59,6 +73,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		CommonModule,
 		BrowserModule,
 		BrowserAnimationsModule,
+		MatDatepickerModule,
+		MatNativeDateModule,
+		MatFormFieldModule,
 		FormsModule,
 		HttpClientModule,
 		PerfectScrollbarModule,
@@ -66,7 +83,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		NgbModule,
 		RouterModule.forRoot(Approutes, { useHash: false }),
 		ToastrModule.forRoot(),
-		IgxDatePickerModule
+		IgxDatePickerModule,
+		CalendarModule		
 
 	],
 	providers: [
@@ -84,6 +102,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 			provide: PERFECT_SCROLLBAR_CONFIG,
 			useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
 		},
+		DatePipe
 
 	
 	],

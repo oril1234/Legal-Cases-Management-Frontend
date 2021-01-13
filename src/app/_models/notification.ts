@@ -1,4 +1,4 @@
-export class Notification {
+export class NotificationtsToUsers {
 
     sourceId:number;
     dateTime:Date;
