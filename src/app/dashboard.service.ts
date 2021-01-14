@@ -51,20 +51,12 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 }
 
 
-
-/*
-numberOfCasesToCourtInChosenClinicBetween2Dates()
+numberOfCasesToCourtInChosenClinicBetween2Dates(clinicName: string, range: BetweenDates)
 {
-  let clinicName="הקליניקה לזכויות האדם"
   let myUrl=`http://localhost:9090/api/v1/legalcase/casesBetween/${clinicName}`;
-  let range=new BetweenDates();
-  range.startDate=new Date('2020-1-1');
-  range.endDate=new Date('2021-1-1');
-
   return this.http.post<number>(`${myUrl}`,range);
-  
 }
-*/
+
 
 getAllPersons()
 {

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/dashboard.service';
 import { Clinic } from 'src/app/_models/clinic';
 import {Chart} from 'chart.js'
+import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { BetweenDates } from 'src/app/_models/between-dates';
 
 
 @Component({
@@ -18,35 +20,67 @@ export class ClincsStatisticsComponent implements OnInit {
   //Bar charts of clinic
   clinicChart!:Chart
 
-    
+  closeResult=""
+  startDate=new Date('2020-1-1');
+  endDate=new Date('2021-1-1');
 
   
 
 
-  constructor(private dashboardService:DashboardService) {
+  constructor(private dashboardService:DashboardService, private modalService:NgbModal) {
     this.getAllClinics();
     this.getCasesNumByClinic();
+    
    }
 
   ngOnInit(): void {
   
   
   }
+
+
+  open(content:string,empty:string) {
+		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) => {
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
+		
+	}
+
+  private getDismissReason(reason: ModalDismissReasons): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return  `with: ${reason}`;
+		}
+	}
+
+
   getAllClinics()
   {
     this.dashboardService.getAllClinic().subscribe(
 			data=> {
-				this.clinics=data;
-        this.clinics.forEach(element=>
+
+        let between=new BetweenDates();
+        between.startDate=this.startDate;
+        between.endDate=this.endDate;
+
+        this.clinics=data;
+        this.casesNumber = [];
+        this.clinics.forEach(clinic=>
           {
-            this.dashboardService.getNumberOfCasesByClinicName(element.clinicName).subscribe(
-              data2=>{
-                const newData={clinicName:element.clinicName,casesNumber:data2+""};
-                let splitted=newData.clinicName.split(" ");
-                if(typeof splitted[1] !="undefined" && splitted[1].charAt(0)!='ה')
-                  splitted[1]=splitted[1].substr(1);
-                splitted.splice(0,1);
-                newData.clinicName=splitted.join(' ');
+            this.dashboardService.numberOfCasesToCourtInChosenClinicBetween2Dates(clinic.clinicName, between).subscribe(
+              amount=>{
+
+                const newData = {
+                  clinicName:clinic.clinicName,
+                  casesNumber:amount.toString(),
+                };
+
                 this.casesNumber.push(newData);
 
               },
@@ -96,7 +130,8 @@ export class ClincsStatisticsComponent implements OnInit {
                       scales: {
                             yAxes: [{
                                 ticks: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    stepSize: 1.0,
                                 }
                             }],
                             xAxes: [
@@ -127,6 +162,10 @@ export class ClincsStatisticsComponent implements OnInit {
 				);
 
         
+  }
+  updateData() 
+  {
+    this.getAllClinics();
   }
   getCasesNumByClinic()
  {
