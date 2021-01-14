@@ -41,7 +41,7 @@ export class NotificationsComponent implements OnInit {
         alert("Notifications were read")
       },
       err=>{
-        alert("error occured")
+        alert("error")
       }
     )
   }
