@@ -378,7 +378,7 @@ getNotificationsByPersonID(id:number)
 readAllNotificationsOfPerson(notificationId:number)
 {
   let myUrl=`http://localhost:9090/api/v1/notificationManager/markAsRead`;
-  return this.http.put<number>(`${myUrl}`,notificationId);
+  return this.http.put<number>(`${myUrl}`,notificationId+"");
 }
 
 addNotification(notification:NotificationtsToUsers){

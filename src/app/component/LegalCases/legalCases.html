@@ -1,0 +1,246 @@
+<br>
+<ol class="breadcrumb mb-2">
+    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+    <li class="breadcrumb-item active">Legal Cases</li>
+</ol>
+<div style="margin-top: 1%;" class="row">
+    <div class="col-12">
+        <div class="card" style="overflow:scroll;">
+            <div class="card-body">
+                <h1 dir="rtl" class="mr-auto" style="text-align: right;">פרטי תיקים</h1>
+                <table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
+                    <thead style="position: sticky; top: 0">
+                        <tr>
+                            <th style="position: sticky; top: 0;text-align: right;" scope="col"></th>
+                            <th style="position: sticky; top: 0;" scope="col">מספר תיק</th>
+                            <th style="position: sticky; top: 0" scope="col">תאריך הוספה</th>
+                            <th style="position: sticky; top: 0" scope="col">נושא</th>
+                            <th style="position: sticky; top: 0" scope="col">סטטוס טיפול</th>
+                            <th style="position: sticky; top: 0" scope="col">מספר תיק בבית משפט</th>
+                            <th style="position: sticky; top: 0" scope="col">קליניקה</th>
+                            <th style="position: sticky; top: 0" scope="col">פרטי לקוח</th>
+                            <th style="position: sticky; top: 0" scope="col">סיווג תיק</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let case of cases">
+                            <td style="display: flex;">
+                                <button style="font-size: 10pt;" class="btn-primary mr-1"><i class="fa fa-edit"
+                                        (click)="open(editModal,'')"></i></button>
+
+                                <!--Edit Modal -->
+                                <ng-template #editModal let-modal>
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-basic-title">עריכת תיק</h4>
+                                        <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+                                            (click)="modal.dismiss('Cross click')">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form dir="rtl" style="padding: 0;">
+                                            <label>
+                                                מספר תיק</label>
+                                            <input type="text" name="id" [(ngModel)]="case.id"><br>
+                                            <label>
+                                                נושא</label>
+                                            <input type="text" name="subject" [(ngModel)]="case.subject"><br>
+
+                                            <label>
+                                                תאריך</label>
+                                            <input type="text" name="dateAdded" [(ngModel)]="case.dateAdded"
+                                                readonly><br>
+
+                                            <label>
+                                                סוג</label>
+                                            <input type="text" name="type" [(ngModel)]="case.type"><br>
+
+
+                                            <label>
+                                                מצב</label>
+                                            <input type="text" name="status" [(ngModel)]="case.status"> <br>
+                                            <label>
+                                                קליניקה</label>
+                                            <input type="text" name="clinicName" [(ngModel)]="case.clinicName"><br>
+
+
+                                            <label>
+                                                תעודת זהות לקוח</label>
+                                            <input type="text" name="clientId" [(ngModel)]="case.clientId"><br>
+
+                                            <label>
+                                                מספר תיק בבית משפט</label>
+                                            <input type="text" name="courtCaseId" [(ngModel)]="case.courtCaseId"><br>
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-dark"
+                                            (click)="modal.close('Save click');onEdit()">אישור</button>
+                                    </div>
+                                </ng-template>
+
+                                <button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
+                                    <span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
+                                            class="fa fa-trash-alt"></i></span>
+                                </button>
+                                <!--Delete Modal -->
+                                <ng-template #deleteModal let-modal>
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-basic-title">מחיקת תיק</h4>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <p dir="rtl">
+                                            האם ברצונך למחוק את תיק מספר
+                                            <span>{{case.id}}?</span>
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="modal.close('Save click');onDelete(case.id)">מחק</button>
+                                        <button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
+                                            (click)="modal.close('Save click')">ביטול</button>
+                                    </div>
+                                </ng-template>
+                            </td>
+                            <td>{{case.id}}</td>
+                            <td>{{case.dateAdded}}</td>
+                            <td>{{case.subject}}</td>
+                            <td>{{case.status}}</td>
+                            <td>{{case.courtCaseId}}</td>
+                            <td>{{case.clinicName}}</td>
+                            <td><button class="btn btn-primary"
+                                    (click)="open(detailsModal,'');showDetails(case.clientId)">הצג</button></td>
+                            <td>{{case.type}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button style="color: white;margin-left: 90%;font-size: 15;" class="btn btn-rounded btn-success mb-2"
+                    (click)="open(addModal,'')">צור תיק</button>
+            </div>
+        </div>
+        <!--Add Modal -->
+        <ng-template #addModal let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">יצירת תיק</h4>
+                <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+                    (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form dir="rtl" style="padding: 0;">
+                    <div class="row">
+                        <div class="col-6"> <label>
+                                נושא</label></div>
+                        <div class="col-6">
+                            <input [(ngModel)]="addedCase.subject" type="text" name="subject">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label>
+                                סוג</label>
+                        </div>
+                        <div class="col-6">
+                            <input [(ngModel)]="addedCase.type" type="text" name="type">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label>
+                                מצב</label>
+                        </div>
+                        <div class="col-6">
+                            <input [(ngModel)]="addedCase.status" type="text" name="status">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label>
+                                קליניקה</label>
+
+                        </div>
+                        <div class="col-6">
+                            <input [(ngModel)]="addedCase.clinicName" type="text" name="clinicName">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label>
+                                תעודת זהות לקוח</label>
+                        </div>
+                        <div class="col-6">
+                            <input [(ngModel)]="addedCase.clientId" type="text" name="clientId">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark"
+                    (click)="modal.close('Save click');onSave()">הוסף</button>
+            </div>
+        </ng-template>
+
+        <ng-template #detailsModal let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">פרטי לקוח</h4>
+                <button style="margin-left: 0;border-width: 0; outline: none;
+				box-shadow: none;" type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <span>שם פרטי:</span>
+                    </div>
+                    <div class="col-6">
+                        <span>{{currentClient.firstName}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span>שם משפחה:</span>
+                    </div>
+                    <div class="col-6">
+                        <span>{{currentClient.lastname}}</span>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span>דואר אלקטרוני:</span>
+                    </div>
+                    <div class="col-6">
+                        <span>{{currentClient.email}}</span>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span>מספר טלפון:</span>
+                    </div>
+                    <div class="col-6">
+                        <span>{{currentClient.phoneNumber}}</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </ng-template>
+
+    </div>
+
+
+
+
+</div>
