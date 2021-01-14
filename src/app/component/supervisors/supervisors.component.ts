@@ -60,7 +60,7 @@ this.getAllSupervisors();
   }
 
   	//Modal methodd
-	open(content:string,student:ClinicalSupervisor) {
+	open(content:string,String:string) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 			this.supervisorForm.controls['firstName'].setValue("Yeah");

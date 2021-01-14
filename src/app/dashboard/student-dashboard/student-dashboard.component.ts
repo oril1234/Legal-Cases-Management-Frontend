@@ -6,7 +6,7 @@ import { ClinicalSupervisor } from "src/app/_models/clinical-supervisor";
 
 @Component({
   selector: "app-student-dashboard",
-  templateUrl: "./student-dashboard.component.html",
+  templateUrl:'./student-dashboard.component.html',
   styleUrls: ["./student-dashboard.component.css"],
 })
 export class StudentDashboardComponent implements OnInit {

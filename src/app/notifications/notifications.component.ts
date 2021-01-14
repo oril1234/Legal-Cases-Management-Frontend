@@ -35,7 +35,15 @@ export class NotificationsComponent implements OnInit {
 
   readNotifications()
   {
-    
+    let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
+    this.dashBoardService.readAllNotificationsOfPerson(id).subscribe(
+      data=>{
+        alert("Notifications were read")
+      },
+      err=>{
+        alert("error occured")
+      }
+    )
   }
 
 }

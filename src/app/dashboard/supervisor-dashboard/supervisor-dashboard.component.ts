@@ -76,7 +76,7 @@ export class SupervisorDashboardComponent implements OnInit {
   }
 
   	//Modal methodd
-	open(content:string,student:Student) {
+	open(content:string,String:string) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		}, (reason) => {

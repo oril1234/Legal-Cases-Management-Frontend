@@ -33,7 +33,7 @@ public ngOnInit(): void {
 }
 
 	  	//Modal methodd
-		  open(content:string,legalcase:Clinic) {
+		  open(content:string,String:string) {
         this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
           this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
