@@ -1,7 +1,51 @@
 <div class="card">
     <div class="card-body">
+
+        
+    <button style="float:right" class="btn btn-primary btn-sm"
+    (click)="open(addModal,'')">בחר טווח תאריכים</button>
+
+    
+    <span style="float:center">
+        מציג תוצאות החל מ
+        {{this.startDate.toLocaleString('he', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}
+        ועד ל
+        {{this.endDate.toLocaleString('he', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) }}
+    </span> 
+    
+
+    <ng-template #addModal let-modal>
+        <div class="modal-header">
+            <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div style="float: right;" class="form-group">
+                    <label style="float: right;">
+                        מתאריך</label>
+                    <input style="float: right;" placeholder="dd-mm-yyyy" type="date" [(ngModel)]="startDate"
+                        name="startDate"><br>
+                </div>
+
+                <div style="float: right;" class="form-group">
+                    <label style="float: right;">
+                        עד תאריך</label>
+                    <input placeholder="dd-mm-yyyy" min="1997-01-01" max="2030-12-31" name="endDate" type="date"
+                        [(ngModel)]="endDate"><br>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary" (click)="updateData();modal.dismiss('dates selected')">
+                הצג</button>
+        </div>
+    </ng-template>
+
         <div class="d-md-flex align-items-center">
-            <h4 class="card-title mb-0"> מספר תיקים שנפתחו בקליניקות</h4>
+            <h4 class="card-title mb-0">מספר תיקים פתוחים בבית המשפט</h4>
             <div class="ml-auto">
             </div>
         </div>

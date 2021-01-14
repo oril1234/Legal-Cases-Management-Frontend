@@ -1,4 +1,10 @@
-<div dir="rtl" style="margin-top: 10%;" class="row">
+<br>
+<ol class="breadcrumb mb-2">
+	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+	<li class="breadcrumb-item active">Dashboard</li>
+</ol>
+
+<div dir="rtl" class="row">
     <div class="col-md-6 col-lg-3 col-xlg-3">
         <div style="height: 150px;" class="card bg-info">
             <div class="box bg-info text-center">
@@ -17,10 +23,10 @@
         </div>
     </div>
     <div class="col-md-6 col-lg-3 col-xlg-3">
-        <div style="height: 150px;" class="card ">
+        <div style="height: 150px; color: white" class="card bg-danger">
             <div class="box text-center">
                 <h1 class="font-light ">{{casesInCourtNumber}}</h1>
-                <h6>סך הבל תיקים בבית משפט</h6>
+                <h6>סך הכל תיקים בבית משפט</h6>
                 <button class="btn btn-primary btn-sm" (click)="open(addModal,'')">בחר טווח
                     תאריכים</button>
             </div>
@@ -68,4 +74,3 @@
 
 
 <app-students-statistics></app-students-statistics>
-<app-calendar></app-calendar>

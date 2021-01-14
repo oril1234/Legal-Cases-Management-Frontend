@@ -3,8 +3,6 @@ import { DashboardService } from 'src/app/dashboard.service';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BetweenDates } from 'src/app/_models/between-dates';
 
-
-
 @Component({
   selector: 'app-case-in-court',
   templateUrl: './case-in-court.component.html',
@@ -13,8 +11,8 @@ import { BetweenDates } from 'src/app/_models/between-dates';
 export class CaseInCourtComponent implements OnInit {
 
   caseInCourtNumber:number=0;
-  closeResult=""
-  startDate=new Date('2017-1-1');
+  closeResult="" 
+  startDate=new Date('2020-1-1');
   endDate=new Date('2021-1-1');
 
   constructor(private dashboardService:DashboardService,private modalService:NgbModal) {
