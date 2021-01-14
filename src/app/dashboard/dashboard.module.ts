@@ -16,6 +16,7 @@ import { StudentsStatisticsComponent } from './dashboard-componets/students-stat
 import { CloseCasesComponent } from './dashboard-componets/close-cases/close-cases.component';
 import { CaseInCourtComponent } from './dashboard-componets/case-in-court/case-in-court.component'
 import { NotificationsComponent } from '../notifications/notifications.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
 	{
@@ -34,6 +35,6 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [FormsModule, CommonModule, RouterModule.forChild(routes), ChartsModule],
-	declarations: [DashboardComponent, RevenueStaticGraphComponent, ProjectMonthComponent, CardsComponent, ClincsStatisticsComponent, StudentDashboardComponent, SupervisorDashboardComponent, SuperAdminDashboardComponent, StudentsStatisticsComponent, CloseCasesComponent, CaseInCourtComponent]
+	declarations: [DashboardComponent, RevenueStaticGraphComponent, ProjectMonthComponent, CardsComponent, ClincsStatisticsComponent, StudentDashboardComponent, SupervisorDashboardComponent, SuperAdminDashboardComponent, StudentsStatisticsComponent, CloseCasesComponent, CaseInCourtComponent, CalendarComponent]
 })
 export class DashboardModule {}

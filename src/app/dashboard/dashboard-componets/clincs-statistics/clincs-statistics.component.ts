@@ -43,7 +43,7 @@ export class ClincsStatisticsComponent implements OnInit {
               data2=>{
                 const newData={clinicName:element.clinicName,casesNumber:data2+""};
                 let splitted=newData.clinicName.split(" ");
-                if(splitted[1].charAt(0)!='ה')
+                if(typeof splitted[1] !="undefined" && splitted[1].charAt(0)!='ה')
                   splitted[1]=splitted[1].substr(1);
                 splitted.splice(0,1);
                 newData.clinicName=splitted.join(' ');

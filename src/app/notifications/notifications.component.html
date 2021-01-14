@@ -1,17 +1,32 @@
 <div style="margin-top:7%;" class="container">
-    <div class="row">
-        <div *ngFor="let notification of notifications" class="col-10">
-            <div class="card" style="width: 100%; opacity: 95%;margin-top:0%;margin-bottom: 0;">
-                <div class="card-body">
-                    <h4 style="float: right;">
-                        התקבל עדכון מ<b>{{notification.sourceId}}</b>
-                    </h4>
-                    <h4>{{notification.details}}</h4>
-                    <br>
-                    <hr>
+
+
+    <div style="width: 800px;" class="notification-ui_dd-content">
+
+        <div style="margin-bottom: 0;border-bottom: 1px solid #EAEDED;text-align: right;" class="card">
+            <div class="card-body">
+
+                <button style="color: white;font-size: 21;" class="btn btn-success btn-rounded"
+                    (click)="readNotifications()">סמן התראות כנקראו</button>
+            </div>
+
+        </div>
+        <div *ngFor="let n of notifications"
+            style="margin-bottom: 0;border-bottom: 1px solid #EAEDED;text-align: right;" class="card">
+            <div class="card-body">
+
+                <div class="notification-list_detail">
+                    <p> קיים
+                        <b>עדכון</b> עבורך
+                    </p>
+                    <p class="text-muted">{{n.details}}</p>
+                    <p class="text-muted"><small>{{n.dateTime}}</small></p>
                 </div>
             </div>
 
-
         </div>
+
+
+
     </div>
+</div>

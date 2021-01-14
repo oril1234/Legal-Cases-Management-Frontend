@@ -12,6 +12,10 @@ import jwt_decode from "jwt-decode";
 import { ActivatedRoute, Router } from '@angular/router';
 import {Client} from '../../_models/client'
 import { Roles } from 'src/app/_models/roles.enum';
+import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
+import { NotificationType } from 'src/app/_models/notification-type.enum';
+import { NotificationtsToUsers } from 'src/app/_models/notification';
+import { NotificationManager } from 'src/app/_models/notification-manager';
 
 
 
@@ -24,11 +28,14 @@ import { Roles } from 'src/app/_models/roles.enum';
 	providers: [NgbCarouselConfig]
 })
 export class LegalCasesComponent implements OnInit{
-	cases!:LegalCase[];
-	clinics!:Clinic[];
-	currenntRole=parseInt(localStorage.getItem('Role')+"");
+	cases:LegalCase[];
+	clinics:Clinic[];
+	supervisors:ClinicalSupervisor[]
+	currentSuperVisor:ClinicalSupervisor
+	currentRole=parseInt(localStorage.getItem('Role')+"");
     closeResult="";
 	currentStatus=""
+	clinicName:string=""
 	currentClient:Client
 	userId = parseInt(
 		JSON.parse(
@@ -36,23 +43,11 @@ export class LegalCasesComponent implements OnInit{
 			jwt_decode(localStorage.getItem("authenticationToken") + "")
 		  )
 		).sub);
+	userFullName:string=""	
 
 	addedCase:LegalCase=new LegalCase()
 	edittedCase:LegalCase=new LegalCase()	
 
-
-
-	casesForm = new FormGroup({
-		id:new FormControl(''),
-    subject:new FormControl(''),
-	dateAdded:new FormControl(''),
-		status: new FormControl(''),
-		type:new FormControl(''),
-		courtCaseId: new FormControl(''),
-		clinicName: new FormControl(''),
-		clientId:new FormControl('')
-
-	  });
 
 	constructor(private dashboardService: DashboardService,private modalService: NgbModal,
 		private route:ActivatedRoute,
@@ -62,12 +57,7 @@ export class LegalCasesComponent implements OnInit{
 			if (this.route.snapshot.paramMap.get('status')) {
 				this.currentStatus=this.route.snapshot.paramMap.get('')+"";
 			}
-		if(this.currenntRole==Roles.SUPERVISOR)
-		{
-			this.getAllClinics();
-		}
-		else
-			this.getAllCases();
+		this.getAllClinics();	
 
 	}
 	public ngOnInit(): void {
@@ -82,47 +72,60 @@ export class LegalCasesComponent implements OnInit{
 		this.dashboardService.getAllClinic().subscribe(
 			data=>{
 				this.clinics=data;
-				this.clinics=this.clinics.filter(clinic=>clinic.clinicalSupervisorId==this.userId);
+				if(this.currentRole==Roles.SUPERVISOR)
+				{
+					this.clinics=this.clinics.filter(clinic=>clinic.clinicalSupervisorId==this.userId);
+					this.clinicName=this.clinics[0].clinicName;
+					if(this.clinicName!="")
+					{
+
+					}
+				}
 				this.getAllCases();
-				
 			}
 		)
 
 	}
 
+
 	getAllCases()
 	{
-		
 			
 			if (this.route.snapshot.paramMap.get('status')=='allInCourt')
 			this.dashboardService.selectAllLegalCasesInCourt().subscribe(
 				data=> {
 					this.cases=data;
-					console.log(this.cases)
+					
 				}
 					);
 			else if(this.route.snapshot.paramMap.get('status')=='notInCourt') {
 				this.dashboardService.selectAllLegalCasesNotInCourt().subscribe(
 					data=> {
 						this.cases=data;
-						console.log(this.cases)
-					}
+							}
 						);
 			}
 
 			
-			else if(this.currenntRole==Roles.SUPERVISOR)
+			else if(this.currentRole==Roles.SUPERVISOR)
 			{
 				this.dashboardService.getAllCases().subscribe(
 					data=> {
 						this.cases=data;
 						this.cases=this.cases.filter(lCase=>lCase.clinicName==this.clinics[0].clinicName);
-
 					}
 						);
 			}
-		
 
+			else if(this.currentRole==Roles.STUDENT)
+			{
+				this.dashboardService.getAllCasesAssignedToStudennt(this.userId).subscribe(
+					data=>{
+						this.cases=data;
+					}
+				)
+			}
+		
 
 	}
 
@@ -156,23 +159,56 @@ export class LegalCasesComponent implements OnInit{
 		//Invoked when adding new case
 	onSave()
 	{
+		/*
+		id!: number;
+		dateAdded!: Date;
+		subject!: string;
+		status!: string;
+		courtCaseId!: number;
+		clinicName!: string;
+		clientId!:number;
+		type!:string
+		*/
+		this.addedCase.id=0;
+		this.addedCase.dateAdded=new Date();;
+		this.addedCase.status="חדש";
+		if(this.currentRole==Roles.SUPERVISOR)
+			this.addedCase.clinicName=this.clinics[0].clinicName;
+		
+		this.dashboardService.addNewCase(this.addedCase).subscribe(
 
-
-     const legalCase:LegalCase=new LegalCase();
-     legalCase.id!=125;
-	 legalCase.subject="business conflict";
-     legalCase.dateAdded=new Date();
-     legalCase.status="חדש";
-     legalCase.type="פלילי";
-     legalCase.courtCaseId=22;
-     legalCase.clinicName="הקליניקה ליישוב סכסוכים ע״ש לאון צ׳רני";
-     legalCase.clientId=23215455;
-
-		 this.dashboardService.addNewCase(legalCase).subscribe(
-			 
 		 )
 	}
 
+	validateFields():boolean
+	{
+		if(this.addedCase.id==0)
+		{
+			alert("מספר תיק חסר ")
+			return false
+		}
+		if(this.currentRole==Roles.SUPERADMIN && 
+			typeof this.addedCase.clinicName==undefined || this.addedCase.clinicName=='' ){
+				alert("יש להוסיף שם קליניקה")
+				return false
+		}
+		if(typeof this.addedCase.subject==undefined || this.addedCase.subject=='' ){
+				alert("יש להגדיר נושא לתיק")
+				return false
+		}
+		
+		if(typeof this.addedCase.caseType==undefined || this.addedCase.caseType=='' ){
+			alert("יש להגדיר את סוג התיק")
+			return false
+		}
+
+		if(typeof this.addedCase.clientId==undefined || this.addedCase.clientId==0 ){
+			alert("יש להוסף לקוח לתיק")
+			return false
+		}
+		
+		return true;
+	}
   
 	//Invoked for deleting case
 	onDelete(id:string)
@@ -186,22 +222,11 @@ export class LegalCasesComponent implements OnInit{
 	//Invoked for updating a case
 	onEdit()
 	{
-		const legalCase:LegalCase=new LegalCase();
-		legalCase.id=parseInt(this.casesForm.get("id")?.value+"");
-		legalCase.dateAdded=this.casesForm.get("dateAdded")?.value;
-		legalCase.subject=this.casesForm.get("subject")?.value+"";
-		legalCase.status=this.casesForm.get("status")?.value+"";
-		legalCase.courtCaseId=parseInt(this.casesForm.get("courtCaseId")?.value+"");
-		legalCase.clinicName=this.casesForm.get("clinicName")?.value+"";
-		legalCase.clientId=parseInt(this.casesForm.get("clientId")?.value+"");
-		legalCase.type=this.casesForm.get("type")?.value+"";
-		
+/*
 		this.dashboardService.editCase(legalCase).subscribe(
-		
 			 
 		 )
-		 
-		
+	*/
 	}
 
 	showDetails(id:number)
@@ -213,6 +238,94 @@ export class LegalCasesComponent implements OnInit{
 			}
 		)
 	}
+
+	
+	createNotification(type:NotificationType)
+	{
+	  let n:NotificationtsToUsers=new NotificationtsToUsers();
+	  n.dateTime=new Date();
+	  n.sourceId=
+		JSON.parse(
+		  JSON.stringify(
+			jwt_decode(localStorage.getItem("authenticationToken") + "")
+		  )
+		).sub
+	  
+		/*
+		if(type==NotificationType.ADD)
+		{
+		  n.details=this.supervisorName+" הוסיף סטודנט חדש לקליניקה";
+		}
+		if(type==NotificationType.EDIT)
+		{
+		  n.details=this.supervisorName+" ערך פרטים של סטודנט";
+		}
+		if(type==NotificationType.DELETE)
+		{
+		  n.details=this.supervisorName+" מחק סטודנט מהקליניקה";
+		}
+		*/
+	  this.dashboardService.addNotification(n).subscribe(
+		data=>{
+		  this.mapNotification(data[0]);
+		  
+		},
+		err=>
+		{
+		  alert("notification was not added")
+		}
+	  )
+	}
+  
+	mapNotification(notificationId:string)
+	{
+	  let ng:NotificationManager=new NotificationManager();
+	  ng.unread=false;
+	  ng.notificationId=notificationId;
+	  /*
+	  if(this.currentRole==Roles.SUPERADMIN)
+	  {
+		ng.receiverId=this.supervisorId;
+		this.addNotificationToUser(ng)
+  
+	  }
+	  */
+	  /*
+	  else{
+		alert("the user is supervisor")
+		this.dashboardService.getAllPersons().subscribe(
+		  data=>{
+			data.forEach(person=>{
+			  if(person.role=="Super Admin")
+			  {
+				ng.receiverId=person.id;
+			  }
+  
+			})
+			this.addNotificationToUser(ng)
+  
+		  }
+		)
+		
+	  }
+	  */
+  
+	}
+  
+	addNotificationToUser(notificationManager:NotificationManager)
+	{
+	  this.dashboardService.mapNotificationToUser(notificationManager).subscribe(
+		data=>{
+		  alert("notification was mapped")
+		},
+		err=>
+		{
+		  alert("Error!!!")
+		}
+	  )
+	}
+
+	
 
 
 }

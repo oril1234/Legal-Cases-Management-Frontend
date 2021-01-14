@@ -32,4 +32,10 @@ export class NotificationsComponent implements OnInit {
     )
   }
 
+
+  readNotifications()
+  {
+    
+  }
+
 }

@@ -1,19 +1,27 @@
 <div dir="rtl" style="margin-top: 10%;" class="row">
 
 
-    <div class="col-md-6 col-lg-4 col-xlg-3">
-        <div class="card bg-success">
-            <div class="box text-center">
-                <h1 class="font-light text-white">{{casesAssignedStudentNumber}}</h1>
-                <h6 class="text-white">סך הכל תיקים שלי</h6>
+
+    <div class="lg-8">
+        <div class="row">
+            <div class="col-6">
+                <div class="card bg-success">
+                    <div class="box text-center">
+                        <h1 class="font-light text-white">{{casesAssignedStudentNumber}}</h1>
+                        <h6 class="text-white">סך הכל תיקים שלי</h6>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-lg-4 col-xlg-3">
-        <div class="card bg-warning">
-            <div class="box text-center">
-                <h1 class="font-light text-white"></h1>
-                <h6 class="text-white">סך הבל תיקים בקליניקה</h6>
+            <div class="col-6">
+                <div class="card bg-warning">
+                    <div class="box text-center">
+                        <h1 class="font-light text-white"></h1>
+                        <h6 class="text-white">סך הבל תיקים בקליניקה</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <app-calendar></app-calendar>
             </div>
         </div>
     </div>
@@ -24,7 +32,7 @@
             <div class="card-body">
                 <center class="mt-4"> <img src=".https://law.haifa.ac.il/images/cln/haran1.jpg" class="rounded-circle"
                         width="150">
-                    <h4 class="card-title mt-2">{{supervisor.firsName}} {{ supervisor.lastname}}</h4>
+                    <h4 class="card-title mt-2">{{supervisor.firstName}} {{supervisor.lastname}}</h4>
                     <h6 class="card-subtitle">המנחה שלי</h6>
                     <div class="row text-center justify-content-md-center">
                         <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i>
@@ -55,5 +63,6 @@
             </div>
         </div>
     </div>
+
 
 </div>

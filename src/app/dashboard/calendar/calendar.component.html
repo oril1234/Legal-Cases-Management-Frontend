@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="card">
+        <h3 style="text-align: right;" class="card-header" id="monthAndYear">{{monthAndYear}}</h3>
+        <table class="table table-bordered table-responsive-sm" id="calendar">
+            <thead>
+                <tr>
+                    <th>ראשון</th>
+                    <th>שני</th>
+                    <th>שלישי</th>
+                    <th>רביעי</th>
+                    <th>חמישי</th>
+                    <th>שישי</th>
+                    <th>שבת</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let data of datesData; let i = index">
+                    <td *ngFor="let cell of data;let j=index" [ngClass]="{'bg-info':i==todayRow && j==todayCol}">
+
+                        {{ cell }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

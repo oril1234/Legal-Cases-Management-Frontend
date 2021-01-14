@@ -107,7 +107,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT],
     params:"",
-    hasSub:true,
+    hasSub:false,
     showSub:false
   },
   {

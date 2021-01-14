@@ -6,5 +6,5 @@ export class LegalCase {
     courtCaseId!: number;
     clinicName!: string;
     clientId!:number;
-    type!:string
+    caseType!:string
 }
