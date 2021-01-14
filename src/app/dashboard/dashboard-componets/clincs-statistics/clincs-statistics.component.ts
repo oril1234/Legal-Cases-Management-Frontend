@@ -138,11 +138,7 @@ export class ClincsStatisticsComponent implements OnInit {
                               {
                                 ticks: {
                                   callback: function(label, index, labels) {
-                                    if (/\s/.test(<string>label)) {
-                                      return (<string>label).split(" ");
-                                    }else{
-                                      return (<string>label).split(" ");
-                                    }              
+                                    return <string>label;
                                   }
                                 }
                               }
