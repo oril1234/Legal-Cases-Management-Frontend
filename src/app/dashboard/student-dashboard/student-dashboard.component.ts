@@ -3,6 +3,8 @@ import { ThemeService } from "ng2-charts";
 import { DashboardService } from "src/app/dashboard.service";
 import jwt_decode from "jwt-decode";
 import { ClinicalSupervisor } from "src/app/_models/clinical-supervisor";
+import { LegalCaseCounter } from "src/app/_models/legal-case-counter";
+import { LegalCase } from "src/app/_models/legal-case";
 
 @Component({
   selector: "app-student-dashboard",
@@ -11,6 +13,7 @@ import { ClinicalSupervisor } from "src/app/_models/clinical-supervisor";
 })
 export class StudentDashboardComponent implements OnInit {
   casesAssignedStudentNumber: number = 0;
+  totalCasesInClinic:number=0
   supervisor!: ClinicalSupervisor;
 
   constructor(private dashboardService: DashboardService) {
@@ -32,6 +35,8 @@ export class StudentDashboardComponent implements OnInit {
       .subscribe((data) => {
         this.casesAssignedStudentNumber = data;
       });
+
+      
   }
 
   getNumberOfCasesByChosenClinic() {}
@@ -45,6 +50,18 @@ export class StudentDashboardComponent implements OnInit {
     this.dashboardService.getStudentClinicalSupervisorByStudentId(id).subscribe(
       (data) => {
         this.supervisor = data;
+        this.dashboardService.getAllCases().subscribe(
+          data1=>{
+            let cases:LegalCase[]=data1;
+            this.dashboardService.getAllClinic().subscribe(
+              data2=>{
+                data2=data2.filter(superv=>superv.clinicalSupervisorId==this.supervisor.id);
+                cases=cases.filter(lCase=>lCase.clinicName==data2[0].clinicName);
+                this.totalCasesInClinic=cases.length;
+              }
+            )
+          }
+        )
       },
       (err) => {
         alert("just an error!")
