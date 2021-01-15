@@ -101,7 +101,7 @@
           </tbody>
         </table>
 
-        <button style="color: white;margin-left: 91%;font-size: 21;" class="btn btn-success btn-rounded"
+        <button style="color: white; float: right; font-size: 21;" class="btn btn-success btn-rounded"
 				(click)="open(addModal,'')">הוסף מנחה חדש</button>
 
       </div>
@@ -119,38 +119,69 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body">
-      <form dir="rtl" [formGroup]="supervisorForm" style="text-align:right; padding: 0;">
 
-        <label>
-          שם פרטי</label>
+    <div class="modal-body" style="width: 300px;">
+      <form dir="rtl" [formGroup]="supervisorForm" style="padding-left: 0;">
+
+        <div class="row">
+					<div class="col-6"><label>
+          שם פרטי</label></div>
+          <div class="col-6">
         <input type="text" formControlName="firstName"><br>
-
-
-        <label>
-          שם משפחה</label>
-        <input type="text" formControlName="lastname"> <br>
-        <label>
-          תעודת זהות</label>
-        <input type="text" formControlName="id"><br>
-
-
-        <label>
-          דואר אלקטרוני</label>
-        <input type="text" formControlName="email"> <br>
-        <label>
-          מספר טלפון</label>
-        <input type="text" formControlName="phoneNumber"><br>
-
-
-        <label>
-          משנת</label>
-        <input type="text" formControlName="sinceYear"><br>
-
-      </form>
+      </div>
     </div>
+
+      
+      <div class="row">
+        <div class="col-6"><label>
+          שם משפחה</label></div>
+          <div class="col-6">
+        <input type="text" formControlName="lastname"> <br>
+      </div>
+    </div>
+
+
+      <div class="row">
+        <div class="col-6"><label>	
+          תעודת זהות</label></div>
+          <div class="col-6">
+        <input type="text" formControlName="id"><br>
+        </div>
+      </div>
+
+
+        <div class="row">
+					<div class="col-6"><label>
+          דואר אלקטרוני</label></div>
+          <div class="col-6">
+        <input type="text" formControlName="email"> <br>
+      </div>
+    </div>
+
+
+        <div class="row">
+					<div class="col-6"><label>
+          מספר טלפון</label></div>
+          <div class="col-6">
+        <input type="text" formControlName="phoneNumber"><br>
+        </div>
+      </div>
+
+
+        <div class="row">
+					<div class="col-6"><label>
+          משנת</label></div>
+          <div class="col-6">
+        <input type="text" formControlName="sinceYear"><br>
+        </div>
+      </div>
+
+      </form></div>
+    
     <div class="modal-footer">
       <button type="button" class="btn btn-rounded btn-primary" (click)="modal.close('Save click');onSave()">הוסף</button>
     </div>
   </ng-template>
+
+
 </div>

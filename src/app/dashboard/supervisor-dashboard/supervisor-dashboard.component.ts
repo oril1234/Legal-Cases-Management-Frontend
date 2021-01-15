@@ -20,8 +20,8 @@ import { BetweenDates } from 'src/app/_models/between-dates';
 })
 export class SupervisorDashboardComponent implements OnInit {
   closeResult=""
-  startDate!:Date
-  endDate!:Date
+  startDate=new Date('2020-1-1');
+  endDate=new Date('2021-1-1');
 
   id:number=0;
   studentsNumber:number=0;

@@ -135,7 +135,7 @@
 					</tbody>
 				</table><br>
 
-				<button *ngIf="currentRole!=0" style="color: white;margin-left: 90%;font-size: 15;"
+				<button *ngIf="currentRole!=0" style="color: white; float: right; font-size: 15;"
 					class="btn btn-primary btn-rounded btn-success mb-2" (click)="open(addModal,'')">הוסף
 					סטודנט</button>
 
@@ -144,6 +144,7 @@
 
 
 	</div>
+
 	<!--Add Modal -->
 	<ng-template #addModal let-modal>
 		<div class="modal-header">
@@ -155,6 +156,7 @@
 		</div>
 		<div class="modal-body" style="width: 300px;">
 			<form style="padding-left: 0;" dir="rtl">
+
 				<div class="row">
 					<div class="col-6">
 						<label>
@@ -163,8 +165,8 @@
 					<div class="col-6">
 						<input type="text" [(ngModel)]="addedStudent.firstName" name="firstName">
 					</div>
-
 				</div>
+
 				<div class="row">
 					<div class="col-6">
 						<label>
@@ -173,7 +175,6 @@
 					<div class="col-6">
 						<input name="lastName" type="text" [(ngModel)]="addedStudent.lastname">
 					</div>
-
 				</div>
 
 				<div class="row">
@@ -220,7 +221,7 @@
 			</form>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-outline-dark"
+			<button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
 				(click)="modal.close('Save click');onSave()">הוסף</button>
 		</div>
 	</ng-template>
