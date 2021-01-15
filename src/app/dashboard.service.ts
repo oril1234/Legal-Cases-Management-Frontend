@@ -10,6 +10,16 @@ import { Client } from './_models/client';
 import { Research } from './_models/research';
 import { NotificationtsToUsers } from './_models/notification';
 import { NotificationManager } from './_models/notification-manager';
+import { environment } from "../environments/environment";
+
+let BASE_URL:string = "http://localhost:9090";
+
+
+if (environment.production) {
+  // Amazon AWS Backend
+  BASE_URL = "http://tmp:9090/"
+}
+
 
 NotificationManager
 
@@ -21,20 +31,20 @@ export class DashboardService {
   constructor(private http:HttpClient) { }
 
   getNumberOfClosedCasesPassedYear(){
-    let myUrl="http://localhost:9090/api/v1/legalcase/closedCases"
+    let myUrl=BASE_URL + "/api/v1/legalcase/closedCases"
     return this.http.get<number>(`${myUrl}`); 
 
   }
 
   numberOfCasesReceivedThisPastYear()
   {
-    let myUrl="http://localhost:9090/api/v1/legalcase/total";
+    let myUrl=BASE_URL + "/api/v1/legalcase/total";
     return this.http.get<number>(`${myUrl}`);
   }
 
 numberOfCasesReceivedThisPastYearByClinic(clinicName: string)
 {
-  let myUrl=`http://localhost:9090/api/v1/legalcase/total/clinic/${clinicName}`;
+  let myUrl=BASE_URL + `/api/v1/legalcase/total/clinic/${clinicName}`;
   return this.http.get<number>(`${myUrl}`);
 
 }
@@ -47,13 +57,13 @@ numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 {
 
 
-  return this.http.post<number>("http://localhost:9090/api/v1/legalcase/casesBetween",range);
+  return this.http.post<number>(BASE_URL + "/api/v1/legalcase/casesBetween",range);
 }
 
 
 numberOfCasesToCourtInChosenClinicBetween2Dates(clinicName: string, range: BetweenDates)
 {
-  let myUrl=`http://localhost:9090/api/v1/legalcase/casesBetween/${clinicName}`;
+  let myUrl=BASE_URL + `/api/v1/legalcase/casesBetween/${clinicName}`;
   return this.http.post<number>(`${myUrl}`,range);
 }
 
@@ -61,7 +71,7 @@ numberOfCasesToCourtInChosenClinicBetween2Dates(clinicName: string, range: Betwe
 getAllPersons()
 {
   
-  let myUrl="http://localhost:9090/api/v1/person"
+  let myUrl=BASE_URL + "/api/v1/person"
   return this.http.get<Student[]>(`${myUrl}`); 
 
 }
@@ -69,21 +79,21 @@ getAllPersons()
 
   getAllStudents()
   {
-    let myUrl="http://localhost:9090/api/v1/student"
+    let myUrl=BASE_URL + "/api/v1/student"
     return this.http.get<Student[]>(`${myUrl}`); 
 
   }
 
   getPersonFullNameById(id:number)
   {
-    let myUrl=`http://localhost:9090/api/v1/person/fullName/${id}`
+    let myUrl=BASE_URL + `/api/v1/person/fullName/${id}`
     return this.http.get<string[]>(`${myUrl}`); 
 
   }
 
   getAllStudentsInMyClinic(id:number)
   {
-    let myUrl=`http://localhost:9090/api/v1/student/clinic/${id}/getall`
+    let myUrl=BASE_URL + `/api/v1/student/clinic/${id}/getall`
     return this.http.get<Student[]>(`${myUrl}`); 
 
   }
@@ -95,14 +105,14 @@ getAllPersons()
 
   getStudentsNum()
   {
-    let myUrl="http://localhost:9090/api/v1/student/total";
+    let myUrl=BASE_URL + "/api/v1/student/total";
     return this.http.get<number>(`${myUrl}`); 
   }
 
   //For getting supervisors' details according to student id
   getStudentsClinicalSupervisorDetails(id:number)
   {
-    let myUrl="http://localhost:9090/api/v1/student/{id}/supervisor";
+    let myUrl=BASE_URL + "/api/v1/student/{id}/supervisor";
     return this.http.get<number>(`${myUrl}`); 
     
   }
@@ -110,7 +120,7 @@ getAllPersons()
   //Get all the students that are in a specific clinic
   getAllStudentsInChosenClinic(clinicName:string)
   {
-    let myUrl=`http://localhost:9090/api/v1/student/clinic/getAllClinicsStudents"`;
+    let myUrl=BASE_URL + `/api/v1/student/clinic/getAllClinicsStudents"`;
     return this.http.post<Student[]>(`${myUrl}`,clinicName); 
   }
   
@@ -118,7 +128,7 @@ getAllPersons()
   getNumberOfStudentsInAChosenClinic(clinicName:string)
   {
 
-    let myUrl=`http://localhost:9090/api/v1/student/clinic/totalNumberOfStudents`;
+    let myUrl=BASE_URL + `/api/v1/student/clinic/totalNumberOfStudents`;
     return this.http.post<number>(`${myUrl}`,clinicName); 
   }        
   
@@ -127,21 +137,21 @@ getAllPersons()
   addNewStudent(student:Student)
   {
 
-    let myUrl="http://localhost:9090/api/v1/student"
+    let myUrl=BASE_URL + "/api/v1/student"
     return this.http.post(`${myUrl}`,student); 
 
   }
 
   deleteStudent(id:string)
   {
-    let myUrl=`http://localhost:9090/api/v1/student/${id}`  
+    let myUrl=BASE_URL + `/api/v1/student/${id}`  
     return this.http.delete<ClinicalSupervisor[]>(`${myUrl}`); 
 
   }
 
   editStudent(student:Student)
   {
-    let myUrl=`http://localhost:9090/api/v1/student/${student.id}`
+    let myUrl=BASE_URL + `/api/v1/student/${student.id}`
     return this.http.put<any>(`${myUrl}`,student); 
 
   }
@@ -151,27 +161,27 @@ getAllPersons()
 
   getAllSupervisors()
   {
-    let myUrl="http://localhost:9090/api/v1/clinicalSupervisor"
+    let myUrl=BASE_URL + "/api/v1/clinicalSupervisor"
     return this.http.get<ClinicalSupervisor[]>(`${myUrl}`); 
 
   }
 
   addNewSupervisor(supervisor:ClinicalSupervisor)
   {
-    let myUrl="http://localhost:9090/api/v1/clinicalSupervisor"
+    let myUrl=BASE_URL + "/api/v1/clinicalSupervisor"
     return this.http.post<any>(`${myUrl}`,supervisor); 
 
   }
 
   deleteSupervisor(id:number)
   {
-    let myUrl=`http://localhost:9090/api/v1/clinicalSupervisor/${id}`
+    let myUrl=BASE_URL + `/api/v1/clinicalSupervisor/${id}`
     return this.http.delete<any>(`${myUrl}`); 
   }
 
   editSupervisor(supervisor:ClinicalSupervisor)
   {
-    let myUrl=`http://localhost:9090/api/v1/clinicalSupervisor/${supervisor.id}`
+    let myUrl=BASE_URL + `/api/v1/clinicalSupervisor/${supervisor.id}`
     return this.http.put<any>(`${myUrl}`,supervisor); 
   }
 
@@ -179,34 +189,34 @@ getAllPersons()
 
   getAllCases()
   {
-    let myUrl="http://localhost:9090/api/v1/legalcase"
+    let myUrl=BASE_URL + "/api/v1/legalcase"
     return this.http.get<LegalCase[]>(`${myUrl}`); 
 
   }
 
   addNewCase(legalcase:LegalCase)
   {
-    let myUrl="http://localhost:9090/api/v1/legalcase"
+    let myUrl=BASE_URL + "/api/v1/legalcase"
     return this.http.post<any>(`${myUrl}`,legalcase); 
 
   }
 
   deleteCase(id:number)
   {
-    let myUrl=`http://localhost:9090/api/v1/legalcase/${id}`
+    let myUrl=BASE_URL + `/api/v1/legalcase/${id}`
     return this.http.delete<any>(`${myUrl}`); 
   }
 
   editCase(legalCase:LegalCase)
   {
-    let myUrl=`http://localhost:9090/api/v1/legalcase/${legalCase.id}`
+    let myUrl=BASE_URL + `/api/v1/legalcase/${legalCase.id}`
     return this.http.put<any>(`${myUrl}`,legalCase); 
   }
 
 
   getAllClinic()
   {
-    let myUrl="http://localhost:9090/api/v1/clinic"
+    let myUrl=BASE_URL + "/api/v1/clinic"
     return this.http.get<Clinic[]>(`${myUrl}`); 
 
   }
@@ -214,7 +224,7 @@ getAllPersons()
   getClinicalSupervisorByStudentId(id:number)
   {
     
-    let myUrl=`http://localhost:9090/api/v1/student/${id}/supervisor`
+    let myUrl=BASE_URL + `/api/v1/student/${id}/supervisor`
     return this.http.get<ClinicalSupervisor>(`${myUrl}`); 
 
 
@@ -222,40 +232,40 @@ getAllPersons()
 
   getStudentClinicalSupervisorByStudentId(id:number)
   {
-    let myUrl=`http://localhost:9090/api/v1/student/${id}/supervisor`
+    let myUrl=BASE_URL + `/api/v1/student/${id}/supervisor`
     return this.http.get<ClinicalSupervisor>(`${myUrl}`); 
 
   }
 
   getClinicNameBySupervisorId(id:number)
   {
-    let myUrl=`http://localhost:9090/api/v1/clinic/name/${id}`
+    let myUrl=BASE_URL + `/api/v1/clinic/name/${id}`
     return this.http.get<string[]>(`${myUrl}`); 
 
   }
 
   addNewClinic(clinic:Clinic)
   {
-    let myUrl="http://localhost:9090/api/v1/clinic"
+    let myUrl=BASE_URL + "/api/v1/clinic"
     return this.http.post<Clinic[]>(`${myUrl}`,clinic); 
 
   }
     
   confirmFileUpload(file_path:string)
   {
-    let myUrl="http://localhost:9090/api/v1/import/confirm-upload"
+    let myUrl=BASE_URL + "/api/v1/import/confirm-upload"
     return this.http.get(`${myUrl}`); 
   }
 
   deleteClinic(id:number)
   {
-    let myUrl=`http://localhost:9090/api/v1/clinic/${id}`
+    let myUrl=BASE_URL + `/api/v1/clinic/${id}`
     return this.http.delete<Clinic[]>(`${myUrl}`); 
   }
 
   editClinic(clinic:Clinic)
   {
-    let myUrl=`http://localhost:9090/api/v1/clinic/${clinic.clinicName}`
+    let myUrl=BASE_URL + `/api/v1/clinic/${clinic.clinicName}`
     return this.http.put<any>(`${myUrl}`,clinic); 
 
   }
@@ -263,7 +273,7 @@ getAllPersons()
   getNumberOfCasesByClinicName(clinicName:string)
   {
     
-    let myUrl="http://localhost:9090/api/v1/legalcase/clinic";
+    let myUrl=BASE_URL + "/api/v1/legalcase/clinic";
     return this.http.get<number>(`${myUrl}/${clinicName}`); 
 
   }
@@ -273,7 +283,7 @@ getAllPersons()
   //Get number of all the active clinics
 getNumberOfActiveClinics()
 {
-  let myUrl="http://localhost:9090/api/v1/clinic/total/active";
+  let myUrl=BASE_URL + "/api/v1/clinic/total/active";
   return this.http.get<number>(`${myUrl}`); 
 
 }       
@@ -281,7 +291,7 @@ getNumberOfActiveClinics()
 //Get all the inactive clinics
 getAllInactiveClinicsList()
 {
-  let myUrl="http://localhost:9090/api/v1/clinic/inactive";
+  let myUrl=BASE_URL + "/api/v1/clinic/inactive";
   return this.http.get<Clinic[]>(`${myUrl}`); 
 }
 
@@ -291,20 +301,20 @@ getAllInactiveClinicsList()
 */ 
 getNumberOfCasesPerStudentBySupervisorId(id:number)
 {
-  let myUrl=`http://localhost:9090/api/v1/clinic/${id}/legalCasesPerStudent`;
+  let myUrl=BASE_URL + `/api/v1/clinic/${id}/legalCasesPerStudent`;
   return this.http.get<LegalCaseCounter[]>(`${myUrl}`);
 }
 
 getAllCasesAssignedToStudennt(id:number)
 {
-  let myUrl=`http://localhost:9090/api/v1/caseAssigned/student/${id}`;
+  let myUrl=BASE_URL + `/api/v1/caseAssigned/student/${id}`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
 
 }
 
 getNumberOfCasesAssignedToStudent(id:number)
 {
-  let myUrl=`http://localhost:9090/api/v1/caseAssigned/total/student/${id}`;
+  let myUrl=BASE_URL + `/api/v1/caseAssigned/total/student/${id}`;
   return this.http.get<number>(`${myUrl}`);
 
 }
@@ -312,13 +322,13 @@ getNumberOfCasesAssignedToStudent(id:number)
 
 getNumberOfCasesByChosenClinic(clinicName:string)
 {
-  let myUrl=`http://localhost:9090/api/v1/legalcase/clinic/${clinicName}`;
+  let myUrl=BASE_URL + `/api/v1/legalcase/clinic/${clinicName}`;
   return this.http.get<number>(`${myUrl}`);
 }
 
 selectAllLegalCasesInCourt()
 {
-  let myUrl=`http://localhost:9090/api/v1/legalcase/allInCourt`;
+  let myUrl=BASE_URL + `/api/v1/legalcase/allInCourt`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
 }
 
@@ -327,13 +337,13 @@ selectAllLegalCasesInCourt()
 
 selectAllLegalCasesInCourtBelongingToClinic(clinicName:string)
 {
-  let myUrl=`http://localhost:9090/api/v1/legalcase/allInCourt/${clinicName}`;
+  let myUrl=BASE_URL + `/api/v1/legalcase/allInCourt/${clinicName}`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
 }
 
 selectAllLegalCasesNotInCourt()
 {
-  let myUrl=`http://localhost:9090/api/v1/legalcase/notInCourt`;
+  let myUrl=BASE_URL + `/api/v1/legalcase/notInCourt`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
 
 }
@@ -341,20 +351,20 @@ selectAllLegalCasesNotInCourt()
 
 selectAllLegalCasesNotInCourtBelongingToClinic(clinicName:string)
 {
-  let myUrl=`http://localhost:9090/api/v1/legalcase/notInCourt/${clinicName}`;
+  let myUrl=BASE_URL + `/api/v1/legalcase/notInCourt/${clinicName}`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
 
 }
 
 getNumberOfClinicalSupervisors()
 {
-  let myUrl=`http://localhost:9090/api/v1/clinicalSupervisor/total`;
+  let myUrl=BASE_URL + `/api/v1/clinicalSupervisor/total`;
   return this.http.get<number>(`${myUrl}`);
 }
 
 getNumberOfResearchesInAChosenClinic(clinicName:string)
 {
-  let myUrl=`http://localhost:9090/api/v1/research/clinic/total/${clinicName}`;
+  let myUrl=BASE_URL + `/api/v1/research/clinic/total/${clinicName}`;
   return this.http.get<number>(`${myUrl}`);
 }
 
@@ -363,26 +373,26 @@ getNumberOfResearchesInAChosenClinic(clinicName:string)
 
 getNotificationsNumberByPersonID(id:number)
 {
-  let myUrl=`http://localhost:9090/api/v1/notificationManager/total/${id}`;
+  let myUrl=BASE_URL + `/api/v1/notificationManager/total/${id}`;
   return this.http.get<number>(`${myUrl}`);
 
 }
 
 getNotificationsByPersonID(id:number)
 {
-  let myUrl=`http://localhost:9090/api/v1/notificationManager/${id}`;
+  let myUrl=BASE_URL + `/api/v1/notificationManager/${id}`;
   return this.http.get<Notification[]>(`${myUrl}`);
 
 }
 
 readAllNotificationsOfPerson(notificationId:number)
 {
-  let myUrl=`http://localhost:9090/api/v1/notificationManager/markAsRead`;
+  let myUrl=BASE_URL + `/api/v1/notificationManager/markAsRead`;
   return this.http.put<number>(`${myUrl}`,notificationId+"");
 }
 
 addNotification(notification:NotificationtsToUsers){
-  let myUrl=`http://localhost:9090/api/v1/notification`;
+  let myUrl=BASE_URL + `/api/v1/notification`;
   return this.http.post<string[]>(`${myUrl}`,notification);
 
 
@@ -390,7 +400,7 @@ addNotification(notification:NotificationtsToUsers){
 
 mapNotificationToUser(notifictionManager:NotificationManager)
 {
-  let myUrl=`http://localhost:9090/api/v1/notificationManager`;
+  let myUrl=BASE_URL + `/api/v1/notificationManager`;
   return this.http.post(`${myUrl}`,notifictionManager);
 
 }
@@ -400,7 +410,7 @@ mapNotificationToUser(notifictionManager:NotificationManager)
 
 getClientNyId(id:number)
 {
-  let myUrl=`http://localhost:9090/api/v1/client/${id}`;
+  let myUrl=BASE_URL + `/api/v1/client/${id}`;
   return this.http.get<Client>(`${myUrl}`);
 
 }
@@ -413,7 +423,7 @@ getClientNyId(id:number)
 
 getAllResearches()
 {
-  let myUrl=`http://localhost:9090/api/v1/research`;
+  let myUrl=BASE_URL + `/api/v1/research`;
   return this.http.get<Research[]>(`${myUrl}`);
 
 }

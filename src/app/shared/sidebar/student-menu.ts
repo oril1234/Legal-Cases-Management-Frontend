@@ -104,7 +104,7 @@ export const STUDENT_ROUTES: RouteInfo[] = [
   {
     path: '/component/modal',
     title: 'הסעות',
-    icon: 'mdi mdi-tablet',
+    icon: 'mdi mdi-jeepney',
     class: '',
     extralink: false,
     submenu: [],

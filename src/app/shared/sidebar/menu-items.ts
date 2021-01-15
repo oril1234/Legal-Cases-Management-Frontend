@@ -11,7 +11,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
-    hasSub:false,
+    hasSub:true,
     showSub:false
   },
   {
@@ -35,7 +35,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
     role:[Roles.STUDENT,Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
-    hasSub:false,
+    hasSub:true,
     showSub:false
   },
   {
@@ -58,6 +58,18 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [],
     role:[Roles.STUDENT,Roles.SUPERVISOR],
+    params:"",
+    hasSub:false,
+    showSub:false
+  },
+  {
+    path: '/component/csvimport',
+    title: 'ייבוא סטודנטים',
+    icon: 'mdi mdi-folder-multiple',
+    class: '',
+    extralink: false,
+    submenu: [],
+    role:[Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
     hasSub:false,
     showSub:false
@@ -147,21 +159,9 @@ export const ROUTES: RouteInfo[] = [
     showSub:false
   },
   {
-    path: '/component/csvimport',
-    title: 'העלאת CSV',
-    icon: 'mdi mdi-tablet',
-    class: '',
-    extralink: false,
-    submenu: [],
-    role:[Roles.SUPERVISOR,Roles.SUPERADMIN],
-    params:"",
-    hasSub:false,
-    showSub:false
-  },
-  {
     path: '/component/modal',
     title: 'הסעות',
-    icon: 'mdi mdi-tablet',
+    icon: 'mdi mdi-jeepney',
     class: '',
     extralink: false,
     submenu: [],
@@ -179,7 +179,7 @@ export const ROUTES: RouteInfo[] = [
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.SUPERVISOR,Roles.STUDENT],
+    role:[Roles.SUPERADMIN, Roles.SUPERVISOR,Roles.STUDENT],
     params:"",
     hasSub:false,
     showSub:false
