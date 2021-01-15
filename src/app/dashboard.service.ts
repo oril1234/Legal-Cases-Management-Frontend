@@ -211,7 +211,7 @@ getAllPersons()
 
   }
 
-  getclinicNameBySupervisorId(id:number)
+  getClinicalSupervisorByStudentId(id:number)
   {
     
     let myUrl=`http://localhost:9090/api/v1/student/${id}/supervisor`

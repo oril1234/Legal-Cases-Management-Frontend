@@ -10,9 +10,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BetweenDates } from 'src/app/_models/between-dates';
 
-
-
-
 @Component({
   selector: 'app-supervisor-dashboard',
   templateUrl: './supervisor-dashboard.component.html',
@@ -47,7 +44,6 @@ export class SupervisorDashboardComponent implements OnInit {
 
 
   constructor(private dashBoardService:DashboardService,private modalService:NgbModal) {
-    
     this.getClinicName();
    }
 
@@ -68,9 +64,11 @@ export class SupervisorDashboardComponent implements OnInit {
           err=> {
           },
           ()=>{
+
             this.getTotalNumberOfStudentsInClinic();
             this.getTotalNumberOfCaseReceivedThisYear();
             this.GetNumberOfResearchesInClinic();
+            this.getNumberOfCasesInCourtBetweenDates();
           }
     )
   }
@@ -96,23 +94,27 @@ export class SupervisorDashboardComponent implements OnInit {
 		}
 	}
 
-  getNumberOfCasesInCouret()
+  getNumberOfCasesInCourtBetweenDates()
   {
     let between=new BetweenDates();
     between.startDate=this.startDate;
     between.endDate=this.endDate;
 
-    this.dashBoardService.selectAllLegalCasesInCourt().subscribe(
+    // numberOfCasesToCourtInChosenClinicBetween2Dates(clinic, dates)
+
+    this.dashBoardService.numberOfCasesToCourtInChosenClinicBetween2Dates(this.clinicName, between).subscribe(
       data=>{
-        let cases:LegalCase[]=data;
-        cases=cases.filter(lCase=>lCase.clinicName==this.clinicName);
-        let start:Date=new Date(this.startDate+"");
-        let end:Date=new Date(this.endDate+"");
-        cases=cases.filter(lCase=>{
-          let formatted=new Date(lCase.dateAdded+"")
-        return formatted>start && formatted<end;
-          });
-        this.casesInCourtNumber=cases.length;            
+        this.casesInCourtNumber = data;
+        // console.log(data);
+        // let cases:LegalCase[]=data;
+        // cases=cases.filter(lCase=>lCase.clinicName==this.clinicName);
+        // let start:Date=new Date(this.startDate+"");
+        // let end:Date=new Date(this.endDate+"");
+        // cases=cases.filter(lCase=>{
+        //   let formatted=new Date(lCase.dateAdded+"")
+        // return formatted>start && formatted<end;
+        //   });
+        // this.casesInCourtNumber=cases.length;            
 
       },
       err=>
@@ -135,23 +137,6 @@ export class SupervisorDashboardComponent implements OnInit {
     */
   }
 
-  /*
-  getClinicNameBySupervisor()
-  {
-    let decoded=jwt_decode(localStorage.getItem("authenticationToken")+"")
-    let id:number=parseInt(JSON.parse(JSON.stringify(decoded)+"").sub);
-
-    this.dashBoardService.getClinicNameBySupervisorId(id).subscribe(
-      data=>
-      {
-        this.clinicName=data;
-
-      }
-
-    )
-
-  }
-  */
 
   getTotalNumberOfStudentsInClinic()
   {
