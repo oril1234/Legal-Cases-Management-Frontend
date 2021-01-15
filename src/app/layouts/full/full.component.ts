@@ -25,6 +25,7 @@ export class FullComponent implements OnInit {
   {
     this.getFullName();
     this.getNotifications();
+    this.currentRole=parseInt(localStorage.getItem("Role")+"");
   }
   }
 

@@ -6,7 +6,7 @@
 
 <div dir="rtl" class="row">
     <div class="col-md-6 col-lg-3 col-xlg-3">
-        <div style="height: 150px;" class="card bg-info">
+        <div style="height: 120px;" class="card bg-info">
             <div class="box bg-info text-center">
                 <h1 class="font-light text-white">{{studentsNumber}}</h1>
                 <h6 class="text-white">סך הכל סטודנטים</h6>
@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-md-6 col-lg-3 col-xlg-3">
-        <div style="height: 150px;" class="card bg-success">
+        <div style="height: 120px;" class="card bg-success">
             <div class="box text-center">
                 <h1 class="font-light text-white">{{casesReceivedThisYearNumber}}</h1>
                 <h6 class="text-white"> סך הכל פניות</h6>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-md-6 col-lg-3 col-xlg-3">
-        <div style="height: 150px; color: white" class="card bg-danger">
+        <div style="height: 120px; color: white" class="card bg-danger">
             <div class="box text-center">
                 <h1 class="font-light ">{{casesInCourtNumber}}</h1>
                 <h6>סך הכל תיקים בבית משפט</h6>
@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="col-md-6 col-lg-3 col-xlg-3">
-        <div style="height: 150px;" class="card bg-primary">
+        <div style="height: 120px;" class="card bg-primary">
             <div class="box text-center">
                 <h1 class="font-light text-white">{{researchesNumber}}</h1>
                 <h6 class="font-light text-white">סך הכל מחקרים</h6>
@@ -44,30 +44,41 @@
 
 <ng-template #addModal let-modal>
     <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">בחירת טווח תאריכים</h4>
         <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
             (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="modal-body">
-        <form>
-            <div style="float: right;" class="form-group">
-                <label style="float: right;">
-                    מתאריך</label>
-                <input style="float: right;" placeholder="dd-mm-yyyy" type="date" [(ngModel)]="startDate"
+    <div class="modal-body" style="width: 300px;">
+        <form dir="rtl">
+
+            <div class="row">
+                <div class="col-6">
+                    <label>
+                        מתאריך </label>
+                </div>
+                <div class="col-6">
+                <input placeholder="dd-mm-yyyy" min="1997-01-01" max="2030-12-31" type="date" [(ngModel)]="startDate"
                     name="startDate"><br>
+                </div>
             </div>
 
-            <div style="float: right;" class="form-group">
-                <label style="float: right;">
-                    עד תאריך</label>
-                <input placeholder="dd-mm-yyyy" min="1997-01-01" max="2030-12-31" name="endDate" type="date"
+            <div class="row">
+                <div class="col-6">
+                    <label>
+                        עד תאריך </label>
+                </div>
+                <div class="col-6">
+                    <input placeholder="dd-mm-yyyy" min="1997-01-01" max="2030-12-31" name="endDate" type="date"
                     [(ngModel)]="endDate"><br>
+                </div>
             </div>
+
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn-primary" (click)="getNumberOfCasesInCouret();modal.dismiss('dates selected')">
+        <button class="btn btn-primary btn-rounded btn-success mb-2" (click)="getNumberOfCasesInCouret();modal.dismiss('dates selected')">
             הצג</button>
     </div>
 </ng-template>
