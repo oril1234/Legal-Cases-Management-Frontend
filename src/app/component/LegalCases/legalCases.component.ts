@@ -36,7 +36,7 @@ export class LegalCasesComponent implements OnInit{
     closeResult="";
 	currentStatus=""
 	clinicName:string=""
-	currentClient:Client
+	currentClient:Client=new Client()
 	userId = parseInt(
 		JSON.parse(
 		  JSON.stringify(
@@ -57,7 +57,8 @@ export class LegalCasesComponent implements OnInit{
 			if (this.route.snapshot.paramMap.get('status')) {
 				this.currentStatus=this.route.snapshot.paramMap.get('')+"";
 			}
-		this.getAllClinics();	
+		this.getAllClinics();
+		this.getAllCasesAssignedToStudent();	
 
 	}
 	public ngOnInit(): void {
@@ -81,7 +82,11 @@ export class LegalCasesComponent implements OnInit{
 
 					}
 				}
-				this.getAllCases();
+
+				if(this.currentRole!=Roles.STUDENT)
+					this.getAllCases();
+				else
+				this.getAllCasesAssignedToStudent();
 			}
 		)
 
@@ -95,6 +100,7 @@ export class LegalCasesComponent implements OnInit{
 			this.dashboardService.selectAllLegalCasesInCourt().subscribe(
 				data=> {
 					this.cases=data;
+					console.log(this.cases[0])
 					
 				}
 					);
@@ -129,9 +135,18 @@ export class LegalCasesComponent implements OnInit{
 
 	}
 
+	getAllCasesAssignedToStudent(){
+		this.dashboardService.getAllCasesAssignedToStudennt(this.userId).subscribe(
+			data=>{
+				this.cases=data;
+			}
+		)
+
+	}
+
 
 	  	//Modal methodd
-		  open(content:string,legalcase:LegalCase) {
+		  open(content:string) {
 			this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 				this.closeResult = `Closed with: ${result}`;
 			}, (reason) => {

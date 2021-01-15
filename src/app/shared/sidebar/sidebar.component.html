@@ -4,7 +4,8 @@
         <!-- First level menu -->
         <li class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title"
             *ngFor="let sidebarnavItem of sidebarnavItems">
-            <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true">{{sidebarnavItem.title}}</div>
+            <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true && sidebarnavItem.hasSub">
+                {{sidebarnavItem.title}}</div>
             <a class="sidebar-link waves-effect waves-dark"
                 [routerLink]="sidebarnavItem.class === '' && !sidebarnavItem.hasSub ? [sidebarnavItem.path] : null"
                 [ngClass]="[sidebarnavItem.class]" *ngIf="!sidebarnavItem.extralink

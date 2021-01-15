@@ -54,7 +54,7 @@
 
                                             <label>
                                                 סוג</label>
-                                            <input type="text" name="type" [(ngModel)]="case.type"><br>
+                                            <input type="text" name="caseType" [(ngModel)]="case.caseType"><br>
 
 
                                             <label>
@@ -113,14 +113,14 @@
                             <td>{{case.clinicName}}</td>
                             <td><button class="btn btn-primary"
                                     (click)="open(detailsModal,'');showDetails(case.clientId)">הצג</button></td>
-                            <td>{{case.type}}</td>
+                            <td>{{case.caseType}}</td>
 
                         </tr>
                     </tbody>
                 </table>
 
                 <button style="color: white;margin-left: 90%;font-size: 15;" class="btn btn-rounded btn-success mb-2"
-                    (click)="open(addModal,'')">צור תיק</button>
+                    (click)="open(addModal)">צור תיק</button>
             </div>
         </div>
         <!--Add Modal -->
