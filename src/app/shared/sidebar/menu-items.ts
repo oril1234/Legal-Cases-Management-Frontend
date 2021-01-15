@@ -75,13 +75,13 @@ export const ROUTES: RouteInfo[] = [
     showSub:false
   },
   {
-    path: '/component/supervisors',
-    title: 'מנחים',
-    icon: 'mdi mdi-message-bulleted',
+    path: '/component/dashboard',
+    title: 'ניהול תיקים',
+    icon: 'mdi mdi-bank',
     class: '',
     extralink: false,
     submenu: [],
-    role:[Roles.SUPERADMIN],
+    role:[Roles.SUPERVISOR,Roles.SUPERADMIN],
     params:"",
     hasSub:false,
     showSub:false
@@ -118,6 +118,18 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [],
     role:[Roles.STUDENT],
+    params:"",
+    hasSub:false,
+    showSub:false
+  },
+  {
+    path: '/component/supervisors',
+    title: 'מנחים',
+    icon: 'mdi mdi-message-bulleted',
+    class: '',
+    extralink: false,
+    submenu: [],
+    role:[Roles.SUPERADMIN],
     params:"",
     hasSub:false,
     showSub:false
