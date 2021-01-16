@@ -184,6 +184,9 @@ export class LegalCasesComponent implements OnInit{
 			this.addedCase.clinicName=this.clinics[0].clinicName;
 		
 		this.dashboardService.addNewCase(this.addedCase).subscribe(
+			data=>{
+				this.cases.push(this.addedCase);
+			}
 
 		 )
 		 
@@ -223,6 +226,9 @@ export class LegalCasesComponent implements OnInit{
 	onDelete(id:string)
 	{
 		this.dashboardService.deleteCase(parseInt(id)).subscribe(
+			data=>{
+				this.cases=this.cases.filter(lCase=>lCase.id!=parseInt(id))
+			}
 
 		);
 	}

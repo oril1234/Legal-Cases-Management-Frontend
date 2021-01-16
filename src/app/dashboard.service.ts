@@ -202,6 +202,14 @@ getAllPersons()
 
   }
 
+  getCaseById(id:number)
+  {
+    
+    let myUrl=BASE_URL + `/api/v1/legalcase/${id}`
+    return this.http.get<LegalCase>(`${myUrl}`); 
+
+  }
+
   addNewCase(legalcase:LegalCase)
   {
     let myUrl=BASE_URL + "/api/v1/legalcase"

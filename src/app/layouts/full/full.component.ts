@@ -6,6 +6,7 @@ import {Roles} from '../../_models/roles.enum'
 import {AuthService} from '../../auth/shared/auth.service'
 import jwt_decode from "jwt-decode"
 import { DashboardService } from 'src/app/dashboard.service';
+import { NotificationsService } from 'src/app/services/notifications.service';
 declare var $: any;
 
 @Component({
@@ -19,8 +20,10 @@ export class FullComponent implements OnInit {
 
 
   notificationsNumber=0;
+  showNotifications:boolean=true
 
-  constructor(public router: Router,private authservice:AuthService,private dashBoardService:DashboardService) {
+  constructor(public router: Router,private authservice:AuthService,private dashBoardService:DashboardService,
+    private notificationsService:NotificationsService) {
     if(localStorage.getItem("authenticationToken")!=null)
   {
     this.getFullName();
@@ -46,8 +49,13 @@ export class FullComponent implements OnInit {
     //this.getNotifications();
     if (this.router.url === '/') {
       this.router.navigate(['/starter']);
-      
+     
+     this.notificationsService.shouldShowNotifications.subscribe(currentState=>
+      {
+        this.showNotifications=currentState
+      }) 
     }
+    
    
  
     this.defaultSidebar = this.sidebartype;

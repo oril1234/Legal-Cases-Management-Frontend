@@ -48,7 +48,7 @@
                                                         מספר התיק</label>
                                                 </div>
                                                 <div class="col-6">
-                                                    <input type="text" name="id" [(ngModel)]="case.id"><br>
+                                                    <input type="text" name="id" [(ngModel)]="case.id" disabled><br>
                                                 </div>
                                             </div>
 
@@ -65,7 +65,7 @@
                                                         תאריך פתיחת התיק</label></div>
                                                 <div class="col-6">
                                                     <input type="text" name="dateAdded" [(ngModel)]="case.dateAdded"
-                                                        readonly><br>
+                                                        disabled><br>
                                                 </div>
                                             </div>
 
@@ -120,7 +120,8 @@
                                     </div>
                                 </ng-template>
 
-                                <button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
+                                <button *ngIf="currentRole!=0" class="btn btn-sm btn-danger btn-delete-account"
+                                    (click)="open(deleteModal,'')">
                                     <span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
                                             class="fa fa-trash-alt"></i></span>
                                 </button>
@@ -161,8 +162,8 @@
                     </tbody>
                 </table>
 
-                <button style="color: white; float: right; font-size: 15;" class="btn btn-rounded btn-success mb-2"
-                    (click)="open(addModal)"> פתיחת תיק חדש</button>
+                <button *ngIf="currentRole!=0" style="color: white; float: right; font-size: 15;"
+                    class="btn btn-rounded btn-success mb-2" (click)="open(addModal)"> פתיחת תיק חדש</button>
             </div>
         </div>
 

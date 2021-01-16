@@ -156,6 +156,18 @@ export class AssignedCaseComponent implements OnInit {
 			this.dashboardService.addNewCaseAssignment(assigned).subscribe(
 				data=>{
 					alert("תיק מספר"+ assigned.legalCaseId+" הוקצה בהצלחה")
+					this.dashboardService.getCaseById(assigned.legalCaseId).subscribe(
+						data1=>{
+							let newItem:CaseAssignedSupervisorsList=new CaseAssignedSupervisorsList()
+							newItem.dateAssigned=new Date();
+							newItem.id=assigned.legalCaseId;
+							newItem.status=data1.status;
+							newItem.subject=data1.subject;
+							let student:Student=this.students.filter(aStudent=>aStudent.id==assigned.studentId)[0];
+							newItem.studentName=student.firstName+" "+student.lastname;
+							this.caseAssignedBySupervisor.push(newItem);
+						}
+					)
 					this.createNotification(NotificationType.ADD,assigned.studentId,assigned.legalCaseId)
 				},
 				err=>{
@@ -168,6 +180,7 @@ export class AssignedCaseComponent implements OnInit {
 		onAssignCancel(caseId:number,studentName:string)
 		{
 			
+			
 			let studentId:number=0;
 			this.students.forEach(student=>{
 				if(student.firstName+" "+student.lastname==studentName)
@@ -176,15 +189,20 @@ export class AssignedCaseComponent implements OnInit {
 				}
 			})
 			
+
+			
 			this.dashboardService.deleteCaseAssignmentByStudentIdAndCase(studentId,caseId).subscribe(
 				data=>{
 					alert(" הקצאת תיק בוטלה עבור"+ studentName)
 					this.createNotification(NotificationType.DELETE,studentId,caseId)
+					this.caseAssignedBySupervisor=this.caseAssignedBySupervisor.filter(item=>(item.id!=caseId 
+						|| item.studentName!=studentName))
 				},
 				err=>{
 					alert("הקצאה לא בוטלה")
 				}
 			)
+			
 			
 		}
 		createNotification(type:NotificationType,studentId:number,caseId:number)
@@ -195,8 +213,11 @@ export class AssignedCaseComponent implements OnInit {
 		  
 			if(type==NotificationType.ADD)
 			{
-			  n.details="המנחה שלך, "+this.currentSuperVisor.firstName+' '+
-			  this.currentSuperVisor+" הקצה עבורך את תיק מספר "+caseId;
+			  n.details="המנחה שלך, "
+			  +this.currentSuperVisor.firstName+' '+
+			  this.currentSuperVisor.lastname+
+			  " הקצה עבורך את תיק מספר "+
+			  caseId;
 			}
 
 			if(type==NotificationType.DELETE)
@@ -206,13 +227,11 @@ export class AssignedCaseComponent implements OnInit {
 			}
 		  this.dashboardService.addNotification(n).subscribe(
 			data=>{
-				alert("יש!")
 				this.mapNotification(data[0],studentId);
 			  
 			},
 			err=>
 			{
-			  alert("התראה לא התווספה בהצלחה")
 			}
 		  )
 		}
@@ -225,11 +244,9 @@ export class AssignedCaseComponent implements OnInit {
 		  ng.receiverId=studentId
 		  this.dashboardService.mapNotificationToUser(ng).subscribe(
 			data=>{
-			  alert("התראה נשלחה בהצלחה")
 			},
 			err=>
 			{
-			  alert("Error!!!")
 			}
 		  )
 		 

@@ -5,7 +5,8 @@
         <li class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title"
             *ngFor="let sidebarnavItem of sidebarnavItems">
             <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true && sidebarnavItem.hasSub">
-                {{sidebarnavItem.title}}</div>
+                {{sidebarnavItem.title}}
+            </div>
 
             <a class="sidebar-link waves-effect waves-dark"
                 [routerLink]="sidebarnavItem.class === '' && !sidebarnavItem.hasSub ? [sidebarnavItem.path] : null"
@@ -16,7 +17,8 @@
             </a>
 
             <div *ngIf="sidebarnavItem.showSub">
-                <a class="sidebar-link waves-effect waves-dark" *ngFor="let submenuItem of sidebarnavItem.submenu"
+                <a [ngStyle]="{'font-size': (sidebarnavItem.title=='סטודנטים בקליניקות') ? '10px' : '15px'}"
+                    class="sidebar-link waves-effect waves-dark" *ngFor="let submenuItem of sidebarnavItem.submenu"
                     [routerLink]="submenuItem.path" [ngClass]="[sidebarnavItem.class]"
                     (click)="addExpandClass(sidebarnavItem.title)"
                     [routerLinkActive]="sidebarnavItem.submenu.length != 0 ? '' : 'active'">

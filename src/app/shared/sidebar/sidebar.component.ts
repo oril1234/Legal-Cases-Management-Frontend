@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, HostListener } from '@angular/core';
 import { ROUTES } from './menu-items';
 import { RouteInfo } from './sidebar.metadata';
 import { Router, ActivatedRoute,ParamMap } from '@angular/router';
@@ -175,4 +175,6 @@ export class SidebarComponent implements OnInit {
     }
 
   }
+
+
 }

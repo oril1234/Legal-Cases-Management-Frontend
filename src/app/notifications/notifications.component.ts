@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import jwt_decode from "jwt-decode";
+import { NotificationsService } from '../services/notifications.service';
 
 @Component({
   selector: 'app-notifications',
@@ -12,11 +13,12 @@ export class NotificationsComponent implements OnInit {
   notifications:Notification[]=[]
   userId=""
 
-  constructor(private dashBoardService: DashboardService) {
+  constructor(private dashBoardService: DashboardService,private notificationsService: NotificationsService) {
     this.getNotifications();
    }
 
   ngOnInit(): void {
+    
   }
 
   getNotifications()
@@ -39,7 +41,7 @@ export class NotificationsComponent implements OnInit {
     let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
     this.dashBoardService.readAllNotificationsOfPerson(id).subscribe(
       data=>{
-        alert("Notifications were read")
+        this.notificationsService.changeState(false)
       },
       err=>{
         alert("error")
