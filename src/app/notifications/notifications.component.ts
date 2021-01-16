@@ -10,7 +10,7 @@ import jwt_decode from "jwt-decode";
 export class NotificationsComponent implements OnInit {
 
   notifications:Notification[]=[]
-  iserId=""
+  userId=""
 
   constructor(private dashBoardService: DashboardService) {
     this.getNotifications();

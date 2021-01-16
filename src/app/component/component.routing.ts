@@ -8,6 +8,7 @@ import { LegalCasesComponent } from './LegalCases/legalCases.component';
 
 import { ClinicsComponent } from './clinics/clinicscomponent';
 import { CsvImportComponent } from './csvimport/csvimport.component';
+import { AssignedCaseComponent } from './assigned-case/assigned-case.component';
 
 
 
@@ -69,6 +70,19 @@ export const ComponentsRoutes: Routes = [
 			{
 				path: 'legalCases/:status',
 				component: LegalCasesComponent,
+				data: {
+					title: 'Carousel',
+					urls: [
+						{ title: 'Dashboard', url: '/dashboard' },
+						{ title: 'ngComponent' },
+						{ title: 'Carousel' }
+					]
+				}
+			},
+
+			{
+				path: 'assignedCases',
+				component: AssignedCaseComponent,
 				data: {
 					title: 'Carousel',
 					urls: [

@@ -122,10 +122,15 @@ return "";
     clinic.clinicName=clinicToEdit.clinicName;
     clinic.clinicalSupervisorId=clinicToEdit.clinicalSupervisorId;
     clinic.yearFounded=clinicToEdit.yearFounded;
+    alert(clinic.clinicName)
  
-    this.dashboardService.addNewClinic(clinic).subscribe(
-      
+    
+    this.dashboardService.updateClinicDetails(clinic).subscribe(
+      data=>{
+
+      }
     )
+    
 		 
 		
 	}

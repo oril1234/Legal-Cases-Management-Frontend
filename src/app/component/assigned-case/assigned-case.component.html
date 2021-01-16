@@ -1,0 +1,125 @@
+<br>
+<ol class="breadcrumb mb-2">
+    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+    <li class="breadcrumb-item active">Legal Cases</li>
+</ol>
+<div style="margin-top: 1%;" class="row">
+    <div class="col-12">
+        <div class="card" style="overflow:scroll;">
+            <div class="card-body">
+                <h1 dir="rtl" class="mr-auto" style="text-align: right;">פרטי הקצאות תיקים</h1>
+                <table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
+                    <thead style="position: sticky; top: 0">
+                        <tr>
+                            <th style="position: sticky; top: 0;text-align: right;" scope="col"></th>
+
+                            <th style="text-align:right;" scope="col">סטטוס טיפול</th>
+                            <th style="text-align:right;" scope="col">נושא</th>
+                            <th style="text-align:right;" scope="col">תאריך הקצאה</th>
+                            <th style="text-align:right;" scope="col">שם סטודנט</th>
+                            <th style="text-align:right;" scope="col">מספר תיק</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let caseAssignedBySupervisor of caseAssignedBySupervisor">
+                            <td style="display: flex;">
+
+                                <button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
+                                    <span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
+                                            class="fa fa-trash-alt"></i></span>
+                                </button>
+
+                                <!--Delete Modal -->
+                                <ng-template #deleteModal let-modal>
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-basic-title">מחיקת תיק</h4>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <p dir="rtl">
+                                            האם ברצונך לבטל את הקצאת תיק מספר
+                                            <span>{{caseAssignedBySupervisor.id}}</span>
+                                            עבור
+                                            <span>{{caseAssignedBySupervisor.studentName}}?</span>
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" (click)="modal.close('Save click');
+                                        onAssignCancel(caseAssignedBySupervisor.id,
+                                            caseAssignedBySupervisor.studentName)">
+                                            מחק</button>
+                                        <button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
+                                            (click)="modal.close('Save click')">ביטול</button>
+                                    </div>
+                                </ng-template>
+                            </td>
+
+
+                            <td style="text-align:right;">{{caseAssignedBySupervisor.status}}</td>
+                            <td style="text-align:right;">{{caseAssignedBySupervisor.subject}}</td>
+                            <td style="text-align:right;">{{caseAssignedBySupervisor.dateAssigned}}</td>
+                            <td style="text-align:right;">{{caseAssignedBySupervisor.studentName}}</td>
+                            <td style="text-align:right;">{{caseAssignedBySupervisor.id}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button style="color: white; float: right; font-size: 15;" class="btn btn-rounded btn-success mb-2"
+                    (click)="open(addModal)"> בצע הקצאה חדשה</button>
+            </div>
+        </div>
+
+        <!--Add Modal -->
+        <ng-template #addModal let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">הקצאת תיק לסטודנט</h4>
+                <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+                    (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="width: 300px;">
+
+                <div class="row">
+                    <div class="col-6"> <label>
+                            מספר תיק</label></div>
+                    <div class="col-6">
+                        <select name="chosenCase" style="width: 100px;" [(ngModel)]="chosenCase">
+                            <option *ngFor="let case of cases" [ngValue]="case">
+                                {{case.id }}
+                            </option>
+
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6"> <label>
+                            סטודנט מוקצה</label></div>
+                    <div class="col-6">
+                        <select style="width: 100px;" name="chosenStudent" [(ngModel)]="chosenStudent">
+                            <option *ngFor="let student of students" [ngValue]="student">
+                                {{student.firstName}} {{student.lastname}}
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
+                    (click)="modal.close('Save click');onSave()">אשר</button>
+            </div>
+        </ng-template>
+
+    </div>
+
+
+
+
+</div>

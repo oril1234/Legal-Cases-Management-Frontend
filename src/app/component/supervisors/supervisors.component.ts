@@ -108,14 +108,19 @@ this.getAllSupervisors();
      supervisor.role="ClinicalSupervisor";
 
 		 this.dashboardService.addNewSupervisor(supervisor).subscribe(
-			 
+			data=>{
+				this.supervisors.push(supervisor);
+			} 
 		 )
 	}
 
   
-	onDelete(id:string)
+	onDelete(id:number)
 	{
-		this.dashboardService.deleteSupervisor(parseInt(id)).subscribe(
+		this.dashboardService.deleteSupervisor(id).subscribe(
+			date=>{
+				this.supervisors=this.supervisors.filter(cSupervisor=>cSupervisor.id!=id)
+			}
 
 		);
 	}

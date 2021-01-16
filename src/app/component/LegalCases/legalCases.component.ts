@@ -162,8 +162,10 @@ export class LegalCasesComponent implements OnInit{
 		}
 		private getDismissReason(reason: ModalDismissReasons): string {
 			if (reason === ModalDismissReasons.ESC) {
+				this.addedCase=new LegalCase()
 				return 'by pressing ESC';
 			} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+				
 				return 'by clicking on a backdrop';
 			} else {
 				return  `with: ${reason}`;
@@ -174,17 +176,8 @@ export class LegalCasesComponent implements OnInit{
 		//Invoked when adding new case
 	onSave()
 	{
-		/*
-		id!: number;
-		dateAdded!: Date;
-		subject!: string;
-		status!: string;
-		courtCaseId!: number;
-		clinicName!: string;
-		clientId!:number;
-		type!:string
-		*/
-		this.addedCase.id=0;
+
+		this.addedCase.id=130;
 		this.addedCase.dateAdded=new Date();;
 		this.addedCase.status="חדש";
 		if(this.currentRole==Roles.SUPERVISOR)
@@ -193,6 +186,7 @@ export class LegalCasesComponent implements OnInit{
 		this.dashboardService.addNewCase(this.addedCase).subscribe(
 
 		 )
+		 
 	}
 
 	validateFields():boolean

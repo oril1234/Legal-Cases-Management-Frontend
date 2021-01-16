@@ -11,6 +11,8 @@ import { Research } from './_models/research';
 import { NotificationtsToUsers } from './_models/notification';
 import { NotificationManager } from './_models/notification-manager';
 import { environment } from "../environments/environment";
+import {AssignedCase} from './_models/assigned-case'
+import { CaseAssignedSupervisorsList } from './_models/case-assigned-supervisors-list';
 
 let BASE_URL:string = "http://localhost:9090";
 
@@ -142,7 +144,7 @@ getAllPersons()
 
   }
 
-  deleteStudent(id:string)
+  deleteStudent(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/student/${id}`  
     return this.http.delete<ClinicalSupervisor[]>(`${myUrl}`); 
@@ -164,6 +166,12 @@ getAllPersons()
     let myUrl=BASE_URL + "/api/v1/clinicalSupervisor"
     return this.http.get<ClinicalSupervisor[]>(`${myUrl}`); 
 
+  }
+
+  getClinicalSupervisorById(id:number)
+  {
+    let myUrl=BASE_URL +`/api/v1/clinicalSupervisor/${id}`;
+    return this.http.get<ClinicalSupervisor>(`${myUrl}`); 
   }
 
   addNewSupervisor(supervisor:ClinicalSupervisor)
@@ -200,7 +208,6 @@ getAllPersons()
     return this.http.post<any>(`${myUrl}`,legalcase); 
 
   }
-
   deleteCase(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/legalcase/${id}`
@@ -212,6 +219,28 @@ getAllPersons()
     let myUrl=BASE_URL + `/api/v1/legalcase/${legalCase.id}`
     return this.http.put<any>(`${myUrl}`,legalCase); 
   }
+  getAllAssignedCasesBySupervisor(id:number)
+  {
+    let myUrl=BASE_URL + `/api/v1/caseAssigned/allCasesAssigedToStudents/${id}`
+    return this.http.get<CaseAssignedSupervisorsList[]>(`${myUrl}`); 
+
+  }
+
+  addNewCaseAssignment(assignedCase:AssignedCase)
+  {
+    let myUrl=BASE_URL + "/api/v1/caseAssigned"
+    return this.http.post<any>(`${myUrl}`,assignedCase); 
+
+  }
+
+  deleteCaseAssignmentByStudentIdAndCase(studentId:number,caseId:number)
+  {
+    
+    let myUrl=BASE_URL +`/api/v1/caseAssigned/case/${caseId}/student/${studentId}`
+    return this.http.delete<any>(`${myUrl}`); 
+  }
+
+
 
 
   getAllClinic()
@@ -247,7 +276,14 @@ getAllPersons()
   addNewClinic(clinic:Clinic)
   {
     let myUrl=BASE_URL + "/api/v1/clinic"
-    return this.http.post<Clinic[]>(`${myUrl}`,clinic); 
+    return this.http.post(`${myUrl}`,clinic); 
+
+  }
+
+  updateClinicDetails(clinic:Clinic)
+  {
+    let myUrl=BASE_URL +`/api/v1/clinic/${clinic.clinicName}`
+    return this.http.put<number>(`${myUrl}`,clinic); 
 
   }
     

@@ -21,7 +21,7 @@
                             <th style="text-align:right;" scope="col">נושא</th>
                             <th style="text-align:right;" scope="col">תאריך הוספה</th>
                             <th style="text-align:right;" scope="col">מספר תיק</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
@@ -44,70 +44,74 @@
 
                                             <div class="row">
                                                 <div class="col-6">
-                                            <label>
-                                                מספר התיק</label></div>
+                                                    <label>
+                                                        מספר התיק</label>
+                                                </div>
                                                 <div class="col-6">
-                                            <input type="text" name="id" [(ngModel)]="case.id"><br>
-                                        </div>
-                                    </div>
-                                            
+                                                    <input type="text" name="id" [(ngModel)]="case.id"><br>
+                                                </div>
+                                            </div>
+
                                             <div class="row">
                                                 <div class="col-6"><label>
-                                                נושא התיק</label></div>
+                                                        נושא התיק</label></div>
                                                 <div class="col-6">
-                                            <input type="text" name="subject" [(ngModel)]="case.subject"><br>
-                                        </div>
-                                    </div>
-                                           
+                                                    <input type="text" name="subject" [(ngModel)]="case.subject"><br>
+                                                </div>
+                                            </div>
+
                                             <div class="row">
                                                 <div class="col-6"> <label>
-                                                תאריך פתיחת התיק</label></div>
+                                                        תאריך פתיחת התיק</label></div>
                                                 <div class="col-6">
-                                            <input type="text" name="dateAdded" [(ngModel)]="case.dateAdded"
-                                                readonly><br>
+                                                    <input type="text" name="dateAdded" [(ngModel)]="case.dateAdded"
+                                                        readonly><br>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                                <div class="row">
-                                                    <div class="col-6"> <label>
-                                                סוג התיק</label></div>
+                                            <div class="row">
+                                                <div class="col-6"> <label>
+                                                        סוג התיק</label></div>
                                                 <div class="col-6">
-                                            <input type="text" name="caseType" [(ngModel)]="case.caseType"><br>
-                                        </div>
-                                    </div>
+                                                    <input type="text" name="caseType" [(ngModel)]="case.caseType"><br>
+                                                </div>
+                                            </div>
 
                                             <div class="row">
                                                 <div class="col-6">
-                                            <label>
-                                                סטטוס התיק</label></div>
+                                                    <label>
+                                                        סטטוס התיק</label>
+                                                </div>
                                                 <div class="col-6">
-                                            <input type="text" name="status" [(ngModel)]="case.status"> <br>
-                                        </div>
-                                    </div>
-                                            
-                                            <div class="row">
-                                                <div class="col-6"><label>
-                                                קליניקה</label></div>
-                                                <div class="col-6">
-                                            <input type="text" name="clinicName" [(ngModel)]="case.clinicName"><br>
-                                        </div>
-                                    </div>
+                                                    <input type="text" name="status" [(ngModel)]="case.status"> <br>
+                                                </div>
+                                            </div>
 
                                             <div class="row">
                                                 <div class="col-6"><label>
-                                                תעודת זהות לקוח</label></div>
+                                                        קליניקה</label></div>
                                                 <div class="col-6">
-                                            <input type="text" name="clientId" [(ngModel)]="case.clientId"><br>
-                                        </div>
-                                    </div>
+                                                    <input type="text" name="clinicName"
+                                                        [(ngModel)]="case.clinicName"><br>
+                                                </div>
+                                            </div>
 
                                             <div class="row">
                                                 <div class="col-6"><label>
-                                                מספר תיק בבית משפט</label></div>
+                                                        תעודת זהות לקוח</label></div>
                                                 <div class="col-6">
-                                            <input type="text" name="courtCaseId" [(ngModel)]="case.courtCaseId"><br>
-                                        </div>
-                                    </div>
+                                                    <input type="text" name="clientId" [(ngModel)]="case.clientId"><br>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-6"><label>
+                                                        מספר תיק בבית משפט</label></div>
+                                                <div class="col-6">
+                                                    <input type="text" name="courtCaseId"
+                                                        [(ngModel)]="case.courtCaseId"><br>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
@@ -145,7 +149,7 @@
                             <td style="text-align:right;">{{case.caseType}}</td>
                             <td style="text-align:right;"><button class="btn btn-primary"
                                     (click)="open(detailsModal,'');showDetails(case.clientId)">הצג</button></td>
-                
+
                             <td style="text-align:right;">{{case.clinicName}}</td>
                             <td style="text-align:right;">{{case.courtCaseId}}</td>
                             <td style="text-align:right;">{{case.status}}</td>
@@ -188,7 +192,7 @@
                                 סוג התיק</label>
                         </div>
                         <div class="col-6">
-                            <input [(ngModel)]="addedCase.type" type="text" name="type">
+                            <input [(ngModel)]="addedCase.caseType" type="text" name="caseType">
                         </div>
                     </div>
 

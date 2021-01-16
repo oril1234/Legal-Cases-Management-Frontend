@@ -13,6 +13,7 @@ import { CsvImportComponent } from './csvimport/csvimport.component';
 import { ClinicsComponent } from './clinics/clinicscomponent';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatStepperModule} from '@angular/material/stepper';
+import { AssignedCaseComponent } from './assigned-case/assigned-case.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import {MatStepperModule} from '@angular/material/stepper';
     LegalCasesComponent,
     ClinicsComponent,
     CsvImportComponent,
+    AssignedCaseComponent,
   ]
 })
 export class ComponentsModule {}

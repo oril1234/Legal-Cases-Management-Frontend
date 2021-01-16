@@ -190,7 +190,6 @@ export class StudentsComponent implements OnInit {
       this.addedStudent.email == "" ||
       !this.validateEmail(this.addedStudent.email)
     ) {
-      alert(this.addedStudent.firstName);
       return false;
     }
 
@@ -208,6 +207,7 @@ export class StudentsComponent implements OnInit {
       });
       if (detected) {
         this.dashboardService.addNewStudent(this.addedStudent).subscribe((data) => {
+        this.students.push(this.addedStudent)  
         this.createNotification(NotificationType.ADD);  
           
         });
@@ -215,9 +215,10 @@ export class StudentsComponent implements OnInit {
     });
   }
 
-  onDelete(id: string) {
+  onDelete(id: number) {
     this.dashboardService.deleteStudent(id).subscribe(
       data=>{
+        this.students=this.students.filter(student=>student.id!=id)
         this.createNotification(NotificationType.DELETE)
       }
     );

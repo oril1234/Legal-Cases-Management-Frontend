@@ -75,7 +75,7 @@ export const ROUTES: RouteInfo[] = [
     showSub:false
   },
   {
-    path: '/component/dashboard',
+    path: '/component/assignedCases',
     title: 'ניהול תיקים',
     icon: 'mdi mdi-bank',
     class: '',
