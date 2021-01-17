@@ -57,7 +57,7 @@ roles = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
   //Gertting the role of the user
   getRole(userName:number)
   {
-    return this.httpClient.get<string[]>(BASE_URL + `api/v1/person/role/${userName}`);
+    return this.httpClient.get<string[]>(BASE_URL + `/api/v1/person/role/${userName}`);
   }
 
   getJwtToken() {
