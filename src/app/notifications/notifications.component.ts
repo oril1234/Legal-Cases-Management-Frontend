@@ -36,7 +36,18 @@ export class NotificationsComponent implements OnInit {
     this.dashBoardService.getNotificationsByPersonID(id).subscribe(
       data=>{
         this.notifications=data;
-
+        this.notifications=this.notifications.sort((n1,n2) => {
+          if (n1.dateTime > n2.dateTime) {
+              return -1;
+          }
+      
+          if (n1.dateTime < n2.dateTime) {
+              return 1;
+          }
+      
+          return 0;
+      });
+      
       },
       err=>{
       }
@@ -46,10 +57,11 @@ export class NotificationsComponent implements OnInit {
 
   readNotifications()
   {
+    this.notificationsService.changeState(false)
     let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
     this.dashBoardService.readAllNotificationsOfPerson(id).subscribe(
       data=>{
-        this.notificationsService.changeState(false)
+        
       },
       err=>{
       }
