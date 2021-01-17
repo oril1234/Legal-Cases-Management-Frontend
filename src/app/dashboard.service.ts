@@ -13,6 +13,7 @@ import { NotificationManager } from './_models/notification-manager';
 import { environment } from "../environments/environment";
 import {AssignedCase} from './_models/assigned-case'
 import { CaseAssignedSupervisorsList } from './_models/case-assigned-supervisors-list';
+import { Person } from './_models/person';
 
 let BASE_URL:string = "http://localhost:9090";
 
@@ -74,8 +75,15 @@ getAllPersons()
 {
   
   let myUrl=BASE_URL + "/api/v1/person"
-  return this.http.get<Student[]>(`${myUrl}`); 
+  return this.http.get<Person[]>(`${myUrl}`); 
 
+}
+
+
+getPersonById(id:number)
+{
+  let myUrl=BASE_URL +`/api/v1/person/${id}`
+  return this.http.get<Person>(`${myUrl}`); 
 }
 
 
@@ -114,8 +122,8 @@ getAllPersons()
   //For getting supervisors' details according to student id
   getStudentsClinicalSupervisorDetails(id:number)
   {
-    let myUrl=BASE_URL + "/api/v1/student/{id}/supervisor";
-    return this.http.get<number>(`${myUrl}`); 
+    let myUrl=BASE_URL + `/api/v1/student/${id}/supervisor`;
+    return this.http.get<ClinicalSupervisor>(`${myUrl}`); 
     
   }
   
@@ -224,9 +232,11 @@ getAllPersons()
 
   editCase(legalCase:LegalCase)
   {
-    let myUrl=BASE_URL + `/api/v1/legalcase/${legalCase.id}`
-    return this.http.put<any>(`${myUrl}`,legalCase); 
+    let myUrl=BASE_URL + `/api/v1/legalcase/116`
+    return this.http.put(`${myUrl}`,legalCase); 
   }
+
+  
   getAllAssignedCasesBySupervisor(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/caseAssigned/allCasesAssigedToStudents/${id}`
@@ -425,7 +435,7 @@ getNotificationsNumberByPersonID(id:number)
 getNotificationsByPersonID(id:number)
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager/${id}`;
-  return this.http.get<Notification[]>(`${myUrl}`);
+  return this.http.get<NotificationtsToUsers[]>(`${myUrl}`);
 
 }
 
@@ -436,6 +446,7 @@ readAllNotificationsOfPerson(notificationId:number)
 }
 
 addNotification(notification:NotificationtsToUsers){
+  
   let myUrl=BASE_URL + `/api/v1/notification`;
   return this.http.post<string[]>(`${myUrl}`,notification);
 
@@ -450,15 +461,37 @@ mapNotificationToUser(notifictionManager:NotificationManager)
 }
 
 
+deleteNotificationForUser(notifictionManager:NotificationManager)
+{
+  let myUrl=BASE_URL + `/api/v1/notificationManager/${notifictionManager.notificationId}`;
+  return this.http.delete(`${myUrl}`);
+
+}
+
+
 /////////////////End Notifications///////////////////////////
 
-getClientNyId(id:number)
+
+getAllClients()
+{
+  let myUrl=BASE_URL + `/api/v1/client`;
+  return this.http.get<Client[]>(`${myUrl}`);
+
+}
+
+getClientById(id:number)
 {
   let myUrl=BASE_URL + `/api/v1/client/${id}`;
   return this.http.get<Client>(`${myUrl}`);
 
 }
 
+addNewClient(client:Client)
+{
+  let myUrl=BASE_URL + `/api/v1/client`;
+  return this.http.post<any>(`${myUrl}`,client);
+
+}
 
 
 

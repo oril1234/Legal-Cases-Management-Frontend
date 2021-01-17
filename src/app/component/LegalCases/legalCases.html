@@ -71,9 +71,15 @@
 
                                             <div class="row">
                                                 <div class="col-6"> <label>
-                                                        סוג התיק</label></div>
+                                                        סיווג תיק</label></div>
                                                 <div class="col-6">
-                                                    <input type="text" name="caseType" [(ngModel)]="case.caseType"><br>
+                                                    <select name="defaultCaseType" style="width:200px;"
+                                                        [(ngModel)]="case.caseType">
+                                                        <option *ngFor="let caseType of caseTypes" [ngValue]="caseType">
+                                                            {{caseType}}
+                                                        </option>
+
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -97,10 +103,16 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-6"><label>
+                                                <div class="col-6"> <label>
                                                         תעודת זהות לקוח</label></div>
                                                 <div class="col-6">
-                                                    <input type="text" name="clientId" [(ngModel)]="case.clientId"><br>
+                                                    <select name="chosenCase" style="width: 200px;"
+                                                        [(ngModel)]="chosenClient">
+                                                        <option *ngFor="let client of clients" [ngValue]="client">
+                                                            {{client.id }}
+                                                        </option>
+
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -116,7 +128,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-                                            (click)="modal.close('Save click');onEdit()">אישור</button>
+                                            (click)="modal.close('Save click');onEdit(case)">אישור</button>
                                     </div>
                                 </ng-template>
 
@@ -162,6 +174,9 @@
                     </tbody>
                 </table>
 
+                <button *ngIf="currentRole!=0" style="color: white; float: center; font-size: 15;margin-left: 50%;"
+                    class="btn btn-rounded btn-primary mb-2" (click)="open(newClientModal)">הוספת לקוח</button>
+
                 <button *ngIf="currentRole!=0" style="color: white; float: right; font-size: 15;"
                     class="btn btn-rounded btn-success mb-2" (click)="open(addModal)"> פתיחת תיק חדש</button>
             </div>
@@ -181,6 +196,14 @@
 
                     <div class="row">
                         <div class="col-6"> <label>
+                                מספר תיק</label></div>
+                        <div class="col-6">
+                            <input type="number" [(ngModel)]="addedCase.id" name="id">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6"> <label>
                                 נושא התיק</label></div>
                         <div class="col-6">
                             <input [(ngModel)]="addedCase.subject" type="text" name="subject">
@@ -188,12 +211,15 @@
                     </div>
 
                     <div class="row">
+                        <div class="col-6"> <label>
+                                סיווג תיק</label></div>
                         <div class="col-6">
-                            <label>
-                                סוג התיק</label>
-                        </div>
-                        <div class="col-6">
-                            <input [(ngModel)]="addedCase.caseType" type="text" name="caseType">
+                            <select name="defaultCaseType" style="width:200px;" [(ngModel)]="defaultCaseType">
+                                <option *ngFor="let caseType of caseTypes" [ngValue]="caseType">
+                                    {{caseType}}
+                                </option>
+
+                            </select>
                         </div>
                     </div>
 
@@ -203,7 +229,7 @@
                                 סטטוס התיק</label>
                         </div>
                         <div class="col-6">
-                            <input [(ngModel)]="addedCase.status" type="text" name="status">
+                            <input value="חדש" disabled>
                         </div>
                     </div>
 
@@ -215,17 +241,20 @@
                         </div>
 
                         <div class="col-6">
-                            <input [(ngModel)]="addedCase.clinicName" type="text" name="clinicName">
+                            <input [(ngModel)]="clinicName" type="text" name="clinicName" disabled>
                         </div>
                     </div>
 
                     <div class="row">
+                        <div class="col-6"> <label>
+                                תעודת זהות לקוח</label></div>
                         <div class="col-6">
-                            <label>
-                                תעודת זהות לקוח</label>
-                        </div>
-                        <div class="col-6">
-                            <input [(ngModel)]="addedCase.clientId" type="text" name="clientId">
+                            <select name="chosenCase" style="width:200px;" [(ngModel)]="chosenClient">
+                                <option *ngFor="let client of clients" [ngValue]="client">
+                                    {{client.id }}
+                                </option>
+
+                            </select>
                         </div>
                     </div>
 
@@ -285,6 +314,71 @@
 
             </div>
             <div class="modal-footer">
+            </div>
+        </ng-template>
+
+
+        <ng-template #newClientModal let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">לקוח חדש</h4>
+                <button style="margin-left: 0;border-width: 0; outline: none;
+				box-shadow: none;" type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="width: 300px; " dir="rtl">
+
+                <div class="row">
+                    <div class="col-6">
+                        <span>תעודת זהות:</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="number" [(ngModel)]="newClient.id" name="id">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span>שם פרטי:</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" [(ngModel)]="newClient.firstName" name="firstName">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span>שם משפחה:</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" [(ngModel)]="newClient.lastname" name="id">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span>דואר אלקטרוני:</span>
+                    </div>
+
+                    <div class="col-6">
+                        <input type="text" [(ngModel)]="newClient.email" name="email">
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span>מספר טלפון:</span>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" [(ngModel)]="newClient.phoneNumber" name="phoneNumber">
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
+                    (click)="modal.close('Save click');addNewClient()">אישור</button>
             </div>
         </ng-template>
 

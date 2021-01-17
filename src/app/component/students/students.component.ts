@@ -26,15 +26,37 @@ import { NotificationManager } from "src/app/_models/notification-manager";
   styles: [],
 })
 export class StudentsComponent implements OnInit {
+  
+  person:Person=new Person()
+  
+  //Studnts in clinic 
   students!: Student[];
+  
+  //All Supervisors 
   supervisors!: ClinicalSupervisor[];
+
+  //string representing the result of closing a modal
   closeResult = "";
+
+  //The role of the connected user
   currentRole: number = parseInt(localStorage.getItem("Role") + "");
+
+  //The clinic of which students are displayed
   currentClinic = "";
+
+  //Object of a new student to add to system
   addedStudent: Student=new Student();
+
+  //Object to hold a reference of an existing student that is editted
   edittedStudent: Student=new Student();;
+
+  //The name of the supervisor of the current clinic
   supervisorName: string = "";
+
+  //The id number of the supervisor of the current clinic
   supervisorId:number
+
+  //Id of connected user
   userId = parseInt(
     JSON.parse(
       JSON.stringify(
@@ -48,12 +70,13 @@ export class StudentsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+  
     //Allowing reload component
-
     if (this.route.snapshot.paramMap.get("clinic")) {
       this.currentClinic = this.route.snapshot.paramMap.get("clinic") + "";
     }
 
+    this.getPersonDetails();
     this.getStudents();
     this.getAllSuperVisors();
   }
@@ -63,38 +86,48 @@ export class StudentsComponent implements OnInit {
 
   }
 
+  getPersonDetails()
+  {
+    this.dashboardService.getPersonById(this.userId).subscribe(
+      data=>{
+    this.person=data;
+      }
+    )
 
+    
+  }
 
+  getStudents() 
+  {
+    //Fetching students with connected student in the same clinic
+    if (this.currentRole == Roles.STUDENT) 
+    {
 
-  getStudents() {
-    if (this.currentRole == Roles.STUDENT) {
-      let decoded = JSON.stringify(
-        jwt_decode(localStorage.getItem("authenticationToken") + "")
-      );
-      let id: number = parseInt(JSON.parse(decoded).sub);
-
-      this.dashboardService.getAllStudentsInMyClinic(id).subscribe(
+      this.dashboardService.getAllStudentsInMyClinic(this.userId).subscribe(
         (data) => {
           this.students = data;
         },
         (err) => {}
       );
     }
-    if (this.currentRole == Roles.SUPERADMIN) {
-            this.dashboardService.getAllClinic().subscribe((data1) => {
+
+
+    if (this.currentRole == Roles.SUPERADMIN) 
+    {
+          this.dashboardService.getAllClinic().subscribe((data1) => 
+          {
             let clinics: Clinic[] = data1;
             clinics = clinics.filter(
               (clinic) => clinic.clinicName == this.currentClinic
             );
             let supervisorid = clinics[0].clinicalSupervisorId;
             this.dashboardService.getAllStudents().subscribe(
-              (data) => {
-                console.log(data[0]);
-                this.students = data;
-                this.students = this.students.filter(
-                  (student) => student.clinicalSupervisorId == supervisorid
-                );
-                this.getAllSuperVisors();
+                (data) => {
+                  this.students = data;
+                  this.students = this.students.filter(
+                    (student) => student.clinicalSupervisorId == supervisorid
+                  );
+                  this.getAllSuperVisors();
 
           },
           (err) => {}
@@ -102,10 +135,12 @@ export class StudentsComponent implements OnInit {
       });
     }
 
-    if (this.currentRole == Roles.SUPERVISOR) {
+    if (this.currentRole == Roles.SUPERVISOR) 
+    {
 
       this.dashboardService.getAllStudents().subscribe(
-        (data) => {
+        (data) => 
+        {
           this.students = data;
           this.students = this.students.filter(
             (student) => student.clinicalSupervisorId ==this.userId
@@ -127,20 +162,34 @@ export class StudentsComponent implements OnInit {
     }
   }
 
-  getAllSuperVisors() {
-    let id = parseInt(
-      JSON.parse(
-        JSON.stringify(
-          jwt_decode(localStorage.getItem("authenticationToken") + "")
-        )
-      ).sub
-    );
+  getAllSuperVisors() 
+  {
+
     this.dashboardService.getAllSupervisors().subscribe((data) => {
       this.supervisors = data;
       if(this.currentRole==Roles.SUPERVISOR)
-        this.supervisors=this.supervisors.filter(supervisor=>supervisor.id==id);
-      this.supervisorName=this.supervisors[0].firstName+" "+this.supervisors[0].lastname;
-      this.supervisorId=this.supervisors[0].id;
+        {
+          this.supervisors=this.supervisors.filter(supervisor=>supervisor.id==this.userId);
+          this.supervisorName=this.supervisors[0].firstName+" "+this.supervisors[0].lastname;
+          this.supervisorId=this.supervisors[0].id;
+
+        }
+      else if(this.currentRole==Roles.SUPERADMIN){
+        this.dashboardService.getAllClinic().subscribe(
+          data=>{
+            data=data.filter(clinic=>clinic.clinicName==this.currentClinic);
+            this.currentClinic=data[0].clinicName;
+            this.supervisors=this.supervisors.filter(supervisor=>supervisor.id==data[0].clinicalSupervisorId)
+            this.supervisorName=this.supervisors[0].firstName+" "+this.supervisors[0].lastname;
+            this.supervisorId=this.supervisors[0].id;
+
+          }
+        )
+
+
+
+      }  
+
     });
   }
 
@@ -196,21 +245,27 @@ export class StudentsComponent implements OnInit {
 
     let detected: boolean = false;
     this.dashboardService.getAllSupervisors().subscribe((data) => {
-      data.forEach((supervisor) => {
-        if (
+      data.forEach((supervisor) => 
+      {
+        if 
+        (
           supervisor.firstName + " " + supervisor.lastname ==
           this.supervisorName
-        ) {
+        ) 
+        {
           this.addedStudent.clinicalSupervisorId = supervisor.id;
           detected = true;
         }
       });
       if (detected) {
-        this.dashboardService.addNewStudent(this.addedStudent).subscribe((data) => {
-        this.students.push(this.addedStudent)  
-        this.createNotification(NotificationType.ADD);  
-          
-        });
+        this.dashboardService.addNewStudent(this.addedStudent).subscribe(
+          (data) => 
+          {
+          this.students.push(this.addedStudent)  
+          this.createNotification(NotificationType.ADD);  
+            
+          }
+        );
       }
     });
   }
@@ -275,26 +330,23 @@ export class StudentsComponent implements OnInit {
 
   createNotification(type:NotificationType)
   {
+    if(this.currentRole!=Roles.SUPERADMIN)
+      return;
     let n:NotificationtsToUsers=new NotificationtsToUsers();
     n.dateTime=new Date();
-    n.sourceId=
-      JSON.parse(
-        JSON.stringify(
-          jwt_decode(localStorage.getItem("authenticationToken") + "")
-        )
-      ).sub
+    n.sourceId=this.userId
     
       if(type==NotificationType.ADD)
       {
-        n.details=this.supervisorName+" הוסיף סטודנט חדש לקליניקה";
+        n.details=this.person.firstName+" "+this.person.lastname+" הוסיף סטודנט חדש לקליניקה שלך";
       }
       if(type==NotificationType.EDIT)
       {
-        n.details=this.supervisorName+" ערך פרטים של סטודנט";
+        n.details=this.person.firstName+" "+this.person.lastname+" ערך פרטים של סטודנט בקליניקה שלך";
       }
       if(type==NotificationType.DELETE)
       {
-        n.details=this.supervisorName+" מחק סטודנט מהקליניקה";
+        n.details=this.person.firstName+" "+this.person.lastname+" מחק סטודנט מהקליניקה מהקליניקה שלך";
       }
     this.dashboardService.addNotification(n).subscribe(
       data=>{
@@ -303,7 +355,6 @@ export class StudentsComponent implements OnInit {
       },
       err=>
       {
-        alert("notification was not added")
       }
     )
   }
@@ -321,12 +372,12 @@ export class StudentsComponent implements OnInit {
 
     }
     else{
-      alert("the user is supervisor")
       this.dashboardService.getAllPersons().subscribe(
         data=>{
           data.forEach(person=>{
             if(person.role=="Super Admin")
             {
+
               ng.receiverId=person.id;
             }
 
@@ -344,11 +395,10 @@ export class StudentsComponent implements OnInit {
   {
     this.dashboardService.mapNotificationToUser(notificationManager).subscribe(
       data=>{
-        alert("notification was mapped")
+        
       },
       err=>
       {
-        alert("Error!!!")
       }
     )
   }

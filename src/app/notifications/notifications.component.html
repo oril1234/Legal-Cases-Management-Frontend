@@ -4,7 +4,7 @@
     <li class="breadcrumb-item active">Notifications</li>
 </ol>
 
- <div class="col-12">
+<div class="col-12">
     <div class="notification-ui_dd-content">
 
         <div style="margin-bottom: 0;border-bottom: 1px solid #EAEDED;text-align: right;" class="card">
@@ -15,23 +15,25 @@
             </div>
 
         </div>
-        <div *ngFor="let n of notifications"
+        <div *ngFor="let n of notifications; let i = index"
             style="margin-bottom: 0;border-bottom: 1px solid #EAEDED;text-align: right;" class="card">
             <div class="card-body">
 
                 <div class="notification-list_detail">
                     <p> קיים
                         <b>עדכון</b> עבורך
-                        &nbsp;<button class="btn btn-circle btn-secondary"><i class="fas fa-bell"></i></button> </p>
+                        &nbsp;<button class="btn btn-circle btn-secondary"><i class="fas fa-bell"></i></button>
+                    </p>
                     <p class="text-muted">{{n.details}}</p>
                     <p class="text-muted">{{n.sourceId}}</p>
                     <p class="text-muted"><small>{{n.dateTime}}</small></p>
                 </div>
+                <!--<button (click)="deleteNotification(i)" class="btn btn-danger" style="float: right;">מחק התראה</button> -->
             </div>
 
         </div>
 
 
     </div>
- 
+
 </div>

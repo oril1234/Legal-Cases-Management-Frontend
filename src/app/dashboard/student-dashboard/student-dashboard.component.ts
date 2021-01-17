@@ -64,7 +64,7 @@ export class StudentDashboardComponent implements OnInit {
         )
       },
       (err) => {
-        alert("just an error!")
+
       }
     );
   }

@@ -2,7 +2,7 @@
     <ul id="sidebarnav">
         <li class="nav-devider"></li>
         <!-- First level menu -->
-        <li class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title"
+        <li style="white-space: pre-wrap" class="sidebar-item" [class.active]="showMenu === sidebarnavItem.title"
             *ngFor="let sidebarnavItem of sidebarnavItems">
             <div class="nav-small-cap" *ngIf="sidebarnavItem.extralink === true && sidebarnavItem.hasSub">
                 {{sidebarnavItem.title}}
@@ -16,8 +16,8 @@
                 <span class="hide-menu">{{sidebarnavItem.title}}</span>
             </a>
 
-            <div *ngIf="sidebarnavItem.showSub">
-                <a [ngStyle]="{'font-size': (sidebarnavItem.title=='סטודנטים בקליניקות') ? '10px' : '15px'}"
+            <div *ngIf="sidebarnavItem.hasSub && sidebarnavItem.showSub">
+                <a [ngStyle]="{'font-size': (sidebarnavItem.title=='סטודנטים בקליניקות') ? '10.5px' : '15px'}"
                     class="sidebar-link waves-effect waves-dark" *ngFor="let submenuItem of sidebarnavItem.submenu"
                     [routerLink]="submenuItem.path" [ngClass]="[sidebarnavItem.class]"
                     (click)="addExpandClass(sidebarnavItem.title)"

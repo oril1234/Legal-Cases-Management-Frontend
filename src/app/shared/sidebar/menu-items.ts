@@ -146,6 +146,8 @@ export const ROUTES: RouteInfo[] = [
     hasSub:false,
     showSub:false
   },
+  
+  /*
   {
     path: '/component/clinics',
     title: 'הקליניקה',
@@ -158,6 +160,8 @@ export const ROUTES: RouteInfo[] = [
     hasSub:false,
     showSub:false
   },
+
+  */
   {
     path: '/component/modal',
     title: 'הצעות חקיקה',
