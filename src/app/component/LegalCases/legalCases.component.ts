@@ -375,7 +375,6 @@ export class LegalCasesComponent implements OnInit
 		},
 		err=>
 		{
-			alert("NO!!!!")
 		}
 	  )
 	 
