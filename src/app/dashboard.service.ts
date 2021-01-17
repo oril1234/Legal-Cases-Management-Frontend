@@ -232,7 +232,7 @@ getPersonById(id:number)
 
   editCase(legalCase:LegalCase)
   {
-    let myUrl=BASE_URL + `/api/v1/legalcase/116`
+    let myUrl=BASE_URL + `/api/v1/legalcase/${legalCase.id}`
     return this.http.put(`${myUrl}`,legalCase); 
   }
 
