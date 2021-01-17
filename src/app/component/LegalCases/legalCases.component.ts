@@ -221,11 +221,12 @@ export class LegalCasesComponent implements OnInit
 	{
 		if (reason === ModalDismissReasons.ESC)
 		{
+			this.addedCase=new LegalCase();
 			this.addedCase = new LegalCase()
 			return 'by pressing ESC';
 		} else if (reason === ModalDismissReasons.BACKDROP_CLICK)
 		{
-
+			this.addedCase=new LegalCase();
 			return 'by clicking on a backdrop';
 		} else
 		{
@@ -248,6 +249,11 @@ export class LegalCasesComponent implements OnInit
 			data =>
 			{
 				this.cases.push(this.addedCase);
+				this.addedCase=new LegalCase();
+			},
+			err=>{
+				this.addedCase=new LegalCase();
+				
 			}
 
 		)
