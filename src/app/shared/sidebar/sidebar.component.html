@@ -17,7 +17,7 @@
             </a>
 
             <div *ngIf="sidebarnavItem.hasSub && sidebarnavItem.showSub">
-                <a [ngStyle]="{'font-size': (sidebarnavItem.title=='סטודנטים בקליניקות') ? '10.5px' : '15px'}"
+                <a [ngStyle]="{'font-size': (sidebarnavItem.title=='סטודנטים בקליניקות') ? '12px' : '15px'}"
                     class="sidebar-link waves-effect waves-dark" *ngFor="let submenuItem of sidebarnavItem.submenu"
                     [routerLink]="submenuItem.path" [ngClass]="[sidebarnavItem.class]"
                     (click)="addExpandClass(sidebarnavItem.title)"

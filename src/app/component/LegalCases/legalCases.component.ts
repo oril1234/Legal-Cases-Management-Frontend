@@ -56,7 +56,7 @@ export class LegalCasesComponent implements OnInit
 
 	defaultCaseType: string = "פלילי"
 	caseTypes: string[] = [`פלילי`, `שכר עבודה בסמכות רשם`, `הטרדה מאיימת וצו הגנה`, `ערעור ביטוח לאומי`,
-		`האזנת סתר`, `עתירה לבג"ץ`, `ביצוע תביעה בהוצאה לפועל`, `ביטול קנס מנהלי`, `תביעה קטנה`]
+		`האזנת סתר`, `עתירה לבג"ץ`, `ביצוע תביעה בהוצאה לפועל`, `ביטול קנס מנהלי`, `תביעה קטנה`,'ערעור מסים']
 
 
 	constructor(private dashboardService: DashboardService, private modalService: NgbModal,
@@ -309,8 +309,6 @@ export class LegalCasesComponent implements OnInit
 		this.dashboardService.editCase(lcase).subscribe(
 			data =>
 			{
-				alert("עריכה תיק בוצעה בהצלחה")
-				
 				
 				if(this.currentRole==Roles.STUDENT)
 					this.createNotification(NotificationType.EDIT,lcase.id)
@@ -319,7 +317,6 @@ export class LegalCasesComponent implements OnInit
 			},
 			err =>
 			{
-				alert("עריכת תיק לא בוצעה בהצלחה")
 			}
 
 		)
@@ -371,7 +368,6 @@ export class LegalCasesComponent implements OnInit
 	  ng.receiverId=this.currentSuperVisor.id
 	  this.dashboardService.mapNotificationToUser(ng).subscribe(
 		data=>{
-			alert("התראה נוספה בהצלחה")
 		},
 		err=>
 		{

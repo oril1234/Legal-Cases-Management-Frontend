@@ -82,6 +82,7 @@ export class SidebarComponent implements OnInit {
              
               if(element.path=='/component/legalCases')
               {
+                element.submenu=[]
                 
                 element.submenu.push(
                   {
@@ -143,6 +144,7 @@ export class SidebarComponent implements OnInit {
 
               if(element.path=='/component/students')
               {
+                element.submenu=[]
                 this.clinics.forEach(item=>
                   {
                     element.submenu.push(

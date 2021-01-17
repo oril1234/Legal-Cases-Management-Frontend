@@ -155,7 +155,6 @@ export class AssignedCaseComponent implements OnInit {
 
 			this.dashboardService.addNewCaseAssignment(assigned).subscribe(
 				data=>{
-					alert("תיק מספר"+ assigned.legalCaseId+" הוקצה בהצלחה")
 					this.dashboardService.getCaseById(assigned.legalCaseId).subscribe(
 						data1=>{
 							let newItem:CaseAssignedSupervisorsList=new CaseAssignedSupervisorsList()
@@ -171,7 +170,6 @@ export class AssignedCaseComponent implements OnInit {
 					this.createNotification(NotificationType.ADD,assigned.studentId,assigned.legalCaseId)
 				},
 				err=>{
-					//alert("ההקצאה לא התבצעה")
 				}
 			)
 
@@ -193,13 +191,11 @@ export class AssignedCaseComponent implements OnInit {
 			
 			this.dashboardService.deleteCaseAssignmentByStudentIdAndCase(studentId,caseId).subscribe(
 				data=>{
-					//alert(" הקצאת תיק בוטלה עבור"+ studentName)
 					this.createNotification(NotificationType.DELETE,studentId,caseId)
 					this.caseAssignedBySupervisor=this.caseAssignedBySupervisor.filter(item=>(item.id!=caseId 
 						|| item.studentName!=studentName))
 				},
 				err=>{
-					//alert("הקצאה לא בוטלה")
 				}
 			)
 			
