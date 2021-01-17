@@ -7,6 +7,15 @@ import {
 } from "@angular/common/http";
 import { map, tap, last } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
+import { environment } from "../../environments/environment";
+
+let BASE_URL:string = "http://localhost:9090";
+
+
+if (environment.production) {
+  // Amazon AWS Backend
+  BASE_URL = "http://oglegal.us-east-1.elasticbeanstalk.com"
+}
 
 @Injectable({
   providedIn: "root"
@@ -22,7 +31,7 @@ export class UploaderService {
 
     const req = new HttpRequest(
       "POST",
-      "http://localhost:9090/api/v1/import/upload-file",
+      BASE_URL + "/api/v1/import/upload-file",
       formData,
       {
         reportProgress: true
@@ -42,7 +51,7 @@ export class UploaderService {
 
     const req = new HttpRequest(
       "POST",
-      "http://localhost:9090/api/v1/import/confirm-upload",
+      BASE_URL + "/api/v1/import/confirm-upload",
       formData,
       {
         reportProgress: true

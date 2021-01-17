@@ -20,7 +20,7 @@ let BASE_URL:string = "http://localhost:9090";
 
 if (environment.production) {
   // Amazon AWS Backend
-  BASE_URL = "http://tmp:9090/"
+  BASE_URL = "http://oglegal.us-east-1.elasticbeanstalk.com"
 }
 
 
@@ -232,7 +232,7 @@ getPersonById(id:number)
 
   editCase(legalCase:LegalCase)
   {
-    let myUrl=BASE_URL + `/api/v1/legalcase/116`
+    let myUrl=BASE_URL + `/api/v1/legalcase/${legalCase.id}`
     return this.http.put(`${myUrl}`,legalCase); 
   }
 

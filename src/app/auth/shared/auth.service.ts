@@ -5,8 +5,17 @@ import { LoginRequestPayload } from '../login/login-request.payload';
 import { LoginResponse } from '../login/login-response.payload';
 import { map, tap } from 'rxjs/operators';
 import {Roles} from '../../_models/roles.enum';
+import { environment } from "../../../environments/environment";
 import jwt_decode from 'jwt-decode';
 import {JwtHelperService} from '@auth0/angular-jwt';
+
+let BASE_URL:string = "http://localhost:9090";
+
+
+if (environment.production) {
+  // Amazon AWS Backend
+  BASE_URL = "http://oglegal.us-east-1.elasticbeanstalk.com"
+}
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +46,7 @@ roles = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
 
 
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
-    return this.httpClient.post<LoginResponse>('http://localhost:9090/authenticate',
+    return this.httpClient.post<LoginResponse>(BASE_URL + "/authenticate",
       loginRequestPayload).pipe(map(data => {
         
         localStorage.setItem('authenticationToken', data.token);
@@ -48,7 +57,7 @@ roles = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
   //Gertting the role of the user
   getRole(userName:number)
   {
-    return this.httpClient.get<string[]>(`http://localhost:9090/api/v1/person/role/${userName}`);
+    return this.httpClient.get<string[]>(BASE_URL + `api/v1/person/role/${userName}`);
   }
 
   getJwtToken() {
@@ -56,7 +65,7 @@ roles = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
   }
 /*
   refreshToken() {
-    return this.httpClient.post<LoginResponse>('http://localhost:8080/api/auth/refresh/token',
+    return this.httpClient.post<LoginResponse>(BASE_URL + "/api/auth/refresh/token",
       this.refreshTokenPayload)
       .pipe(tap(response => {
         this.localStorage.clear('authenticationToken');
@@ -69,7 +78,7 @@ roles = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
   */
 /*
   logout() {
-    this.httpClient.post('http://localhost:8080/api/auth/logout', this.refreshTokenPayload,
+    this.httpClient.post(BASE_URL + "/api/auth/logout", this.refreshTokenPayload,
       { responseType: 'text' })
       .subscribe(data => {
         console.log(data);
