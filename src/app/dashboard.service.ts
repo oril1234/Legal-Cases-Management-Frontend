@@ -14,6 +14,7 @@ import { environment } from "../environments/environment";
 import {AssignedCase} from './_models/assigned-case'
 import { CaseAssignedSupervisorsList } from './_models/case-assigned-supervisors-list';
 import { Person } from './_models/person';
+import { LegislativeProposal } from './_models/legislative-proposal';
 
 let BASE_URL:string = "http://localhost:9090";
 
@@ -259,7 +260,58 @@ getPersonById(id:number)
   }
 
 
+  getAllProposal()
+  {
+    let myUrl=BASE_URL + "/api/v1/legProposal"
+    return this.http.get<LegislativeProposal[]>(`${myUrl}`); 
 
+  }
+
+  addNewProposal(proposal:LegislativeProposal)
+  {
+    let myUrl=BASE_URL + `/api/v1/legProposal`
+    return this.http.post<LegislativeProposal[]>(`${myUrl}`,proposal); 
+
+  }
+
+  deleteProposal(id:number)
+  {
+    let myUrl=BASE_URL + `/api/v1/legProposal/${id}`
+    return this.http.delete<any>(`${myUrl}`); 
+
+  }
+
+  editProposal(proposal:LegislativeProposal)
+  {
+    let myUrl=BASE_URL + `/api/v1/legProposal/${proposal.id}`
+    return this.http.put(`${myUrl}`,proposal); 
+  }
+
+  getAllResearches()
+  {
+    let myUrl=BASE_URL + "/api/v1/research"
+    return this.http.get<Research[]>(`${myUrl}`); 
+
+  }
+
+  addNewResearch(research:Research)
+  {
+    let myUrl=BASE_URL + "/api/v1/research"
+    return this.http.post<any>(`${myUrl}`,research); 
+
+  }
+
+  editResearch(research:Research)
+  {
+    let myUrl=BASE_URL + `/api/v1/research/${research.id}`
+    return this.http.put<any>(`${myUrl}`,research); 
+  }
+
+  deleteResearch(id:number)
+  {
+    let myUrl=BASE_URL + `/api/v1/research/${id}`
+    return this.http.delete<any>(`${myUrl}`);  
+  }
 
   getAllClinic()
   {
@@ -494,16 +546,5 @@ addNewClient(client:Client)
 }
 
 
-
-
-/////////////////////////Research///////////////////
-
-getAllResearches()
-{
-  let myUrl=BASE_URL + `/api/v1/research`;
-  return this.http.get<Research[]>(`${myUrl}`);
-
-}
-/////////////////////End Research////////////////////
 
 }

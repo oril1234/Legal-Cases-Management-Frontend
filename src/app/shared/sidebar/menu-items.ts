@@ -163,7 +163,7 @@ export const ROUTES: RouteInfo[] = [
 
   */
   {
-    path: '/component/modal',
+    path: '/component/legislativeProposal',
     title: 'הצעות חקיקה',
     icon: 'mdi mdi-tablet',
     class: '',
@@ -174,22 +174,11 @@ export const ROUTES: RouteInfo[] = [
     hasSub:false,
     showSub:false
   },
-  {
-    path: '/component/modal',
-    title: 'הסעות',
-    icon: 'mdi mdi-jeepney',
-    class: '',
-    extralink: false,
-    submenu: [],
-    role:[Roles.SUPERVISOR,Roles.STUDENT],
-    params:"",
-    hasSub:false,
-    showSub:false
-  },
+
 
 
   {
-    path: '/component/pagination',
+    path: '/component/research',
     title: 'מחקר',
     icon: 'mdi mdi-backburger',
     class: '',

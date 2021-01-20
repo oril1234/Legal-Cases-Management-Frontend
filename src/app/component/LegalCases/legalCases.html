@@ -106,7 +106,7 @@
                                                 <div class="col-6"> <label>
                                                         תעודת זהות לקוח</label></div>
                                                 <div class="col-6">
-                                                    <select name="chosenCase" style="width: 200px;"
+                                                    <select name="chosenclient" style="width: 200px;"
                                                         [(ngModel)]="chosenClient">
                                                         <option *ngFor="let client of clients" [ngValue]="client">
                                                             {{client.id }}
@@ -195,26 +195,26 @@
                 <form style="padding-left: 0;" dir="rtl">
 
                     <div class="row">
-                        <div class="col-6"> <label>
+                        <div class="col-5"> <label>
                                 מספר תיק</label></div>
-                        <div class="col-6">
-                            <input type="number" [(ngModel)]="addedCase.id" name="id">
+                        <div class="col-7">
+                            <input style="width: 250px;" type="number" [(ngModel)]="addedCase.id" name="id">
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-6"> <label>
+                        <div class="col-5"> <label>
                                 נושא התיק</label></div>
-                        <div class="col-6">
-                            <input [(ngModel)]="addedCase.subject" type="text" name="subject">
+                        <div class="col-7">
+                            <input style="width: 250px;" [(ngModel)]="addedCase.subject" type="text" name="subject">
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-6"> <label>
+                        <div class="col-5"> <label>
                                 סיווג תיק</label></div>
-                        <div class="col-6">
-                            <select name="defaultCaseType" style="width:200px;" [(ngModel)]="defaultCaseType">
+                        <div class="col-7">
+                            <select style="width: 250px;" name="defaultCaseType" [(ngModel)]="defaultCaseType">
                                 <option *ngFor="let caseType of caseTypes" [ngValue]="caseType">
                                     {{caseType}}
                                 </option>
@@ -224,32 +224,33 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-5">
                             <label>
                                 סטטוס התיק</label>
                         </div>
-                        <div class="col-6">
-                            <input value="חדש" disabled>
+                        <div class="col-7">
+                            <input style="width: 250px;" value="חדש" disabled>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-5">
                             <label>
                                 קליניקה</label>
 
                         </div>
 
-                        <div class="col-6">
-                            <input [(ngModel)]="clinicName" type="text" name="clinicName" disabled>
+                        <div class="col-7">
+                            <input style="width: 250px;" [(ngModel)]="clinicName" type="text" name="clinicName"
+                                disabled>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-6"> <label>
+                        <div class="col-5"> <label>
                                 תעודת זהות לקוח</label></div>
-                        <div class="col-6">
-                            <select name="chosenCase" style="width:200px;" [(ngModel)]="chosenClient">
+                        <div class="col-7">
+                            <select style="width: 250px;" name="chosenCase" [(ngModel)]="chosenClient">
                                 <option *ngFor="let client of clients" [ngValue]="client">
                                     {{client.id }}
                                 </option>

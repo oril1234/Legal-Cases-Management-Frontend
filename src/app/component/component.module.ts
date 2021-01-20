@@ -15,6 +15,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatStepperModule} from '@angular/material/stepper';
 import { AssignedCaseComponent } from './assigned-case/assigned-case.component';
 import { ClinicDetailsComponent } from './clinic-details/clinic-details.component';
+import { ResearchComponent } from './research/research.component';
+import { LegislativeProposalComponent } from './legislative-proposal/legislative-proposal.component';
+
 
 @NgModule({
   imports: [
@@ -34,6 +37,8 @@ import { ClinicDetailsComponent } from './clinic-details/clinic-details.componen
     CsvImportComponent,
     AssignedCaseComponent,
     ClinicDetailsComponent,
+    ResearchComponent,
+    LegislativeProposalComponent
   ]
 })
 export class ComponentsModule {}

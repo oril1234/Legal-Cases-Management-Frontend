@@ -9,6 +9,9 @@ import { LegalCasesComponent } from './LegalCases/legalCases.component';
 import { ClinicsComponent } from './clinics/clinicscomponent';
 import { CsvImportComponent } from './csvimport/csvimport.component';
 import { AssignedCaseComponent } from './assigned-case/assigned-case.component';
+import { LegislativeProposal } from '../_models/legislative-proposal';
+import { LegislativeProposalComponent } from './legislative-proposal/legislative-proposal.component';
+import { ResearchComponent } from './research/research.component';
 
 
 
@@ -76,6 +79,29 @@ export const ComponentsRoutes: Routes = [
 						{ title: 'Dashboard', url: '/dashboard' },
 						{ title: 'ngComponent' },
 						{ title: 'Carousel' }
+					]
+				}
+			},
+
+			{
+				path: 'legislativeProposal',
+				component: LegislativeProposalComponent,
+				data: {
+					title: 'LegislativeProposal',
+					urls: [
+						{ title: 'ngComponent' },
+					]
+				}
+			},
+
+			
+			{
+				path: 'research',
+				component: ResearchComponent,
+				data: {
+					title: 'LegislativeProposal',
+					urls: [
+						{ title: 'ngComponent' },
 					]
 				}
 			},

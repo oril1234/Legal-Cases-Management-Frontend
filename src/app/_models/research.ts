@@ -1,8 +1,9 @@
 export class Research {
 
+    id:number;
     clinicName!: string;
     subject!:string
-    type!:string
+    researchType!:string
     status!:string
 
 }
