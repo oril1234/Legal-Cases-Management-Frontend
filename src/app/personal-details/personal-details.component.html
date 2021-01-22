@@ -1,0 +1,192 @@
+<div id="personalDetails" class="card">
+    <div dir="rtl" class="card-body">
+
+
+        <div class="row">
+            <div class="col-12">
+                <h1><b>פרטים אישיים:</b></h1>
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+
+        </div>
+
+        <div *ngIf="!editPhoto" class="row">
+            <div class="col-4">
+                <b>תמונה</b>
+            </div>
+            <div class="col-4">
+
+                <img src="{{photoUrl}}" alt="העלה תמונה">
+            </div>
+            <div class="col-12">
+                <button (click)="resetBooleanFields();editPhoto=true" class="btn btn-primary">עדכן תמונה</button>
+            </div>
+
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+        <div style="background-color: #EAEDED;padding-top: 3%;" *ngIf="editPhoto" class="row">
+            <div class="col-6">
+                <b dir="rtl">כתובת תמונה:</b>
+            </div>
+            <div class="col-5">
+                <input style="padding-left: 0;" type="text" [(ngModel)]="photoUrl">
+            </div>
+            <div class="col-6"></div>
+            <div style="margin-top:2% ;" class="col-6">
+                <button class="btn btn-primary btn-success mb-2" (click)="editPerson()">אשר</button>
+                <button style="margin-right: 2%;" class="btn btn-danger mb-2"
+                    (click)="resetBooleanFields()">בטל</button>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-4">
+                <b>שם פרטי</b>
+            </div>
+            <div class="col-4">
+                <p>{{person.firstName}}</p>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <b>שם משפחה</b>
+            </div>
+            <div class="col-4">
+                <p>{{person.lastname}}</p>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+
+        <div *ngIf="!editPhoneNumber" class="row">
+            <div class="col-4">
+                <b>טלפון</b>
+            </div>
+            <div class="col-4">
+                <p>{{person.phoneNumber}}</p>
+            </div>
+            <div class="col-4">
+                <button (click)="resetBooleanFields();editPhoneNumber=true" style="font-size: 10pt;"
+                    class="btn-primary mr-1"><i class="fa fa-edit"></i></button>
+            </div>
+
+        </div>
+
+        <div style="background-color: #EAEDED;padding-top: 3%;" *ngIf="editPhoneNumber" class="row">
+            <div class="col-6">
+                <b>טלפון חדש</b>
+            </div>
+            <div class="col-5">
+                <input style="padding-left: 0;" type="text" [(ngModel)]="person.phoneNumber">
+            </div>
+            <div class="col-6"></div>
+            <div style="margin-top:2% ;" class="col-6">
+                <button class="btn btn-primary btn-success mb-2" (click)="editPerson()">אשר</button>
+                <button style="margin-right: 2%;" class="btn btn-danger mb-2"
+                    (click)="resetBooleanFields()">בטל</button>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+        <div *ngIf="!editEmail" class="row">
+            <div class="col-4">
+                <b>דואר אלקטרוני</b>
+            </div>
+            <div class="col-4">
+                <p>{{person.email}}</p>
+            </div>
+            <div class="col-4">
+                <button (click)="resetBooleanFields();editEmail=true" style="font-size: 10pt;"
+                    class="btn-primary mr-1"><i class="fa fa-edit"></i></button>
+            </div>
+
+        </div>
+
+        <div style="background-color: #EAEDED;padding-top: 3%;" *ngIf="editEmail" class="row">
+            <div class="col-6">
+                <b>דואר אלקטרוני חדש</b>
+            </div>
+            <div class="col-6">
+                <input type="text" [(ngModel)]="person.email">
+            </div>
+            <div class="col-6"></div>
+            <div style="margin-top:2% ;" class="col-6">
+                <button class="btn btn-primary btn-success mb-2" (click)="editPerson()">אשר</button>
+                <button style="margin-right: 2%;" class="btn btn-danger mb-2"
+                    (click)="resetBooleanFields()">בטל</button>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
+        </div>
+        <div class="row" *ngIf="!editPassword">
+            <div class="col-12">
+                <button (click)="resetBooleanFields();editPassword=true" class="btn btn-primary">שנה סיסמא</button>
+            </div>
+        </div>
+        <div style="background-color: #EAEDED;padding-top: 3%;" *ngIf="editPassword" class="row">
+            <div class="col-6">
+                <b>סיסמא נוכחית</b>
+            </div>
+            <div class="col-6">
+                <input type="text" [(ngModel)]="currentPassword">
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-6">
+                <b>סיסמא חדשה</b>
+            </div>
+            <div class="col-6">
+                <input type="text" [(ngModel)]="newPassword">
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-6">
+                <b>וידוא סיסמא חדשה</b>
+            </div>
+            <div class="col-6">
+                <input type="text" [(ngModel)]="newPasswordRetyped">
+            </div>
+            <div class="col-12">
+                <hr>
+            </div>
+            <div class="col-6"></div>
+            <div style="margin-top:2% ;" class="col-6">
+                <button class="btn btn-primary btn-success mb-2" (click)="editPerson()"
+                    [disabled]="!checkValidPassword()">אשר</button>
+                <button style="margin-right: 2%;" class="btn btn-danger mb-2"
+                    (click)="resetBooleanFields()">בטל</button>
+            </div>
+
+        </div>
+
+
+    </div>

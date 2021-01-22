@@ -15,6 +15,7 @@ import {AssignedCase} from './_models/assigned-case'
 import { CaseAssignedSupervisorsList } from './_models/case-assigned-supervisors-list';
 import { Person } from './_models/person';
 import { LegislativeProposal } from './_models/legislative-proposal';
+import { PolicyPaper } from './_models/policy-paper';
 
 let BASE_URL:string = "http://localhost:9090";
 
@@ -86,6 +87,13 @@ getPersonById(id:number)
   let myUrl=BASE_URL +`/api/v1/person/${id}`
   return this.http.get<Person>(`${myUrl}`); 
 }
+
+editPerson(person:Person)
+{
+  let myUrl=BASE_URL +`/api/v1/person/${person.id}`
+  return this.http.put<any>(`${myUrl}`,person); 
+}
+
 
 
   getAllStudents()
@@ -311,6 +319,32 @@ getPersonById(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/research/${id}`
     return this.http.delete<any>(`${myUrl}`);  
+  }
+
+  getAllPolicyPapers()
+  {
+    let myUrl=BASE_URL + "/api/v1/api/v1/policyPaper"
+    return this.http.get<PolicyPaper[]>(`${myUrl}`); 
+
+  }
+
+  addNewPolicyPaper(policyPaper:PolicyPaper)
+  {
+    let myUrl=BASE_URL + "/api/v1/policyPaper"
+    return this.http.post<any>(`${myUrl}`,policyPaper) 
+
+  }
+
+  editPolicyPaper(policyPaper:PolicyPaper)
+  {
+    let myUrl=BASE_URL + `/api/v1/policyPaper/${policyPaper.id}`
+    return this.http.put<any>(`${myUrl}`,policyPaper); 
+  }
+
+  deletePolicyPaper(id:number)
+  {
+    let myUrl=BASE_URL + `/api/v1/policyPaper/${id}`
+    return this.http.delete<any>(`${myUrl}`); 
   }
 
   getAllClinic()

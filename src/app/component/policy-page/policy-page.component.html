@@ -1,0 +1,224 @@
+<br>
+<ol class="breadcrumb mb-2">
+    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+    <li class="breadcrumb-item active">Legal Cases</li>
+</ol>
+<div style="margin-top: 1%;" class="row">
+    <div class="col-12">
+        <div class="card" style="overflow:scroll;">
+            <div class="card-body">
+                <h1 dir="rtl" class="mr-auto" style="text-align: right;">פרטי ניירות מדיניות</h1>
+                <table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
+                    <thead style="position: sticky; top: 0">
+                        <tr>
+
+                            <th style="text-align:right;" scope="col"> </th>
+                            <th style="text-align:right;" scope="col">סיווג </th>
+                            <th style="text-align:right;" scope="col">קליניקה</th>
+                            <th style="text-align:right;" scope="col">סטטוס</th>
+                            <th style="text-align:right;" scope="col">נושא</th>
+                            <th style="text-align:right;" scope="col">מספר נייר מדיניות</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let policyPaper of policyPapers">
+                            <td style="display: flex;">
+                                <button style="font-size: 10pt;" class="btn-primary mr-1"><i class="fa fa-edit"
+                                        (click)="open(editModal,'')"></i></button>
+
+                                <!--Edit Modal -->
+
+
+                                <ng-template #editModal let-modal>
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-basic-title">עריכת הצעת חקיקה</h4>
+                                        <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+                                            (click)="modal.dismiss('Cross click')">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="width: 300px;">
+                                        <form style="padding-left: 0;" dir="rtl">
+
+                                            <div class="row">
+                                                <div class="col-5"> <label>
+                                                        מספר נייר מדיניות</label></div>
+                                                <div class="col-7">
+                                                    <input style="width: 250px;" type="number"
+                                                        [(ngModel)]="policyPaper.id" name="id" disabled>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-5"> <label>
+                                                        נושא</label></div>
+                                                <div class="col-7">
+                                                    <input style="width: 250px;" [(ngModel)]="policyPaper.subject"
+                                                        name="subject">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-5"> <label>
+                                                        קליניקה</label></div>
+                                                <div class="col-7">
+                                                    <input style="width: 250px;" [(ngModel)]="policyPaper.clinicName"
+                                                        type="text" name="clinicName" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-5"> <label>
+                                                        סיווג נייר מדיניות</label></div>
+                                                <div class="col-7">
+                                                    <input style="width: 250px;"
+                                                        [(ngModel)]="policyPaper.policyPaperType" type="text"
+                                                        name="policyPaperType">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <label>
+                                                        סטטוס הצעה</label>
+                                                </div>
+                                                <div class="col-7">
+                                                    <input style="width: 250px;" [(ngModel)]="policyPaper.status"
+                                                        name="status">
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
+                                            (click)="modal.close('Save click');onEdit(policyPaper)">אשר</button>
+                                    </div>
+                                </ng-template>
+
+                                <button *ngIf="currentRole!=0" class="btn btn-sm btn-danger btn-delete-account"
+                                    (click)="open(deleteModal,'')">
+                                    <span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
+                                            class="fa fa-trash-alt"></i></span>
+                                </button>
+
+                                <!--Delete Modal -->
+                                <ng-template #deleteModal let-modal>
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modal-basic-title">מחיקת נייר מדיניות</h4>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <p dir="rtl">
+                                            האם ברצונך למחוק את נייר מדיניות מספר
+                                            <span>{{policyPaper.id}}?</span>
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="modal.close('Save click');onDelete(policyPaper.id)">מחק</button>
+                                        <button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
+                                            (click)="modal.close('Save click')">ביטול</button>
+                                    </div>
+                                </ng-template>
+                            </td>
+
+                            <td style="text-align:right;">{{policyPaper.policyPaperType}}</td>
+
+                            <td style="text-align:right;">{{policyPaper.clinicName}}</td>
+                            <td style="text-align:right;">{{policyPaper.status}}</td>
+                            <td style="text-align:right;">{{policyPaper.subject}}</td>
+                            <td style="text-align:right;">{{policyPaper.id}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <button *ngIf="currentRole!=0" style="color: white; float: right; font-size: 15;"
+                    class="btn btn-rounded btn-success mb-2" (click)="open(addModal)"> פתיחת נייר מדיניות חדש</button>
+            </div>
+        </div>
+
+        <!--Add Modal -->
+
+        <ng-template #addModal let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">נייר מדיניות חדש</h4>
+                <button style="margin-left: 0;" type="button" class="close" aria-label="Close"
+                    (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="width: 300px;">
+                <form style="padding-left: 0;" dir="rtl">
+
+                    <div class="row">
+                        <div class="col-5"> <label>
+                                מספר נייר מדיניות</label></div>
+                        <div class="col-7">
+                            <input style="width: 250px;" type="number" [(ngModel)]="addedPolicyPaper.id" name="id">
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-5"> <label>
+                                נושא</label></div>
+                        <div class="col-7">
+                            <input style="width: 250px;" [(ngModel)]="addedPolicyPaper.subject" name="subject">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5"> <label>
+                                קליניקה</label></div>
+                        <div *ngIf="currentRole==1" class="col-7">
+                            <input style="width: 250px;" [(ngModel)]="clinicName" type="text" name="clinicName">
+                        </div>
+                        <div *ngIf="currentRole==2" class="col-7">
+                            <select name="chosenClinic" style="width: 250px;" [(ngModel)]="chosenClinic">
+                                <option *ngFor="let clinic of clinics" [ngValue]="clinic">
+                                    {{clinic.clinicName }}
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5"> <label>
+                                סיווג נייר מדיניות</label></div>
+                        <div class="col-7">
+                            <input style="width: 250px;" [(ngModel)]="addedPolicyPaper.policyPaperType" type="text"
+                                name="proposalType">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5">
+                            <label>
+                                סטטוס נייר מדיניות</label>
+                        </div>
+                        <div class="col-7">
+                            <input style="width: 250px;" value="חדש" disabled>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
+                    (click)="modal.close('Save click');onSave()">הוסף</button>
+            </div>
+        </ng-template>
+
+
+    </div>
+
+
+
+
+</div>

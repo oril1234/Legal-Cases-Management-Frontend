@@ -45,6 +45,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { from } from 'rxjs';
 import { NwCalendarModule } from 'nw-calendar';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { PersonalDetailsComponent } from './personal-details/personal-details.component';
 
 
 
@@ -68,6 +69,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		BreadcrumbComponent,
 		LoginComponent,
 		NotificationsComponent,
+		PersonalDetailsComponent,
 	],
 	imports: [
 		CommonModule,

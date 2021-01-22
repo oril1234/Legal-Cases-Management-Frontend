@@ -17,6 +17,7 @@ import { AssignedCaseComponent } from './assigned-case/assigned-case.component';
 import { ClinicDetailsComponent } from './clinic-details/clinic-details.component';
 import { ResearchComponent } from './research/research.component';
 import { LegislativeProposalComponent } from './legislative-proposal/legislative-proposal.component';
+import { PolicyPageComponent } from './policy-page/policy-page.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { LegislativeProposalComponent } from './legislative-proposal/legislative
     AssignedCaseComponent,
     ClinicDetailsComponent,
     ResearchComponent,
-    LegislativeProposalComponent
+    LegislativeProposalComponent,
+    PolicyPageComponent
   ]
 })
 export class ComponentsModule {}

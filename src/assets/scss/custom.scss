@@ -734,3 +734,27 @@ table.fc-header {
 .fc-event .ui-resizable-handle {
   display: none !important;
 }
+
+#myProfile {
+  border-width: 0.005px;
+  border-color: #f2f3f4;
+  font-size: 25px;
+}
+#personalDetails {
+  margin-bottom: 0;
+  border-bottom: 1px solid #eaeded;
+  text-align: center;
+  width: 50%;
+  margin-left: 35%;
+  margin-top: 10%;
+}
+input::after,
+::before {
+  box-sizing: content-box;
+}
+@media screen and (max-width: 600px) {
+  #personalDetails {
+    width: 100%;
+    margin-left: 0;
+  }
+}

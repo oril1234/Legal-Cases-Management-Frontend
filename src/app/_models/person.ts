@@ -6,4 +6,5 @@ export class Person {
     email: string;
     phoneNumber:string;
     role: string;
+    imgUrl:string
 }

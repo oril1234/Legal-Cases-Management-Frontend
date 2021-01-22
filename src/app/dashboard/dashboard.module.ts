@@ -17,6 +17,7 @@ import { CloseCasesComponent } from './dashboard-componets/close-cases/close-cas
 import { CaseInCourtComponent } from './dashboard-componets/case-in-court/case-in-court.component'
 import { NotificationsComponent } from '../notifications/notifications.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { PersonalDetailsComponent } from '../personal-details/personal-details.component';
 
 const routes: Routes = [
 	{
@@ -31,6 +32,7 @@ const routes: Routes = [
 		component: DashboardComponent
 	},
 	{path:'notifications', component:NotificationsComponent},
+	{path:'personal_details', component:PersonalDetailsComponent}
 ];
 
 @NgModule({

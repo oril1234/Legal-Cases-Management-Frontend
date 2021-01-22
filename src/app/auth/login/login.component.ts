@@ -50,11 +50,12 @@ export class LoginComponent implements OnInit {
   login() {
     this.loginRequestPayload.username = this.loginForm.get('username')!.value;
     this.loginRequestPayload.password = this.loginForm.get('password')!.value;
-
+    
     this.authService.login(this.loginRequestPayload).subscribe(
       data=>{
         this.authService.getRole( this.loginRequestPayload.username).subscribe(
           data=>{
+            alert("HERE!!!!!!")
             
             //Assign role according to result
             switch(data[0])
@@ -77,12 +78,13 @@ export class LoginComponent implements OnInit {
             this.isError = false;
             this.router.navigateByUrl('');
             this.toastr.success('Login Successful');
+          },
+          err=>{
           }
         )
 
-
-
-  
+      },
+      err=>{
       }
     )
   }
