@@ -55,7 +55,6 @@ export class LoginComponent implements OnInit {
       data=>{
         this.authService.getRole( this.loginRequestPayload.username).subscribe(
           data=>{
-            alert("HERE!!!!!!")
             
             //Assign role according to result
             switch(data[0])
