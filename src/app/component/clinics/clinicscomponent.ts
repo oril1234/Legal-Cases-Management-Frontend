@@ -22,6 +22,7 @@ export class ClinicsComponent  implements OnInit {
     yearFounded:new FormControl('')
 
 	  });
+active:boolean=true;    
 constructor(private dashboardService:DashboardService,private modalService:NgbModal,private router: Router)
 {
   this.getSupervisors();
@@ -87,7 +88,7 @@ public ngOnInit(): void {
 
     {      
       if(supervisor.id==parseInt(id))
-        return supervisor.firstName+' '+supervisor.lastname;
+        return supervisor.firstName+' '+supervisor.lastName;
     }
 return "";    
 

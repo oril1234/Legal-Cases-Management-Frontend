@@ -4,9 +4,10 @@ export class ClinicalSupervisor {
     password!:string;
     email!: string;
     phoneNumber!: string;
-    lastname!: string;
+    lastName!: string;
     role!:string;
-    sinceYear!:number
+    sinceYear!:number;
+    imgUrl:string
 
     constructor(init?:Partial<ClinicalSupervisor>) {
         Object.assign(this, init);

@@ -12,6 +12,7 @@ import { AssignedCaseComponent } from './assigned-case/assigned-case.component';
 import { LegislativeProposal } from '../_models/legislative-proposal';
 import { LegislativeProposalComponent } from './legislative-proposal/legislative-proposal.component';
 import { ResearchComponent } from './research/research.component';
+import { PolicyPaperComponent } from './policy-paper/policy-paper.component';
 
 
 
@@ -98,6 +99,16 @@ export const ComponentsRoutes: Routes = [
 			{
 				path: 'research',
 				component: ResearchComponent,
+				data: {
+					title: 'LegislativeProposal',
+					urls: [
+						{ title: 'ngComponent' },
+					]
+				}
+			},
+			{
+				path: 'policy_paper',
+				component: PolicyPaperComponent,
 				data: {
 					title: 'LegislativeProposal',
 					urls: [

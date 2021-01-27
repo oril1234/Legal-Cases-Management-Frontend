@@ -12,6 +12,7 @@
 					<thead>
 						<tr>
 							<th scope="col" style="text-align:right;"></th>
+							<th scope="col" style="text-align:right;">מצב פעילות</th>
 							<th scope="col" style="text-align:right;">שנת פתיחה</th>
 							<th scope="col" style="text-align:right;">מנחה</th>
 							<th scope="col" style="text-align:right;">שם</th>
@@ -19,7 +20,7 @@
 					</thead>
 					<tbody>
 
-						<tr *ngFor="let clinic of clinics">
+						<tr [ngClass]="{'not-active-clinic':!clinic.active}" *ngFor="let clinic of clinics">
 							<td style="text-align:right;">
 								<button class="btn-primary mr-1" (click)="open(editModal,'')"><i
 										class="fa fa-edit"></i></button>
@@ -84,6 +85,10 @@
 								</ng-template>
 
 							</td>
+							<td style="text-align:right;">
+								<button
+									(click)="clinic.active=!clinic.active">{{clinic.active?"העבר לארכיון":"החזר מארכיון"}}</button>
+							</td>
 							<td style="text-align:right;">{{clinic.yearFounded}}</td>
 							<td style="text-align:right;">{{clinic.clinicalSupervisorId}}</td>
 							<td style="text-align:right;">{{clinic.clinicName}}</td>
@@ -96,7 +101,7 @@
 				<!--Add Modal -->
 				<ng-template #addModal let-modal>
 					<div class="modal-header">
-						<h4 class="modal-title" id="modal-basic-title">יצירת תיק</h4>
+						<h4 class="modal-title" id="modal-basic-title">יצירת קליניקה חדשה</h4>
 						<button style="margin-left: 0;" type="button" class="close" aria-label="Close"
 							(click)="modal.dismiss('Cross click')">
 							<span aria-hidden="true">&times;</span>

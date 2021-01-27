@@ -63,7 +63,7 @@
                 <!-- User profile image -->
                 <div class="profile-img">
 
-                    <img src="assets/images/users/{{currentRole}}.jpg" alt="user" />
+                    <img src="{{person.imgUrl}}" alt="user" />
 
                 </div>
                 <!-- User profile text-->
@@ -87,7 +87,8 @@
             <!-- End Sidebar scroll-->
             <div class="sidebar-footer">
                 <!-- item-->
-                <a href="" class="link" data-toggle="tooltip" title="Settings"><i class="ti-settings"></i></a>
+                <a routerLink="/dashboard/personal_details" class="link" data-toggle="tooltip" title="Settings"><i
+                        class="ti-settings"></i></a>
                 <!-- item-->
                 <a routerLink="/dashboard/notifications" class="link" data-toggle="tooltip" title="Notifications"><span
                         *ngIf="notificationsNumber!=0 && showNotifications" class="badge">

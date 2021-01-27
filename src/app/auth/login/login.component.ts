@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit {
             this.toastr.success('Login Successful');
           },
           err=>{
+            alert("There is no role!!!")
           }
         )
 

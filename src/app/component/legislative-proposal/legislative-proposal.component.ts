@@ -287,17 +287,17 @@ export class LegislativeProposalComponent implements OnInit {
 		{
 			if(type==NotificationType.ADD)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" הוסיף הצעת חקיקה חדשה בקליניקה שלו ";
 			}
 			else if(type==NotificationType.EDIT)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" ערך את הצעת חקיקה מספר  "+caseId+" בקליניקה שלו";
 			}
 			else if(type==NotificationType.DELETE)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" מחק את הצעת חקיקה מספר   "+caseId+" בקליניקה שלו";
 			}
 		}
@@ -306,17 +306,17 @@ export class LegislativeProposalComponent implements OnInit {
 		{
 			if(type==NotificationType.ADD)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" הוסיף הצעת חקיקה חדשה בקליניקה שלך ";
 			}
 			else if(type==NotificationType.EDIT)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" ערך את הצעת חקיקה מספר  "+caseId+" בקליניקה שלך";
 			}
 			else if(type==NotificationType.DELETE)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" מחק את הצעת חקיקה מספר   "+caseId+" בקליניקה שלך";
 			}
 		}

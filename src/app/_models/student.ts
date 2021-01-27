@@ -2,11 +2,12 @@ export class Student {
     id: number;
     password: string;
     firstName: string;
-    lastname: string;
+    lastName: string;
     email: string;
     phoneNumber:string;
     role: string;
     clinicalSupervisorId:number;
+    imgUrl:string
     
     
 

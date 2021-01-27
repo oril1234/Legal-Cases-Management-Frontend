@@ -7,6 +7,7 @@ import {AuthService} from '../../auth/shared/auth.service'
 import jwt_decode from "jwt-decode"
 import { DashboardService } from 'src/app/dashboard.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { Person } from 'src/app/_models/person';
 declare var $: any;
 
 @Component({
@@ -18,18 +19,26 @@ export class FullComponent implements OnInit {
 
 	public config: PerfectScrollbarConfigInterface = {};
 
-
+  person:Person=new Person()
+  userId = 0
   notificationsNumber=0;
   showNotifications:boolean=true
 
   constructor(public router: Router,private authservice:AuthService,private dashBoardService:DashboardService,
     private notificationsService:NotificationsService) {
     if(localStorage.getItem("authenticationToken")!=null)
-  {
+    {
+     this.userId= parseInt(
+        JSON.parse(
+          JSON.stringify(
+          jwt_decode(localStorage.getItem("authenticationToken") + "")
+          )
+        ).sub);
+    this.getPersonDetails();
     this.getFullName();
     this.getNotifications();
     this.currentRole=parseInt(localStorage.getItem("Role")+"");
-  }
+    }
   }
 
   public innerWidth: number=0;
@@ -91,6 +100,18 @@ export class FullComponent implements OnInit {
       {
        
       }
+    )
+  }
+
+  getPersonDetails()
+  {
+    this.dashBoardService.getPersonById(this.userId).subscribe(
+      data=>
+     { 
+       this.person=data;
+       
+    
+    }
     )
   }
 

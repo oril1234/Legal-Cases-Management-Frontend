@@ -28,16 +28,9 @@ export class SupervisorsComponent implements OnInit {
 
   public supervisors!:ClinicalSupervisor[];
 
-	supervisorForm = new FormGroup({
-		id:new FormControl(''),
-    firstName:new FormControl(''),
-		lastname: new FormControl(''),
-		password: new FormControl(''),
-		email: new FormControl(''),
-		sinceYear:new FormControl(''),
-    phoneNumber:new FormControl('')
+  addedSupervisor:ClinicalSupervisor=new ClinicalSupervisor()
+  edittedSupervisor:ClinicalSupervisor=new ClinicalSupervisor()
 
-	  });
     closeResult=""
 
 
@@ -60,10 +53,10 @@ this.getAllSupervisors();
   }
 
   	//Modal methodd
-	open(content:string,String:string) {
+	openAddModal(content:string) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
-			this.supervisorForm.controls['firstName'].setValue("Yeah");
+
 		}, (reason) => {
 			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 
@@ -71,9 +64,27 @@ this.getAllSupervisors();
 		
 	}
 
-	openDeleteModal(firstName:string,lastName:string,id:string)
-	{
+	openEditModal(supervisor:ClinicalSupervisor,content:string) {
+		this.edittedSupervisor=Object.create(supervisor);
+		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
 
+		}, (reason) => {
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
+		
+	}
+
+	openDeleteModal(content:string)
+	{
+		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+
+		}, (reason) => {
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
 	}
 	private getDismissReason(reason: ModalDismissReasons): string {
 		if (reason === ModalDismissReasons.ESC) {
@@ -87,30 +98,13 @@ this.getAllSupervisors();
 
 	private onSave()
 	{
-		/*
-    const supervisor= {
-      id!: this.supervisorForm.get("id"),
-      firstName!: this.supervisorForm.get("firstName"),
-      lastname!:this.supervisorForm.get("lastname"),
-      email!: this.supervisorForm.get("email"),
-      phoneNumber!: this.supervisorForm.get("phoneNumber"),
-      sinceYear!: this.supervisorForm.get("sinceYear"),
 
-		 };
-     */
-     const supervisor:ClinicalSupervisor=new ClinicalSupervisor();
-     supervisor.id=parseInt(this.supervisorForm.get("id")?.value+"");
-     supervisor.firstName=this.supervisorForm.get("firstName")?.value+"";
-     supervisor.lastname=this.supervisorForm.get("lastname")?.value+"";
-     supervisor.email=this.supervisorForm.get("email")?.value+"";
-     supervisor.phoneNumber=this.supervisorForm.get("phoneNumber")?.value+"";
-     supervisor.sinceYear=parseInt(this.supervisorForm.get("sinceYear")?.value+"");
-     supervisor.role="ClinicalSupervisor";
-
-		 this.dashboardService.addNewSupervisor(supervisor).subscribe(
+		this.addedSupervisor.sinceYear=new Date().getFullYear();
+		this.addedSupervisor.imgUrl="";
+		 this.dashboardService.addNewSupervisor(this.addedSupervisor).subscribe(
 			data=>{
-				this.supervisors.push(supervisor);
-			} 
+				this.supervisors.push(this.addedSupervisor);
+			},
 		 )
 	}
 
@@ -125,23 +119,43 @@ this.getAllSupervisors();
 		);
 	}
 
-	onEdit()
+	onEdit(supervisor:ClinicalSupervisor)
 	{
-		const supervisor:ClinicalSupervisor=new ClinicalSupervisor();
-		supervisor.id=parseInt(this.supervisorForm.get("id")?.value+"");
-		supervisor.firstName=this.supervisorForm.get("firstName")?.value+"";
-		supervisor.lastname=this.supervisorForm.get("lastname")?.value+"";
-		supervisor.email=this.supervisorForm.get("email")?.value+"";
-		supervisor.phoneNumber=this.supervisorForm.get("phoneNumber")?.value+"";
-		supervisor.sinceYear=parseInt(this.supervisorForm.get("sinceYear")?.value+"");
-		supervisor.role="ClinicalSupervisor";
-		supervisor.password="password";
 
-		 this.dashboardService.editSupervisor(supervisor).subscribe(
-		
-			 
+		 this.dashboardService.editSupervisor(this.edittedSupervisor).subscribe(
+			data=>{
+				supervisor=Object.create(this.edittedSupervisor)
+			},
+			err=>alert("Not edited!!!!")
 		 )
 	}
+
+	validateAddedFields():boolean
+	{
+	  let isValidated=typeof this.addedSupervisor.id !== 'undefined';
+	  isValidated=isValidated && typeof this.addedSupervisor.firstName !== 'undefined' && this.addedSupervisor.firstName!="";
+	  isValidated=isValidated && typeof this.addedSupervisor.lastName !== 'undefined' && this.addedSupervisor.lastName!="";
+	  isValidated=isValidated && typeof this.addedSupervisor.email !== 'undefined' && this.validateEmail(this.addedSupervisor.email)
+	  isValidated=isValidated && typeof this.addedSupervisor.phoneNumber !== 'undefined' && this.addedSupervisor.phoneNumber!=""
+  
+	  return isValidated;
+	}
+  
+	validateEdittedFields():boolean
+	{
+	  let isValidated=typeof this.edittedSupervisor.id !== 'undefined';
+	  isValidated=isValidated && typeof this.edittedSupervisor.firstName !== 'undefined' && this.edittedSupervisor.firstName!="";
+	  isValidated=isValidated && typeof this.edittedSupervisor.lastName !== 'undefined' && this.edittedSupervisor.lastName!="";
+	  isValidated=isValidated && typeof this.edittedSupervisor.email !== 'undefined' && this.validateEmail(this.edittedSupervisor.email)
+	  isValidated=isValidated && typeof this.edittedSupervisor.phoneNumber !== 'undefined' && this.edittedSupervisor.phoneNumber!=""
+  
+	  return isValidated;
+	}
+
+	validateEmail(email: string) {
+		const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
+	  }
 
 }
 

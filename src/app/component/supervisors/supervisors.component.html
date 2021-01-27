@@ -1,28 +1,30 @@
-<br><ol class="breadcrumb mb-2">
-	<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-	<li class="breadcrumb-item active">Supervisors</li>
+<br>
+<ol class="breadcrumb mb-2">
+  <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+  <li class="breadcrumb-item active">Supervisors</li>
 </ol>
 <div style="margin-top: 1%;" class="row">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h1 dir="rtl" class="mr-auto"  style="text-align:right;">מנחים</h1>
+        <h1 dir="rtl" class="mr-auto" style="text-align:right;">מנחים</h1>
         <table class="table">
           <thead>
             <tr>
-              <th scope="col"  style="text-align:right;"></th>
-              <th scope="col"  style="text-align:right;">שנת התחלה</th>
-              <th scope="col"  style="text-align:right;">דואר אלקטרוני</th>
-              <th scope="col"  style="text-align:right;">שם משפחה</th>
-              <th scope="col"  style="text-align:right;">שם פרטי</th>
+              <th scope="col" style="text-align:right;"></th>
+              <th scope="col" style="text-align:right;">שנת התחלה</th>
+              <th scope="col" style="text-align:right;">דואר אלקטרוני</th>
+              <th scope="col" style="text-align:right;">שם משפחה</th>
+              <th scope="col" style="text-align:right;">שם פרטי</th>
             </tr>
           </thead>
           <tbody>
 
             <tr *ngFor="let supervisor of supervisors">
               <td>
-                <button class="btn-primary mr-1"><i class="fa fa-edit" (click)="open(editModal,'')"></i></button>
-                <button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
+                <button class="btn-primary mr-1"><i class="fa fa-edit"
+                    (click)="openEditModal(supervisor,editModal)"></i></button>
+                <button class="btn btn-sm btn-danger btn-delete-account" (click)="openDeleteModal(deleteModal)">
                   <span class="spinner-border spinner-border-sm"><i class="fa fa-trash-alt"></i></span>
                 </button>
 
@@ -35,39 +37,66 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
-                    <form dir="rtl" [formGroup]="supervisorForm" style="padding: 0;">
+                  <div class="modal-body" style="width: 300px;">
+                    <form dir="rtl">
 
-                      <label>
-                        שם פרטי</label>
-                      <input type="text" formControlName="firstName" [(ngModel)]="supervisor.firstName"><br>
-
-
-                      <label>
-                        שם משפחה</label>
-                      <input type="text" formControlName="lastname" [(ngModel)]="supervisor.lastname"> <br>
-                      <label>
-                        תעודת זהות</label>
-                      <input type="text" formControlName="id" [(ngModel)]="supervisor.id"><br>
+                      <div class="row">
+                        <div class="col-6"><label>
+                            שם פרטי</label></div>
+                        <div class="col-6">
+                          <input type="text" [(ngModel)]="edittedSupervisor.firstName" name="firstName">
+                        </div>
+                      </div>
 
 
-                      <label>
-                        דואר אלקטרוני</label>
-                      <input type="text" formControlName="email" [(ngModel)]="supervisor.email"> <br>
-                      <label>
-                        מספר טלפון</label>
-                      <input type="text" formControlName="phoneNumber" [(ngModel)]="supervisor.phoneNumber"><br>
+                      <div class="row">
+                        <div class="col-6"><label>
+                            שם משפחה</label></div>
+                        <div class="col-6">
+                          <input type="text" [(ngModel)]="edittedSupervisor.lastName" name="lastName">
+                        </div>
+                      </div>
 
 
-                      <label>
-                        מנחה</label>
-                      <input type="text" formControlName="sinceYear" [(ngModel)]="supervisor.sinceYear"><br>
+                      <div class="row">
+                        <div class="col-6"><label>
+                            תעודת זהות</label></div>
+                        <div class="col-6">
+                          <input type="number" [(ngModel)]="edittedSupervisor.id" name="id" disabled>
+                        </div>
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-6"><label>
+                            דואר אלקטרוני</label></div>
+                        <div class="col-6">
+                          <input type="text" [(ngModel)]="edittedSupervisor.email" name="email">
+                        </div>
+                      </div>
+
+
+                      <div class="row">
+                        <div class="col-6"><label>
+                            מספר טלפון</label></div>
+                        <div class="col-6">
+                          <input type="text" [(ngModel)]="edittedSupervisor.phoneNumber" name="phoneNumber">
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-6"><label>
+                            משנת</label></div>
+                        <div class="col-6">
+                          <input type="text" [(ngModel)]="edittedSupervisor.sinceYear" name="sinceYear" disabled>
+                        </div>
+                      </div>
 
                     </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark"
-                      (click)="modal.close('Save click');onEdit()">ערוך</button>
+                    <button type="button" class="btn btn-outline-dark" [disabled]="!validateEdittedFields()"
+                      (click)="modal.close('Save click');onEdit(supervisor)">ערוך</button>
                   </div>
                 </ng-template>
 
@@ -95,14 +124,14 @@
               </td>
               <td style="text-align:right;">{{supervisor.sinceYear}}</td>
               <td style="text-align:right;">{{supervisor.email}}</td>
-              <td style="text-align:right;">{{supervisor.lastname}}</td>
+              <td style="text-align:right;">{{supervisor.lastName}}</td>
               <td style="text-align:right;">{{supervisor.firstName}}</td>
             </tr>
           </tbody>
         </table>
 
         <button style="color: white; float: right; font-size: 21;" class="btn btn-success btn-rounded"
-				(click)="open(addModal,'')">הוסף מנחה חדש</button>
+          (click)="openAddModal(addModal)">הוסף מנחה חדש</button>
 
       </div>
     </div>
@@ -121,65 +150,59 @@
     </div>
 
     <div class="modal-body" style="width: 300px;">
-      <form dir="rtl" [formGroup]="supervisorForm" style="padding-left: 0;">
+      <form dir="rtl" style="padding-left: 0;">
 
         <div class="row">
-					<div class="col-6"><label>
-          שם פרטי</label></div>
+          <div class="col-6"><label>
+              שם פרטי</label></div>
           <div class="col-6">
-        <input type="text" formControlName="firstName"><br>
-      </div>
+            <input type="text" [(ngModel)]="addedSupervisor.firstName" name="firstName">
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-6"><label>
+              שם משפחה</label></div>
+          <div class="col-6">
+            <input type="text" [(ngModel)]="addedSupervisor.lastName" name="lastName">
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-6"><label>
+              תעודת זהות</label></div>
+          <div class="col-6">
+            <input type="number" [(ngModel)]="addedSupervisor.id" name="id">
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-6"><label>
+              דואר אלקטרוני</label></div>
+          <div class="col-6">
+            <input type="text" [(ngModel)]="addedSupervisor.email" name="email">
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-6"><label>
+              מספר טלפון</label></div>
+          <div class="col-6">
+            <input type="text" [(ngModel)]="addedSupervisor.phoneNumber" name="phoneNumber">
+          </div>
+        </div>
+
+
+      </form>
     </div>
 
-      
-      <div class="row">
-        <div class="col-6"><label>
-          שם משפחה</label></div>
-          <div class="col-6">
-        <input type="text" formControlName="lastname"> <br>
-      </div>
-    </div>
-
-
-      <div class="row">
-        <div class="col-6"><label>	
-          תעודת זהות</label></div>
-          <div class="col-6">
-        <input type="text" formControlName="id"><br>
-        </div>
-      </div>
-
-
-        <div class="row">
-					<div class="col-6"><label>
-          דואר אלקטרוני</label></div>
-          <div class="col-6">
-        <input type="text" formControlName="email"> <br>
-      </div>
-    </div>
-
-
-        <div class="row">
-					<div class="col-6"><label>
-          מספר טלפון</label></div>
-          <div class="col-6">
-        <input type="text" formControlName="phoneNumber"><br>
-        </div>
-      </div>
-
-
-        <div class="row">
-					<div class="col-6"><label>
-          משנת</label></div>
-          <div class="col-6">
-        <input type="text" formControlName="sinceYear"><br>
-        </div>
-      </div>
-
-      </form></div>
-    
     <div class="modal-footer">
-      <button type="button" class="btn btn-rounded btn-primary" (click)="modal.close('Save click');onSave()">הוסף</button>
+      <button type="button" class="btn btn-rounded btn-primary" [disabled]="!validateAddedFields()"
+        (click)="modal.close('Save click');onSave()">הוסף</button>
     </div>
   </ng-template>
 

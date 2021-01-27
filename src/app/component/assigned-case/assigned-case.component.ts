@@ -163,7 +163,7 @@ export class AssignedCaseComponent implements OnInit {
 							newItem.status=data1.status;
 							newItem.subject=data1.subject;
 							let student:Student=this.students.filter(aStudent=>aStudent.id==assigned.studentId)[0];
-							newItem.studentName=student.firstName+" "+student.lastname;
+							newItem.studentName=student.firstName+" "+student.lastName;
 							this.caseAssignedBySupervisor.push(newItem);
 						}
 					)
@@ -181,7 +181,7 @@ export class AssignedCaseComponent implements OnInit {
 			
 			let studentId:number=0;
 			this.students.forEach(student=>{
-				if(student.firstName+" "+student.lastname==studentName)
+				if(student.firstName+" "+student.lastName==studentName)
 				{
 					studentId=student.id;
 				}
@@ -211,7 +211,7 @@ export class AssignedCaseComponent implements OnInit {
 			{
 			  n.details="המנחה שלך, "
 			  +this.currentSuperVisor.firstName+' '+
-			  this.currentSuperVisor.lastname+
+			  this.currentSuperVisor.lastName+
 			  " הקצה עבורך את תיק מספר "+
 			  caseId;
 			}
@@ -219,7 +219,7 @@ export class AssignedCaseComponent implements OnInit {
 			if(type==NotificationType.DELETE)
 			{
 				n.details="המנחה שלך, "+this.currentSuperVisor.firstName+' '+
-				this.currentSuperVisor.lastname+" ביטל את ההקצאה שלך לתיק מספר "+caseId;
+				this.currentSuperVisor.lastName+" ביטל את ההקצאה שלך לתיק מספר "+caseId;
 			}
 		  this.dashboardService.addNotification(n).subscribe(
 			data=>{

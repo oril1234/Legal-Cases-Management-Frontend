@@ -56,6 +56,7 @@ export class PersonalDetailsComponent implements OnInit {
         
         this.person=data;
         this.personToEdit=data;
+        console.log(data)
       },
       err=>
       {

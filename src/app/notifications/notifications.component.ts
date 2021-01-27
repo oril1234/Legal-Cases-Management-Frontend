@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 import { NotificationsService } from '../services/notifications.service';
 import { NotificationManager } from '../_models/notification-manager';
 import { NotificationtsToUsers } from '../_models/notification';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +14,8 @@ import { NotificationtsToUsers } from '../_models/notification';
 })
 export class NotificationsComponent implements OnInit {
 
-  notifications:NotificationtsToUsers[]=[]
+  userNotifications:NotificationtsToUsers[]=[];
+  notificationManagerObjects:NotificationManager[]=[]
  userId = parseInt(
     JSON.parse(
       JSON.stringify(
@@ -21,22 +23,24 @@ export class NotificationsComponent implements OnInit {
       )
     ).sub);
 
-  constructor(private dashBoardService: DashboardService,private notificationsService: NotificationsService) {
+  constructor(private dashBoardService: DashboardService,private notificationsService: NotificationsService,
+    private router:Router) {
     this.getNotifications();
+    this.getNotificationManagerObjects();
    }
 
   ngOnInit(): void {
-    
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
+
 
   getNotifications()
   {
-    let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
-
-    this.dashBoardService.getNotificationsByPersonID(id).subscribe(
+   
+    this.dashBoardService.getNotificationsByPersonID(this.userId).subscribe(
       data=>{
-        this.notifications=data;
-        this.notifications=this.notifications.sort((n1,n2) => {
+        this.userNotifications=data;
+        this.userNotifications=this.userNotifications.sort((n1,n2) => {
           if (n1.dateTime > n2.dateTime) {
               return -1;
           }
@@ -54,12 +58,20 @@ export class NotificationsComponent implements OnInit {
     )
   }
 
+  getNotificationManagerObjects()
+  {
+    this.dashBoardService.getNotificationManagerObjects().subscribe(
+      data=>{
+        this.notificationManagerObjects=data;
+      }
+    )
+  }
+
 
   readNotifications()
   {
     this.notificationsService.changeState(false)
-    let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
-    this.dashBoardService.readAllNotificationsOfPerson(id).subscribe(
+    this.dashBoardService.readAllNotificationsOfPerson(this.userId).subscribe(
       data=>{
         
       },
@@ -68,17 +80,41 @@ export class NotificationsComponent implements OnInit {
     )
   }
 
-  deleteNotification(index:number)
+  deleteNotification(id:string)
   {
-    let nm:NotificationManager=new NotificationManager()
-    nm.unread=false;
-    nm.receiverId=this.userId;
-    nm.notificationId=this.notifications[index].id;
-    this.dashBoardService.deleteNotificationForUser(nm).subscribe(
+    let tmpNManager:NotificationManager[]=this.notificationManagerObjects;
+    alert("The length is "+tmpNManager.length)
+    tmpNManager=tmpNManager.filter(nManager=>nManager.notificationId==id);
+    let currentLength:number=tmpNManager.length;
+    
+    /*
+    this.dashBoardService.deleteNotificationManagerByIdAndReceiverId(id,this.userId).subscribe(
       data=>{
-        this.notifications=this.notifications.filter(n=>n.id!=nm.notificationId || nm.receiverId!=this.userId)
+        
+        this.notificationManagerObjects=this.notificationManagerObjects.filter(nManager=>nManager.notificationId!=id);
+        this.userNotifications=this.userNotifications.filter(n=>n.id!=id);
+        if(currentLength<=1)
+        {
+          alert("WE ARE GOING TO DELETE! The length is "+currentLength)
+          this.dashBoardService.deleteNotificationById(id).subscribe(
+            data1=>{
+              alert("DELETE!!!")
+            },
+            err=>
+            {
+              alert("Not deleted!!!")
+            }
+          )
+        }
+        else
+        alert("NO DELETE! The length is "+tmpNManager.length)
+
+      },
+      err=>{
+        alert("NO DELETE!!!!")
       }
     )
+    */
   }
 
 }

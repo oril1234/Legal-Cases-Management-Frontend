@@ -25,7 +25,7 @@
 
 						<tr *ngFor="let student of students">
 							<td *ngIf="currentRole!=0">
-								<button class="btn-primary mr-1" (click)="open(editModal,'')"><i
+								<button class="btn-primary mr-1" (click)="openEditModal(editModal,student)"><i
 										class="fa fa-edit"></i></button>
 								<!--Edit Modal -->
 								<ng-template #editModal let-modal>
@@ -44,7 +44,8 @@
 														שם פרטי</label>
 												</div>
 												<div class="col-6">
-													<input type="text" [(ngModel)]="student.firstName" name="firstName">
+													<input type="text" [(ngModel)]="edittedStudent.firstName"
+														name="firstName">
 												</div>
 
 											</div>
@@ -54,7 +55,8 @@
 														שם משפחה</label>
 												</div>
 												<div class="col-6">
-													<input name="lastName" type="text" [(ngModel)]="student.lastname">
+													<input name="lastName" type="text"
+														[(ngModel)]="edittedStudent.lastName">
 												</div>
 
 											</div>
@@ -66,7 +68,7 @@
 														דואר אלקטרוני</label>
 												</div>
 												<div class="col-6">
-													<input name="email" type="text" [(ngModel)]="student.email">
+													<input name="email" type="text" [(ngModel)]="edittedStudent.email">
 												</div>
 											</div>
 
@@ -77,7 +79,7 @@
 												</div>
 												<div class="col-6">
 													<input name="phoneNumber" type="text"
-														[(ngModel)]="student.phoneNumber"><br>
+														[(ngModel)]="edittedStudent.phoneNumber"><br>
 												</div>
 											</div>
 
@@ -97,10 +99,12 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-											(click)="modal.close('Save click');onEdit(student)">ערוך</button>
+											(click)="modal.close('Save click');onEdit(student)"
+											[disabled]="!validateEdittedFields()">ערוך</button>
 									</div>
 								</ng-template>
-								<button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
+								<button class="btn btn-sm btn-danger btn-delete-account"
+									(click)="openDeleteModal(deleteModal)">
 									<span class="spinner-border spinner-border-sm"><i
 											class="fa fa-trash-alt"></i></span>
 								</button>
@@ -129,14 +133,14 @@
 							</td>
 							<td style="text-align:right;">{{student.phoneNumber}}</td>
 							<td style="text-align:right;">{{student.email}}</td>
-							<td style="text-align:right;">{{student.lastname}}</td>
+							<td style="text-align:right;">{{student.lastName}}</td>
 							<td style="text-align:right;">{{student.firstName}}</td>
 						</tr>
 					</tbody>
 				</table><br>
 
 				<button *ngIf="currentRole!=0" style="color: white; float: right; font-size: 15;"
-					class="btn btn-primary btn-rounded btn-success mb-2" (click)="open(addModal,'')">הוסף
+					class="btn btn-primary btn-rounded btn-success mb-2" (click)="openAddModal(addModal,'')">הוסף
 					סטודנט</button>
 
 			</div>
@@ -173,7 +177,7 @@
 							שם משפחה</label>
 					</div>
 					<div class="col-6">
-						<input name="lastName" type="text" [(ngModel)]="addedStudent.lastname">
+						<input name="lastName" type="text" [(ngModel)]="addedStudent.lastName">
 					</div>
 				</div>
 
@@ -222,7 +226,7 @@
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-				(click)="modal.close('Save click');onSave()">הוסף</button>
+				(click)="modal.close('Save click');onSave()" [disabled]="!validateAddedFields()">הוסף</button>
 		</div>
 	</ng-template>
 

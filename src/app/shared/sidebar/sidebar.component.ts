@@ -114,8 +114,8 @@ export class SidebarComponent implements OnInit {
     
                     element.submenu.push(
                       {
-                        path: '',
-                        title: 'ניירות עמדה',
+                        path: '/component//policy_paper',
+                        title: 'מסמכי מדיניות',
                         icon: 'mdi mdi-account-box',
                         class: '',
                         extralink: false,
@@ -126,20 +126,7 @@ export class SidebarComponent implements OnInit {
                         showSub:false
                       });
     
-    
-                      element.submenu.push(
-                        {
-                          path:'',
-                          title: 'מסמכי מדיניות',
-                          icon: 'mdi mdi-account-box',
-                          class: '',
-                          extralink: false,
-                          submenu:[],
-                          role:[],
-                          params:"",
-                          hasSub:false,
-                          showSub:false
-                        });
+
               }
 
               if(element.path=='/component/students')

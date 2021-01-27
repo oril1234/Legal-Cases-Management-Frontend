@@ -18,7 +18,7 @@
             </div>
             <div class="col-4">
 
-                <img src="{{photoUrl}}" alt="העלה תמונה">
+                <img src="{{person.imgUrl}}" alt="העלה תמונה">
             </div>
             <div class="col-12">
                 <button (click)="resetBooleanFields();editPhoto=true" class="btn btn-primary">עדכן תמונה</button>
@@ -66,7 +66,7 @@
                 <b>שם משפחה</b>
             </div>
             <div class="col-4">
-                <p>{{person.lastname}}</p>
+                <p>{{person.lastName}}</p>
             </div>
 
         </div>

@@ -64,7 +64,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '/component/csvimport',
-    title: 'ייבוא סטודנטים',
+    title: 'ייבוא נתוני סטודנטים',
     icon: 'mdi mdi-folder-multiple',
     class: '',
     extralink: false,

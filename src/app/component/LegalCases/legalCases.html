@@ -7,7 +7,7 @@
     <div class="col-12">
         <div class="card" style="overflow:scroll;">
             <div class="card-body">
-                <h1 dir="rtl" class="mr-auto" style="text-align: right;">פרטי תיקים</h1>
+                <h1 dir="rtl" class="mr-auto" style="text-align: right;">{{title}}</h1>
                 <table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
                     <thead style="position: sticky; top: 0">
                         <tr>
@@ -28,7 +28,7 @@
                         <tr *ngFor="let case of cases">
                             <td style="display: flex;">
                                 <button style="font-size: 10pt;" class="btn-primary mr-1"><i class="fa fa-edit"
-                                        (click)="open(editModal,'')"></i></button>
+                                        (click)="openEditCaseModal(editModal,case)"></i></button>
 
                                 <!--Edit Modal -->
                                 <ng-template #editModal let-modal>
@@ -43,38 +43,40 @@
                                         <form style="padding-left: 0;" dir="rtl">
 
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-5">
                                                     <label>
                                                         מספר התיק</label>
                                                 </div>
-                                                <div class="col-6">
-                                                    <input type="text" name="id" [(ngModel)]="case.id" disabled><br>
+                                                <div class="col-7">
+                                                    <input style="width:400px" type="text" name="id"
+                                                        [(ngModel)]="edittedCase.id" disabled><br>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-6"><label>
+                                                <div class="col-5"><label>
                                                         נושא התיק</label></div>
-                                                <div class="col-6">
-                                                    <input type="text" name="subject" [(ngModel)]="case.subject"><br>
+                                                <div class="col-7">
+                                                    <input style="width:400px" type="text" name="subject"
+                                                        [(ngModel)]="edittedCase.subject"><br>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-6"> <label>
+                                                <div class="col-5"> <label>
                                                         תאריך פתיחת התיק</label></div>
-                                                <div class="col-6">
-                                                    <input type="text" name="dateAdded" [(ngModel)]="case.dateAdded"
-                                                        disabled><br>
+                                                <div class="col-7">
+                                                    <input style="width:400px" type="text" name="dateAdded"
+                                                        [(ngModel)]="edittedCase.dateAdded" disabled><br>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-6"> <label>
+                                                <div class="col-5"> <label>
                                                         סיווג תיק</label></div>
-                                                <div class="col-6">
-                                                    <select name="defaultCaseType" style="width:200px;"
-                                                        [(ngModel)]="case.caseType">
+                                                <div class="col-7">
+                                                    <select name="defaultCaseType" style="width:400px;"
+                                                        [(ngModel)]="edittedCase.caseType">
                                                         <option *ngFor="let caseType of caseTypes" [ngValue]="caseType">
                                                             {{caseType}}
                                                         </option>
@@ -84,43 +86,41 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-5">
                                                     <label>
                                                         סטטוס התיק</label>
                                                 </div>
-                                                <div class="col-6">
-                                                    <input type="text" name="status" [(ngModel)]="case.status"> <br>
+                                                <div class="col-7">
+                                                    <input style="width:400px" type="text" name="status"
+                                                        [(ngModel)]="edittedCase.status">
+                                                    <br>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-6"><label>
+                                                <div class="col-5"> <label>
                                                         קליניקה</label></div>
-                                                <div class="col-6">
-                                                    <input type="text" name="clinicName"
-                                                        [(ngModel)]="case.clinicName"><br>
+                                                <div class="col-7">
+                                                    <input style="width: 400px;" [(ngModel)]="edittedCase.clinicName"
+                                                        type="text" name="clinicName" disabled>
                                                 </div>
+
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-6"> <label>
+                                                <div class="col-5"> <label>
                                                         תעודת זהות לקוח</label></div>
-                                                <div class="col-6">
-                                                    <select name="chosenclient" style="width: 200px;"
-                                                        [(ngModel)]="chosenClient">
-                                                        <option *ngFor="let client of clients" [ngValue]="client">
-                                                            {{client.id }}
-                                                        </option>
-
-                                                    </select>
+                                                <div class="col-7">
+                                                    <input style="width: 400px;" [(ngModel)]="edittedCase.clientId"
+                                                        type="text" name="clientId" disabled>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-6"><label>
+                                                <div class="col-5"><label>
                                                         מספר תיק בבית משפט</label></div>
-                                                <div class="col-6">
-                                                    <input type="text" name="courtCaseId"
+                                                <div class="col-7">
+                                                    <input style="width:400px" type="text" name="courtCaseId"
                                                         [(ngModel)]="case.courtCaseId"><br>
                                                 </div>
                                             </div>
@@ -133,7 +133,7 @@
                                 </ng-template>
 
                                 <button *ngIf="currentRole!=0" class="btn btn-sm btn-danger btn-delete-account"
-                                    (click)="open(deleteModal,'')">
+                                    (click)="openDeleteModal(deleteModal)">
                                     <span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
                                             class="fa fa-trash-alt"></i></span>
                                 </button>
@@ -161,7 +161,8 @@
 
                             <td style="text-align:right;">{{case.caseType}}</td>
                             <td style="text-align:right;"><button class="btn btn-primary"
-                                    (click)="open(detailsModal,'');showDetails(case.clientId)">הצג</button></td>
+                                    (click)="openClientDetailsModal(detailsModal);showDetails(case.clientId)">הצג</button>
+                            </td>
 
                             <td style="text-align:right;">{{case.clinicName}}</td>
                             <td style="text-align:right;">{{case.courtCaseId}}</td>
@@ -174,11 +175,15 @@
                     </tbody>
                 </table>
 
-                <button *ngIf="currentRole!=0" style="color: white; float: center; font-size: 15;margin-left: 50%;"
-                    class="btn btn-rounded btn-primary mb-2" (click)="open(newClientModal)">הוספת לקוח</button>
+                <button *ngIf="currentRole!=0 && currentStatus!='allInCourt'"
+                    style="color: white; float: center; font-size: 15;margin-left: 50%;"
+                    class="btn btn-rounded btn-primary mb-2" (click)="openAddClientModal(newClientModal)">הוספת
+                    לקוח</button>
 
-                <button *ngIf="currentRole!=0" style="color: white; float: right; font-size: 15;"
-                    class="btn btn-rounded btn-success mb-2" (click)="open(addModal)"> פתיחת תיק חדש</button>
+                <button *ngIf="currentRole!=0 && currentStatus!='allInCourt'"
+                    style="color: white; float: right; font-size: 15;" class="btn btn-rounded btn-success mb-2"
+                    (click)="openAddCaseModal(addModal)"> פתיחת תיק
+                    חדש</button>
             </div>
         </div>
 
@@ -198,7 +203,7 @@
                         <div class="col-5"> <label>
                                 מספר תיק</label></div>
                         <div class="col-7">
-                            <input style="width: 250px;" type="number" [(ngModel)]="addedCase.id" name="id">
+                            <input style="width: 400px;" type="number" [(ngModel)]="addedCase.id" name="id">
                         </div>
                     </div>
 
@@ -206,7 +211,7 @@
                         <div class="col-5"> <label>
                                 נושא התיק</label></div>
                         <div class="col-7">
-                            <input style="width: 250px;" [(ngModel)]="addedCase.subject" type="text" name="subject">
+                            <input style="width: 400px;" [(ngModel)]="addedCase.subject" type="text" name="subject">
                         </div>
                     </div>
 
@@ -214,7 +219,7 @@
                         <div class="col-5"> <label>
                                 סיווג תיק</label></div>
                         <div class="col-7">
-                            <select style="width: 250px;" name="defaultCaseType" [(ngModel)]="defaultCaseType">
+                            <select style="width: 400px;" name="defaultCaseType" [(ngModel)]="defaultCaseType">
                                 <option *ngFor="let caseType of caseTypes" [ngValue]="caseType">
                                     {{caseType}}
                                 </option>
@@ -229,20 +234,24 @@
                                 סטטוס התיק</label>
                         </div>
                         <div class="col-7">
-                            <input style="width: 250px;" value="חדש" disabled>
+                            <input style="width: 400px;" value="חדש" disabled>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-5">
-                            <label>
-                                קליניקה</label>
-
+                        <div class="col-5"> <label>
+                                קליניקה</label></div>
+                        <div *ngIf="currentRole==1" class="col-7">
+                            <input style="width: 400px;" [(ngModel)]="chosenClinic.clinicName" type="text"
+                                name="clinicName" disabled>
                         </div>
+                        <div *ngIf="currentRole==2" class="col-7">
+                            <select name="chosenClinic" style="width: 400px;" [(ngModel)]="chosenClinic">
+                                <option *ngFor="let clinic of clinics" [ngValue]="clinic">
+                                    {{clinic.clinicName }}
+                                </option>
 
-                        <div class="col-7">
-                            <input style="width: 250px;" [(ngModel)]="clinicName" type="text" name="clinicName"
-                                disabled>
+                            </select>
                         </div>
                     </div>
 
@@ -250,7 +259,7 @@
                         <div class="col-5"> <label>
                                 תעודת זהות לקוח</label></div>
                         <div class="col-7">
-                            <select style="width: 250px;" name="chosenCase" [(ngModel)]="chosenClient">
+                            <select style="width: 400px;" name="chosenCase" [(ngModel)]="chosenClient">
                                 <option *ngFor="let client of clients" [ngValue]="client">
                                     {{client.id }}
                                 </option>
@@ -263,7 +272,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-                    (click)="modal.close('Save click');onSave()">הוסף</button>
+                    (click)="modal.close('Save click');onSave()" [disabled]="!validateAddedCaseFields()">הוסף</button>
             </div>
         </ng-template>
 
@@ -289,7 +298,7 @@
                         <span>שם משפחה:</span>
                     </div>
                     <div class="col-6">
-                        <span>{{currentClient.lastname}}</span>
+                        <span>{{currentClient.lastName}}</span>
                     </div>
 
                 </div>
@@ -350,7 +359,7 @@
                         <span>שם משפחה:</span>
                     </div>
                     <div class="col-6">
-                        <input type="text" [(ngModel)]="newClient.lastname" name="id">
+                        <input type="text" [(ngModel)]="newClient.lastName" name="id">
                     </div>
 
                 </div>

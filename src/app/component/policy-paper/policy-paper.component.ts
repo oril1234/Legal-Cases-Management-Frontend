@@ -20,10 +20,10 @@ import { Person } from 'src/app/_models/person';
 import { PolicyPaper } from 'src/app/_models/policy-paper';
 
 @Component({
-  selector: 'app-policy-page',
-  templateUrl: './policy-page.component.html',
-  styleUrls: ['./policy-page.component.css']})
-export class PolicyPageComponent implements OnInit {
+  selector: 'app-policy-paper',
+  templateUrl: './policy-paper.component.html',
+  styleUrls: ['./policy-paper.component.css']})
+export class PolicyPaperComponent implements OnInit {
 
 	admin=new Person()
 	policyPapers: PolicyPaper[];
@@ -47,7 +47,7 @@ export class PolicyPageComponent implements OnInit {
 	clients: Client[] = []
 	chosenClinic: Clinic = new Clinic()
 
-	addedPaper: PolicyPaper = new PolicyPaper()
+	addedPolicyPaper: PolicyPaper = new PolicyPaper()
 	edittedPaper: PolicyPaper = new PolicyPaper()
 
 
@@ -157,11 +157,11 @@ export class PolicyPageComponent implements OnInit {
 	{
 		if (reason === ModalDismissReasons.ESC)
 		{
-			this.addedPaper = new PolicyPaper()
+			this.addedPolicyPaper = new PolicyPaper()
 			return 'by pressing ESC';
 		} else if (reason === ModalDismissReasons.BACKDROP_CLICK)
 		{
-			this.addedPaper=new PolicyPaper();
+			this.addedPolicyPaper=new PolicyPaper();
 			return 'by clicking on a backdrop';
 		} else
 		{
@@ -174,18 +174,18 @@ export class PolicyPageComponent implements OnInit {
 	onSave()
 	{
 
-		this.addedPaper.status = "חדש";
-		this.addedPaper.clinicName = this.clinicName
+		this.addedPolicyPaper.status = "חדש";
+		this.addedPolicyPaper.clinicName = this.clinicName
 
-		this.dashboardService.addNewPolicyPaper(this.addedPaper).subscribe(
+		this.dashboardService.addNewPolicyPaper(this.addedPolicyPaper).subscribe(
 			data =>
 			{
-				this.policyPapers.push(this.addedPaper);
-				this.createNotification(NotificationType.ADD,this.addedPaper.id)
-				this.addedPaper=new PolicyPaper()
+				this.policyPapers.push(this.addedPolicyPaper);
+				this.createNotification(NotificationType.ADD,this.addedPolicyPaper.id)
+				this.addedPolicyPaper=new PolicyPaper()
 			},
 			err=>{
-				this.addedPaper=new PolicyPaper()
+				this.addedPolicyPaper=new PolicyPaper()
 				
 			}
 
@@ -272,17 +272,17 @@ export class PolicyPageComponent implements OnInit {
 		{
 			if(type==NotificationType.ADD)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" הוסיף נייר מדיניות חדש בקליניקה שלו";
 			}
 			else if(type==NotificationType.EDIT)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" ערך את נייר מדיניות מספר  "+caseId+" בקליניקה שלו";
 			}
 			else if(type==NotificationType.DELETE)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" מחק את נייר מדיניות מספר   "+caseId+" בקליניקה שלו";
 			}
 		}
@@ -291,17 +291,17 @@ export class PolicyPageComponent implements OnInit {
 		{
 			if(type==NotificationType.ADD)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" הוסיף נייר מדיניות חדש בקליניקה שלך ";
 			}
 			else if(type==NotificationType.EDIT)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" ערך את נייר מדיניות מספר  "+caseId+" בקליניקה שלך";
 			}
 			else if(type==NotificationType.DELETE)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" מחק את נייר מדיניות מספר   "+caseId+" בקליניקה שלך";
 			}
 		}

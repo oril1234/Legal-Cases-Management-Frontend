@@ -1,7 +1,7 @@
 <br>
 <ol class="breadcrumb mb-2">
-    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-    <li class="breadcrumb-item active">Notifications</li>
+    <li class="breadcrumb-item"><a href="javascript:void(0)">בית</a></li>
+    <li class="breadcrumb-item active">התראות</li>
 </ol>
 
 <div class="col-12">
@@ -15,7 +15,7 @@
             </div>
 
         </div>
-        <div *ngFor="let n of notifications; let i = index"
+        <div *ngFor="let n of userNotifications; let i = index"
             style="margin-bottom: 0;border-bottom: 1px solid #EAEDED;text-align: right;" class="card">
             <div class="card-body">
 
@@ -28,7 +28,8 @@
                     <p class="text-muted">{{n.sourceId}}</p>
                     <p class="text-muted"><small>{{n.dateTime}}</small></p>
                 </div>
-                <!--<button (click)="deleteNotification(i)" class="btn btn-danger" style="float: right;">מחק התראה</button> -->
+                <button (click)="deleteNotification(n.id)" class="btn btn-danger" style="float: right;">מחק
+                    התראה</button>
             </div>
 
         </div>

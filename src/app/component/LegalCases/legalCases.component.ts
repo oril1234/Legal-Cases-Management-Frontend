@@ -30,13 +30,16 @@ import { Person } from 'src/app/_models/person';
 })
 export class LegalCasesComponent implements OnInit
 {
+	admin:Person=new Person()
+	title:string="פרטי תיקים בקליניקה";
 	cases: LegalCase[];
 	clinics: Clinic[];
+	chosenClinic: Clinic = new Clinic()
 	supervisors: ClinicalSupervisor[]
 	currentSuperVisor: ClinicalSupervisor
 	currentRole = parseInt(localStorage.getItem('Role') + "");
 	closeResult = "";
-	currentStatus = ""
+	currentStatus:string = ""
 	clinicName: string = ""
 	currentClient: Client = new Client();
 	newClient: Client = new Client()
@@ -47,7 +50,7 @@ export class LegalCasesComponent implements OnInit
 			)
 		).sub);
 	userFullName: string = ""
-	userDetails:Person=new Person();
+	userDetails: Person = new Person();
 	clients: Client[] = []
 	chosenClient: Client = new Client()
 
@@ -56,7 +59,8 @@ export class LegalCasesComponent implements OnInit
 
 	defaultCaseType: string = "פלילי"
 	caseTypes: string[] = [`פלילי`, `שכר עבודה בסמכות רשם`, `הטרדה מאיימת וצו הגנה`, `ערעור ביטוח לאומי`,
-		`האזנת סתר`, `עתירה לבג"ץ`, `ביצוע תביעה בהוצאה לפועל`, `ביטול קנס מנהלי`, `תביעה קטנה`,'ערעור מסים']
+		`האזנת סתר`, `עתירה לבג"ץ`, `ביצוע תביעה בהוצאה לפועל`, `ביטול קנס מנהלי`, `תביעה קטנה`, 'ערעור מסים',
+	`יישוב סכסוך`]
 
 
 	constructor(private dashboardService: DashboardService, private modalService: NgbModal,
@@ -65,18 +69,23 @@ export class LegalCasesComponent implements OnInit
 	)
 	{
 
+		
 		if (this.route.snapshot.paramMap.get('status'))
 		{
-			this.currentStatus = this.route.snapshot.paramMap.get('') + "";
+			this.currentStatus = this.route.snapshot.paramMap.get('status') + "";
+			this.title=this.currentStatus=="allInCourt"?"פרטי תיקים בבית משפט":"פרטי תיקים בטיפול הקליניקות";
 		}
+		this.addedCase.caseType=this.caseTypes[0];
 
 		this.getPersonDetails();
 
-		if(this.currentRole!=Roles.STUDENT)
+		if (this.currentRole != Roles.STUDENT)
 			this.getAllClinics();
-		else	
-			this.getAllCasesAssignedToStudent();
+		else
+			this.getAllCases();
 		this.getClients()
+		if(this.currentRole==Roles.SUPERVISOR)
+			this.getAdminDetails();
 
 	}
 	public ngOnInit(): void
@@ -88,23 +97,38 @@ export class LegalCasesComponent implements OnInit
 	getPersonDetails()
 	{
 		this.dashboardService.getPersonById(this.userId).subscribe(
-			data=>{
-				this.userDetails=data;
+			data =>
+			{
+				this.userDetails = data;
 			}
 		)
 
-		
-		if(this.currentRole==Roles.STUDENT)
+
+		if (this.currentRole == Roles.STUDENT)
 		{
 			this.dashboardService.getStudentsClinicalSupervisorDetails(this.userId).subscribe(
-				data=>{
-					this.currentSuperVisor=data;
+				data =>
+				{
+					this.currentSuperVisor = data;
 				}
 			)
 		}
-		
-		
+
+
 	}
+
+	getAdminDetails()
+	{
+		this.dashboardService.getAllPersons().subscribe(
+			data=>{
+				data=data.filter(person=>person.role=="Super Admin")
+				this.admin=data[0];
+			},
+			err=>{
+			}
+		)
+	}
+
 
 	getClients()
 	{
@@ -122,19 +146,19 @@ export class LegalCasesComponent implements OnInit
 	//Getting all the clinics for assigning new cases to specific clinic
 	getAllClinics()
 	{
+		
 		this.dashboardService.getAllClinic().subscribe(
 			data =>
 			{
 				this.clinics = data;
 
-				this.clinics = this.clinics.filter(clinic => clinic.clinicalSupervisorId == this.userId);
-				this.clinicName = this.clinics[0].clinicName;
+				if(this.currentRole==Roles.SUPERVISOR)
+					this.clinics = this.clinics.filter(clinic => clinic.clinicalSupervisorId == this.userId);
+				this.chosenClinic=this.clinics[0];	
+				this.clinicName = this.chosenClinic.clinicName;
 
+				this.getAllCases();
 
-				if (this.currentRole != Roles.STUDENT)
-					this.getAllCases();
-				else
-					this.getAllCasesAssignedToStudent();
 			}
 		)
 
@@ -187,20 +211,11 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
-	getAllCasesAssignedToStudent()
-	{
-		this.dashboardService.getAllCasesAssignedToStudennt(this.userId).subscribe(
-			data =>
-			{
-				this.cases = data;
-			}
-		)
-
-	}
+	
 
 
 	//Modal methodd
-	open(content: string)
+	openAddCaseModal(content: string)
 	{
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
 		{
@@ -213,20 +228,68 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
-	openDeleteModal(firstName: string, lastName: string, id: string)
+		//Modal methodd
+	openEditCaseModal(content: string,legalCase:LegalCase)
 	{
-
+		this.edittedCase=Object.create(legalCase);
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+	
+		});
+	
 	}
+
+	openDeleteModal(content: string)
+	{
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
+	}
+
+	openClientDetailsModal(content:string)
+	{
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
+	}
+
+	openAddClientModal(content:string)
+	{
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
+	}
+
+
 	private getDismissReason(reason: ModalDismissReasons): string
 	{
 		if (reason === ModalDismissReasons.ESC)
 		{
-			this.addedCase=new LegalCase();
+			this.addedCase = new LegalCase();
 			this.addedCase = new LegalCase()
 			return 'by pressing ESC';
 		} else if (reason === ModalDismissReasons.BACKDROP_CLICK)
 		{
-			this.addedCase=new LegalCase();
+			this.addedCase = new LegalCase();
 			return 'by clicking on a backdrop';
 		} else
 		{
@@ -243,56 +306,42 @@ export class LegalCasesComponent implements OnInit
 		this.addedCase.status = "חדש";
 		this.addedCase.caseType = this.defaultCaseType;
 		this.addedCase.clientId = this.chosenClient.id
-		this.addedCase.clinicName = this.clinicName
+		this.addedCase.clinicName = this.chosenClinic.clinicName
 
 		this.dashboardService.addNewCase(this.addedCase).subscribe(
 			data =>
 			{
 				this.cases.push(this.addedCase);
-				this.addedCase=new LegalCase();
+				this.addedCase = new LegalCase();
 			},
-			err=>{
-				this.addedCase=new LegalCase();
-				
+			err =>
+			{
+				this.addedCase = new LegalCase();
+
 			}
 
 		)
 
 	}
 
-	validateFields(): boolean
+
+	validateAddedCaseFields():boolean
 	{
-		if (this.addedCase.id == 0)
-		{
-			alert("מספר תיק חסר ")
-			return false
-		}
-		if (this.currentRole == Roles.SUPERADMIN &&
-			typeof this.addedCase.clinicName == undefined || this.addedCase.clinicName == '')
-		{
-			alert("יש להוסיף שם קליניקה")
-			return false
-		}
-		if (typeof this.addedCase.subject == undefined || this.addedCase.subject == '')
-		{
-			alert("יש להגדיר נושא לתיק")
-			return false
-		}
+	  let isValidated=typeof this.addedCase.id !== 'undefined' && this.addedCase.id>0;
+	  isValidated=isValidated && typeof this.addedCase.subject !== 'undefined' && this.addedCase.subject!="";
+	  isValidated=isValidated && typeof this.chosenClient !== 'undefined';
+	  isValidated=isValidated && typeof this.chosenClinic !== 'undefined';
 
-		if (typeof this.addedCase.caseType == undefined || this.addedCase.caseType == '')
-		{
-			alert("יש להגדיר את סוג התיק")
-			return false
-		}
-
-		if (typeof this.addedCase.clientId == undefined || this.addedCase.clientId == 0)
-		{
-			alert("יש להוסף לקוח לתיק")
-			return false
-		}
-
-		return true;
+	  return isValidated;
 	}
+
+	validateEdittedCaseFields():boolean
+	{
+	  let isValidated=typeof this.edittedCase.subject !== 'undefined' && this.addedCase.subject!="";
+
+	  return isValidated;
+	}
+
 
 	//Invoked for deleting case
 	onDelete(id: string)
@@ -310,23 +359,23 @@ export class LegalCasesComponent implements OnInit
 	//Invoked for updating a case
 	onEdit(lcase: LegalCase)
 	{
-		
-		
+
+
 		this.dashboardService.editCase(lcase).subscribe(
 			data =>
 			{
-				
-				if(this.currentRole==Roles.STUDENT)
-					this.createNotification(NotificationType.EDIT,lcase.id)
-					
-					
+
+				if (this.currentRole == Roles.STUDENT)
+					this.createNotification(NotificationType.EDIT, lcase.id)
+
+
 			},
 			err =>
 			{
 			}
 
 		)
-		
+
 
 	}
 
@@ -341,45 +390,47 @@ export class LegalCasesComponent implements OnInit
 	}
 
 
-	createNotification(type:NotificationType,caseId:number)
+	createNotification(type: NotificationType, caseId: number)
 	{
-		
-		
-		let n:NotificationtsToUsers=new NotificationtsToUsers();
-	  	n.dateTime=new Date();
-	  	n.sourceId=this.userId
-		n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
-		" ערך את פרטי התיק "+caseId+" בקליניקה שלך"  
 
 
-	  this.dashboardService.addNotification(n).subscribe(
-		data=>{
-			this.mapNotification(data[0]);
-			
-		},
-		err=>
-		{
-			
-			
-		}
-	  )
-	  
+		let n: NotificationtsToUsers = new NotificationtsToUsers();
+		n.dateTime = new Date();
+		n.sourceId = this.userId
+		n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+			" ערך את פרטי התיק " + caseId + " בקליניקה שלך"
+
+
+		this.dashboardService.addNotification(n).subscribe(
+			data =>
+			{
+				this.mapNotification(data[0]);
+
+			},
+			err =>
+			{
+
+
+			}
+		)
+
 	}
-  
-	mapNotification(notificationId:string)
+
+	mapNotification(notificationId: string)
 	{
-	  let ng:NotificationManager=new NotificationManager();
-	  ng.unread=false;
-	  ng.notificationId=notificationId;
-	  ng.receiverId=this.currentSuperVisor.id
-	  this.dashboardService.mapNotificationToUser(ng).subscribe(
-		data=>{
-		},
-		err=>
-		{
-		}
-	  )
-	 
+		let ng: NotificationManager = new NotificationManager();
+		ng.unread = false;
+		ng.notificationId = notificationId;
+		ng.receiverId = this.currentSuperVisor.id
+		this.dashboardService.mapNotificationToUser(ng).subscribe(
+			data =>
+			{
+			},
+			err =>
+			{
+			}
+		)
+
 	}
 
 

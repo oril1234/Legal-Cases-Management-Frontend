@@ -1,5 +1,5 @@
 .modal-content {
-  width: 400px;
+  width: 550px;
 }
 
 .btn-outline-primary {
@@ -748,10 +748,28 @@ table.fc-header {
   margin-left: 35%;
   margin-top: 10%;
 }
+
+.not-active-clinic {
+  background-color: grey;
+  color: white;
+}
+
 input::after,
 ::before {
   box-sizing: content-box;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 @media screen and (max-width: 600px) {
   #personalDetails {
     width: 100%;

@@ -323,7 +323,7 @@ editPerson(person:Person)
 
   getAllPolicyPapers()
   {
-    let myUrl=BASE_URL + "/api/v1/api/v1/policyPaper"
+    let myUrl=BASE_URL + "/api/v1/policyPaper"
     return this.http.get<PolicyPaper[]>(`${myUrl}`); 
 
   }
@@ -518,6 +518,13 @@ getNotificationsNumberByPersonID(id:number)
 
 }
 
+getAllNotifications()
+{
+  let myUrl=BASE_URL + `/api/v1/notificationManager`;
+  return this.http.get<NotificationtsToUsers[]>(`${myUrl}`);
+
+}
+
 getNotificationsByPersonID(id:number)
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager/${id}`;
@@ -539,6 +546,12 @@ addNotification(notification:NotificationtsToUsers){
 
 }
 
+getNotificationManagerObjects()
+{
+  let myUrl=BASE_URL + `/api/v1/notificationManager/all`;
+  return this.http.get<NotificationManager[]>(`${myUrl}`);
+}
+
 mapNotificationToUser(notifictionManager:NotificationManager)
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager`;
@@ -546,10 +559,15 @@ mapNotificationToUser(notifictionManager:NotificationManager)
 
 }
 
-
-deleteNotificationForUser(notifictionManager:NotificationManager)
+deleteNotificationManagerByIdAndReceiverId(notificationId:string,userId:number)
 {
-  let myUrl=BASE_URL + `/api/v1/notificationManager/${notifictionManager.notificationId}`;
+  let myUrl=BASE_URL + `/api/v1/notificationManager/${notificationId}/${userId}`;
+  return this.http.delete(`${myUrl}`);
+}
+
+deleteNotificationById(id:string)
+{
+  let myUrl=BASE_URL + `/api/v1/notification/${id}`;
   return this.http.delete(`${myUrl}`);
 
 }

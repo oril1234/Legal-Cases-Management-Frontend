@@ -276,17 +276,17 @@ export class ResearchComponent implements OnInit {
 		{
 			if(type==NotificationType.ADD)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" הוסיף מחקר חדש בקליניקה שלו";
 			}
 			else if(type==NotificationType.EDIT)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" ערך את מחקר מספר  "+caseId+" בקליניקה שלו";
 			}
 			else if(type==NotificationType.DELETE)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" מחק את מחקר מספר   "+caseId+" בקליניקה שלו";
 			}
 		}
@@ -295,17 +295,17 @@ export class ResearchComponent implements OnInit {
 		{
 			if(type==NotificationType.ADD)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" הוסיף מחקר חדש בקליניקה שלך ";
 			}
 			else if(type==NotificationType.EDIT)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" ערך את מחקר מספר  "+caseId+" בקליניקה שלך";
 			}
 			else if(type==NotificationType.DELETE)
 			{
-				n.details=this.userDetails.firstName+" "+this.userDetails.lastname+
+				n.details=this.userDetails.firstName+" "+this.userDetails.lastName+
 				" מחק את מחקר מספר   "+caseId+" בקליניקה שלך";
 			}
 		}

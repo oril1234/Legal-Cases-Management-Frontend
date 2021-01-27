@@ -8,6 +8,7 @@ import {Roles} from '../../_models/roles.enum';
 import { environment } from "../../../environments/environment";
 import jwt_decode from 'jwt-decode';
 import {JwtHelperService} from '@auth0/angular-jwt';
+import { Person } from 'src/app/_models/person';
 
 let BASE_URL:string = "http://localhost:9090";
 
@@ -59,6 +60,12 @@ roles = new BehaviorSubject<Roles>(Roles.SUPERVISOR);
   {
     return this.httpClient.get<string[]>(BASE_URL + `/api/v1/person/role/${userName}`);
   }
+
+  getPerson(userName:number)
+  {
+    return this.httpClient.get<Person>(BASE_URL + `/api/v1/person/${userName}`);
+  }
+
 
   getJwtToken() {
     return localStorage.getItem('authenticationToken');
