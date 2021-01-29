@@ -246,6 +246,13 @@ editPerson(person:Person)
   }
 
   
+  getAllAssignedCases()
+  {
+    let myUrl=BASE_URL + `/api/v1/caseAssigned`
+    return this.http.get<AssignedCase[]>(`${myUrl}`); 
+
+  }
+
   getAllAssignedCasesBySupervisor(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/caseAssigned/allCasesAssigedToStudents/${id}`
@@ -387,7 +394,7 @@ editPerson(person:Person)
   updateClinicDetails(clinic:Clinic)
   {
     let myUrl=BASE_URL +`/api/v1/clinic/${clinic.clinicName}`
-    return this.http.put<number>(`${myUrl}`,clinic); 
+    return this.http.put(`${myUrl}`,clinic); 
 
   }
     
@@ -397,9 +404,9 @@ editPerson(person:Person)
     return this.http.get(`${myUrl}`); 
   }
 
-  deleteClinic(id:number)
+  deleteClinic(clinicName:string)
   {
-    let myUrl=BASE_URL + `/api/v1/clinic/${id}`
+    let myUrl=BASE_URL + `/api/v1/clinic/${clinicName}`
     return this.http.delete<Clinic[]>(`${myUrl}`); 
   }
 

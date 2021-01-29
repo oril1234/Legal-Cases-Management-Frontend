@@ -26,14 +26,10 @@ import { Student } from 'src/app/_models/student';
 })
 export class AssignedCaseComponent implements OnInit {
 
-	clinics:Clinic[];
 	cases:LegalCase[]
-	supervisors:ClinicalSupervisor[]
 	currentSuperVisor:ClinicalSupervisor
 	currentRole=parseInt(localStorage.getItem('Role')+"");
     closeResult="";
-	currentStatus=""
-	clinicName:string=""
 	currentClient:Client=new Client()
 	userId = parseInt(
 		JSON.parse(
@@ -41,12 +37,9 @@ export class AssignedCaseComponent implements OnInit {
 			jwt_decode(localStorage.getItem("authenticationToken") + "")
 		  )
 		).sub);
-	userFullName:string=""
-	students:Student[]=[]	
-
-
+  students:Student[]=[]
+  supervisors:ClinicalSupervisor[]=[]	
   caseAssignedBySupervisor:CaseAssignedSupervisorsList[]=[]
-  currentAssignment:AssignedCase=new AssignedCase()
   chosenStudent:Student=new Student()
   chosenCase:LegalCase=new LegalCase()
 
@@ -65,22 +58,33 @@ export class AssignedCaseComponent implements OnInit {
 		this.getSupervisorsDetails()	
 
 	}
-	public ngOnInit(): void {
+public ngOnInit(): void 
+{
 		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-	
-	  }
-  getSupervisorsDetails()
-  {
+}
+
+getSupervisorsDetails()
+{
 	  this.dashboardService.getClinicalSupervisorById(this.userId).subscribe(
 		data=>{
 			this.currentSuperVisor=data;
-
 		}
 	  )
-  }
+}
 
   getAllAssignedCasesBySupervisor()
   {
+
+	if(this.currentRole==Roles.SUPERADMIN)
+	{
+		this.dashboardService.getAllSupervisors().subscribe(
+			data=>{
+				this.supervisors=data;
+				this.dashboardService
+			}
+		)
+	}
+
     this.dashboardService.getAllAssignedCasesBySupervisor(this.userId).subscribe(
       data=>{
         this.caseAssignedBySupervisor=data;
@@ -97,7 +101,6 @@ export class AssignedCaseComponent implements OnInit {
 		  data=>{
 			  data=data.filter(clinic=>clinic.clinicalSupervisorId==this.userId);
 			  let clinicName=data[0].clinicName;
-			  
 			  
 			  this.dashboardService.getAllCases().subscribe(
 				  data1=>{
@@ -203,7 +206,7 @@ export class AssignedCaseComponent implements OnInit {
 		}
 		createNotification(type:NotificationType,studentId:number,caseId:number)
 		{
-			let n:NotificationtsToUsers=new NotificationtsToUsers();
+		  let n:NotificationtsToUsers=new NotificationtsToUsers();
 		  n.dateTime=new Date();
 		  n.sourceId=this.userId
 		  
@@ -221,7 +224,7 @@ export class AssignedCaseComponent implements OnInit {
 				n.details="המנחה שלך, "+this.currentSuperVisor.firstName+' '+
 				this.currentSuperVisor.lastName+" ביטל את ההקצאה שלך לתיק מספר "+caseId;
 			}
-		  this.dashboardService.addNotification(n).subscribe(
+		   this.dashboardService.addNotification(n).subscribe(
 			data=>{
 				this.mapNotification(data[0],studentId);
 			  
@@ -230,6 +233,11 @@ export class AssignedCaseComponent implements OnInit {
 			{
 			}
 		  )
+		}
+
+		createNotificationForSupervisorFromAdmin(type: NotificationType, caseId: number,supervisorId:number)
+		{
+
 		}
 	  
 		mapNotification(notificationId:string,studentId:number)

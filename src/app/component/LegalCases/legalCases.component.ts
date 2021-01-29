@@ -17,6 +17,7 @@ import { NotificationType } from 'src/app/_models/notification-type.enum';
 import { NotificationtsToUsers } from 'src/app/_models/notification';
 import { NotificationManager } from 'src/app/_models/notification-manager';
 import { Person } from 'src/app/_models/person';
+import { AssignedCase } from 'src/app/_models/assigned-case';
 
 
 
@@ -33,6 +34,7 @@ export class LegalCasesComponent implements OnInit
 	admin:Person=new Person()
 	title:string="פרטי תיקים בקליניקה";
 	cases: LegalCase[];
+	assignedCases:AssignedCase[]=[]
 	clinics: Clinic[];
 	chosenClinic: Clinic = new Clinic()
 	supervisors: ClinicalSupervisor[]
@@ -80,7 +82,10 @@ export class LegalCasesComponent implements OnInit
 		this.getPersonDetails();
 
 		if (this.currentRole != Roles.STUDENT)
-			this.getAllClinics();
+			{
+				this.getAllClinics();
+				this.getAllCaseseAssigned();
+			}
 		else
 			this.getAllCases();
 		this.getClients()
@@ -211,6 +216,16 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
+	getAllCaseseAssigned()
+	{
+		this.dashboardService.getAllAssignedCases().subscribe(
+			data=>{
+				this.assignedCases=data;
+				
+			}
+		)
+	}
+
 	
 
 
@@ -337,7 +352,10 @@ export class LegalCasesComponent implements OnInit
 
 	validateEdittedCaseFields():boolean
 	{
-	  let isValidated=typeof this.edittedCase.subject !== 'undefined' && this.addedCase.subject!="";
+	  let isValidated=typeof this.edittedCase.subject !== 'undefined' && this.edittedCase.subject!="";
+	  isValidated=isValidated && typeof this.edittedCase.status !== 'undefined' && this.edittedCase.status!="";
+	  isValidated=isValidated && typeof this.edittedCase.courtCaseId !== 'undefined' && this.edittedCase.courtCaseId+""!=""
+	  && this.edittedCase.courtCaseId>=0;	
 
 	  return isValidated;
 	}
@@ -364,10 +382,8 @@ export class LegalCasesComponent implements OnInit
 		this.dashboardService.editCase(lcase).subscribe(
 			data =>
 			{
-
 				if (this.currentRole == Roles.STUDENT)
 					this.createNotification(NotificationType.EDIT, lcase.id)
-
 
 			},
 			err =>
@@ -393,45 +409,96 @@ export class LegalCasesComponent implements OnInit
 	createNotification(type: NotificationType, caseId: number)
 	{
 
+		let relevantCase:LegalCase=this.cases.filter(lCase=>lCase.id==caseId)[0];
+		let relevantClinic:Clinic=this.clinics.filter(clinic=>clinic.clinicName==relevantCase.clinicName)[0];
+		let relevantSupervisorId=relevantClinic.clinicalSupervisorId;
+		
+		this.createNotificationForStudnets(caseId);
+		if(this.admin.id!=relevantSupervisorId && this.userId==this.admin.id)
+		{
+			this.createNotificationForSupervisorFromAdmin(type,caseId,relevantSupervisorId);
+		}
 
+
+	}
+
+	createNotificationForSupervisorFromAdmin(type: NotificationType, caseId: number,supervisorId:number)
+	{
 		let n: NotificationtsToUsers = new NotificationtsToUsers();
 		n.dateTime = new Date();
-		n.sourceId = this.userId
-		n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
-			" ערך את פרטי התיק " + caseId + " בקליניקה שלך"
+		n.sourceId = this.userId;
 
+		if(type==NotificationType.EDIT)
+		{
+			n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+			" ערך את פרטי התיק " + caseId + " בקליניקה שלך";
+		}
+		else if(type==NotificationType.ADD)
+		{
+			n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+			" הוסיף את תיק מספר " + caseId + " לקליניקה שלך";
+		}
+		else
+		{
+			n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+			" מחר את תיק מסםר " + caseId + " מהקליניקה שלך"
+		}
 
 		this.dashboardService.addNotification(n).subscribe(
-			data =>
-			{
-				this.mapNotification(data[0]);
+			data=>{
+				let notificationId:string=data[0];
+				let ng: NotificationManager = new NotificationManager();
+				ng.unread = false;
+				ng.notificationId = notificationId;
+				ng.receiverId = supervisorId;
+				this.dashboardService.mapNotificationToUser(ng).subscribe(
 
-			},
-			err =>
-			{
-
-
+				)
 			}
-		)
-
+		)	
 	}
 
-	mapNotification(notificationId: string)
+	createNotificationForStudnets(caseId: number)
 	{
-		let ng: NotificationManager = new NotificationManager();
-		ng.unread = false;
-		ng.notificationId = notificationId;
-		ng.receiverId = this.currentSuperVisor.id
-		this.dashboardService.mapNotificationToUser(ng).subscribe(
-			data =>
-			{
-			},
-			err =>
-			{
+		let assignedCases=this.assignedCases.filter(aCase=>aCase.legalCaseId==caseId);
+		if(assignedCases.length==0)
+			return;
+		let n: NotificationtsToUsers = new NotificationtsToUsers();
+		n.dateTime = new Date();
+		n.sourceId = this.userId;
+		n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+		" ערך את פרטי התיק " + caseId + " המוקצה עבורך";	
+		
+		this.dashboardService.addNotification(n).subscribe(
+			data=>{
+				let notificationId:string=data[0];
+				assignedCases.forEach(aCase=>{
+			
+					if(aCase.studentId!=this.userId)
+					{
+						let ng: NotificationManager = new NotificationManager();
+						ng.unread = false;
+						ng.notificationId = notificationId;
+						ng.receiverId = aCase.studentId;
+						this.dashboardService.mapNotificationToUser(ng).subscribe(
+							data =>
+							{
+							},
+	
+						)
+					}
+
+
+				})
+
 			}
-		)
+		)	
+
+
 
 	}
+
+
 
 
 	addNewClient()

@@ -127,7 +127,8 @@
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
+                                        <button [disabled]="!validateEdittedCaseFields()" type="button"
+                                            class="btn btn-primary btn-rounded btn-success mb-2"
                                             (click)="modal.close('Save click');onEdit(case)">אישור</button>
                                     </div>
                                 </ng-template>

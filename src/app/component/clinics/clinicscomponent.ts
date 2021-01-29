@@ -12,8 +12,11 @@ import { Router } from '@angular/router';
 })
 export class ClinicsComponent  implements OnInit {
   currentRole=parseInt(localStorage.getItem("Role")+"");
-  clinics!:Clinic[]
-  supervisors!:ClinicalSupervisor[];
+  clinics!:Clinic[];
+  addedClinic:Clinic=new Clinic()
+  edittedClinic:Clinic=new Clinic()
+  supervisors:ClinicalSupervisor[]=[];
+  supervisor:ClinicalSupervisor=new ClinicalSupervisor();
   closeResult=""
 
   clinicsForm = new FormGroup({
@@ -34,25 +37,51 @@ public ngOnInit(): void {
 }
 
 	  	//Modal methodd
-		  open(content:string,String:string) {
-        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
-          this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+openAddModal(content:string) 
+{
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     
-        });
+      });
         
-      }
+}
 
-      private getDismissReason(reason: ModalDismissReasons): string {
-        if (reason === ModalDismissReasons.ESC) {
+	//Modal methodd
+  openEditModal(content:string,clinic:Clinic) 
+  {
+      this.edittedClinic=Object.create(clinic);
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          
+      });
+              
+  }
+
+  openDeleteModal(content:string) 
+  {
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    
+      });
+        
+  }
+
+private getDismissReason(reason: ModalDismissReasons): string 
+{
+    if (reason === ModalDismissReasons.ESC) {
           return 'by pressing ESC';
         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
           return 'by clicking on a backdrop';
         } else {
           return  `with: ${reason}`;
         }
-      }
+  }
     
 
   getAllClinics()
@@ -61,7 +90,6 @@ public ngOnInit(): void {
         this.dashboardService.getAllClinic().subscribe(
           data=> {
             this.clinics=data;
-          
           },
           err=>
           {
@@ -76,6 +104,7 @@ public ngOnInit(): void {
     this.dashboardService.getAllSupervisors().subscribe(
       data=> {
         this.supervisors=data;
+        this.supervisor=this.supervisors[0];
 
       }
       
@@ -98,40 +127,47 @@ return "";
   onSave()
 	{
 
-     const clinic:Clinic=new Clinic();
-     clinic.clinicName=this.clinicsForm.get("clinicName")?.value;
-     clinic.clinicalSupervisorId=parseInt(this.clinicsForm.get("clinicalSupervisorID")?.value);
-     clinic.yearFounded=new Date().getFullYear();
+     this.addedClinic.clinicalSupervisorId=this.supervisor.id;
+     this.addedClinic.yearFounded=new Date().getFullYear();
+     this.addedClinic.active=true;
+     this.addedClinic.description="תיאור "+this.addedClinic.clinicName;
   
 
-		 this.dashboardService.addNewClinic(clinic).subscribe(
+		 this.dashboardService.addNewClinic(this.addedClinic).subscribe(
 			 
 		 )
 	}
 
-	onDelete(id:string)
+	onDelete(clinicName:string)
 	{
 		
-		this.dashboardService.deleteClinic(parseInt(id)).subscribe(
+		this.dashboardService.deleteClinic(clinicName).subscribe(
 
 		);
 	}
 
 	onEdit(clinicToEdit:Clinic)
 	{
-    const clinic:Clinic=new Clinic();
-    clinic.clinicName=clinicToEdit.clinicName;
-    clinic.clinicalSupervisorId=clinicToEdit.clinicalSupervisorId;
-    clinic.yearFounded=clinicToEdit.yearFounded;
- 
-    
-    this.dashboardService.updateClinicDetails(clinic).subscribe(
-      data=>{
 
+    console.log(this.edittedClinic)
+
+
+    this.dashboardService.updateClinicDetails(this.edittedClinic).subscribe(
+      data=>{
+        alert("YES!!!!")
+      },
+      err=>{
+        alert("NO!!!!!!")
       }
     )
+    
     
 		 
 		
 	}
+
+ onChange()
+ {
+   console.log(this.edittedClinic)
+ } 
 }

@@ -22,7 +22,7 @@
 
 						<tr [ngClass]="{'not-active-clinic':!clinic.active}" *ngFor="let clinic of clinics">
 							<td style="text-align:right;">
-								<button class="btn-primary mr-1" (click)="open(editModal,'')"><i
+								<button class="btn-primary mr-1" (click)="openEditModal(editModal,clinic)"><i
 										class="fa fa-edit"></i></button>
 								<!--Edit Modal -->
 								<ng-template #editModal let-modal>
@@ -34,22 +34,50 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form dir="rtl" [formGroup]="clinicsForm" style="padding: 0;">
+										<form dir="rtl">
 
-											<label>
-												שם </label>
-											<input type="text" formControlName="clinicName"
-												[(ngModel)]="clinic.clinicName"><br>
+											<div class="row">
+												<div class="col-3">
+													<label>
+														שם הקליניקה: </label>
+
+												</div>
+												<div class="col-9">
+													<input style="width: 100%;" type="text" name="clinicName"
+														[(ngModel)]="edittedClinic.clinicName">
+												</div>
+											</div>
 
 
-											<label>
-												מנחה</label>
-											<select style="width: 150px;" formControlName="clinicalSupervisor"
-												[(ngModel)]="clinic.clinicalSupervisorId">
-												<option *ngFor="let s of supervisors">
-													{{s.id}}
-												</option>
-											</select>
+											<div class="row">
+												<div class="col-3">
+													<label>
+														מנחה</label>
+												</div>
+												<div class="col-9">
+													<select (change)="onChange()" style="width: 100%;"
+														name="clinicalSupervisorId"
+														[(ngModel)]="edittedClinic.clinicalSupervisorId">
+														<option *ngFor="let s of supervisors" [value]="s.id">
+															{{s.firstName+' '+s.lastName}}
+														</option>
+													</select>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-3">
+													<label>
+														תיאור:</label>
+												</div>
+												<div class="col-9">
+													<textarea style="width: 100%;height:350px"
+														[(ngModel)]="edittedClinic.description" name="description">
+
+													</textarea>
+
+												</div>
+											</div>
 
 										</form>
 									</div>
@@ -60,7 +88,8 @@
 								</ng-template>
 
 
-								<button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
+								<button class="btn btn-sm btn-danger btn-delete-account"
+									(click)="openDeleteModal(deleteModal)">
 									<span class="spinner-border spinner-border-sm"><i
 											class="fa fa-trash-alt"></i></span>
 								</button>
@@ -78,7 +107,7 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-danger"
-											(click)="modal.close('Save click');onDelete(student.id)">מחק</button>
+											(click)="modal.close('Save click');onDelete(clinic.clinicName)">מחק</button>
 										<button style="margin-right:15px;" type="button" class="btn btn-outline-dark"
 											(click)="modal.close('Save click')">ביטול</button>
 									</div>
@@ -97,7 +126,7 @@
 				</table>
 
 				<button style="color: white;font-size: 21;float:right" class="btn btn-success btn-rounded"
-					(click)="open(addModal,'')">צור קליניקה חדשה</button>
+					(click)="openAddModal(addModal)">צור קליניקה חדשה</button>
 				<!--Add Modal -->
 				<ng-template #addModal let-modal>
 					<div class="modal-header">
@@ -108,20 +137,30 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form dir="rtl" [formGroup]="clinicsForm" style="padding: 0;">
-
-							<label>
-								שם הקליניקה</label>
-							<input type="text" formControlName="clinicName"><br>
-							<label>
-								מנחה</label>
-							<select style="width: 150px;" formControlName="clinicalSupervisor">
-								<option *ngFor="let s of supervisors">
-									{{s.id}}
-								</option>
-							</select>
-
-
+						<form dir="rtl" style="padding: 0;">
+							<div class="row">
+								<div class="col-5">
+									<label>
+										שם הקליניקה</label>
+								</div>
+								<div class="col-7">
+									<input name="clinicName" type="text" [(ngModel)]="addedClinic.clinicName">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-5">
+									<label>
+										מנחה
+									</label>
+								</div>
+								<div class="col-7">
+									<select name="supervisor" style="width: 150px;" [(ngModel)]="supervisor">
+										<option *ngFor="let s of supervisors" [ngValue]="s">
+											{{s.firstName}}
+										</option>
+									</select>
+								</div>
+							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
