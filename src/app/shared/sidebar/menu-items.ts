@@ -62,6 +62,7 @@ export const ROUTES: RouteInfo[] = [
     hasSub:false,
     showSub:false
   },
+  /*
   {
     path: '/component/csvimport',
     title: 'ייבוא נתוני סטודנטים',
@@ -74,6 +75,7 @@ export const ROUTES: RouteInfo[] = [
     hasSub:false,
     showSub:false
   },
+  */
   {
     path: '/component/assignedCases',
     title: 'ניהול תיקים',
