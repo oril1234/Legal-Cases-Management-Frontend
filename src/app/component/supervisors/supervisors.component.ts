@@ -122,12 +122,24 @@ this.getAllSupervisors();
 	onEdit(supervisor:ClinicalSupervisor)
 	{
 
+		alert("The password is "+this.edittedSupervisor.password)
+		
+		this.edittedSupervisor.firstName=this.edittedSupervisor.firstName;
+        this.edittedSupervisor.lastName=this.edittedSupervisor.lastName;
+        this.edittedSupervisor.id=this.edittedSupervisor.id;
+        this.edittedSupervisor.email=this.edittedSupervisor.email;
+        this.edittedSupervisor.phoneNumber=this.edittedSupervisor.phoneNumber;
+        this.edittedSupervisor.imgUrl=this.edittedSupervisor.imgUrl;
+        this.edittedSupervisor.password=this.edittedSupervisor.password;
+		this.edittedSupervisor.role=this.edittedSupervisor.role;
+		this.edittedSupervisor.sinceYear=this.edittedSupervisor.sinceYear;
 		 this.dashboardService.editSupervisor(this.edittedSupervisor).subscribe(
 			data=>{
 				supervisor=Object.create(this.edittedSupervisor)
 			},
 			err=>alert("Not edited!!!!")
 		 )
+		 
 	}
 
 	validateAddedFields():boolean

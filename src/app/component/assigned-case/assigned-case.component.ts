@@ -10,7 +10,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Clinic } from 'src/app/_models/clinic';
 import jwt_decode from "jwt-decode";
 import { ActivatedRoute, Router } from '@angular/router';
-import {Client} from '../../_models/client'
 import { Roles } from 'src/app/_models/roles.enum';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
 import { NotificationType } from 'src/app/_models/notification-type.enum';
@@ -19,6 +18,7 @@ import { NotificationManager } from 'src/app/_models/notification-manager';
 import {CaseAssignedSupervisorsList} from 'src/app/_models/case-assigned-supervisors-list';
 import {AssignedCase} from 'src/app/_models/assigned-case';
 import { Student } from 'src/app/_models/student';
+import { Person } from 'src/app/_models/person';
 @Component({
   selector: 'app-assigned-case',
   templateUrl: './assigned-case.component.html',
@@ -26,11 +26,13 @@ import { Student } from 'src/app/_models/student';
 })
 export class AssignedCaseComponent implements OnInit {
 
+	admin:Person=new Person()
+	clinics:Clinic[]=[];
+	chosenClinic:Clinic=new Clinic()
 	cases:LegalCase[]
-	currentSuperVisor:ClinicalSupervisor
+	currentSuperVisor:ClinicalSupervisor=new ClinicalSupervisor()
 	currentRole=parseInt(localStorage.getItem('Role')+"");
     closeResult="";
-	currentClient:Client=new Client()
 	userId = parseInt(
 		JSON.parse(
 		  JSON.stringify(
@@ -40,27 +42,46 @@ export class AssignedCaseComponent implements OnInit {
   students:Student[]=[]
   supervisors:ClinicalSupervisor[]=[]	
   caseAssignedBySupervisor:CaseAssignedSupervisorsList[]=[]
+  caseAssignedByAllSupervisors:CaseAssignedSupervisorsList[]=[]
   chosenStudent:Student=new Student()
   chosenCase:LegalCase=new LegalCase()
 
   studentToCancelAssignment:Student=new Student()
   assignmentToCancel:LegalCase=new LegalCase()			
 
-	constructor(private dashboardService: DashboardService,private modalService: NgbModal,
-		private route:ActivatedRoute,
-		private router: Router
-		) {
+constructor(private dashboardService: DashboardService,private modalService: NgbModal,
+ private route:ActivatedRoute,private router: Router)
+{
 
-
+	this.getAdminDetails();
+	if(this.currentRole==Roles.SUPERVISOR)
+	{
 		this.getAllAssignedCasesBySupervisor()
-		this.getAllClinics()
-		this. getStudentsInClinic()
-		this.getSupervisorsDetails()	
-
+		this.getAllCaseseDetails()
+		this.getStudentsInClinic()
+		this.getSupervisorsDetails();
 	}
+	else
+	{
+		this.getAllAssignedCasesBySupervisorForAdmin();
+	}	
+
+}
 public ngOnInit(): void 
 {
-		this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+	this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+}
+
+getAdminDetails()
+{
+	this.dashboardService.getAllPersons().subscribe(
+		data=>{
+			data=data.filter(person=>person.role=="Super Admin")
+			this.admin=data[0];
+		},
+		err=>{
+		}
+	)
 }
 
 getSupervisorsDetails()
@@ -72,31 +93,65 @@ getSupervisorsDetails()
 	  )
 }
 
-  getAllAssignedCasesBySupervisor()
-  {
+getAllAssignedCasesBySupervisorForAdmin()
+{
+	this.dashboardService.getAllSupervisors().subscribe(
+		data=>{
+			this.supervisors=data;
+			this.currentSuperVisor=this.supervisors[0];
 
-	if(this.currentRole==Roles.SUPERADMIN)
-	{
-		this.dashboardService.getAllSupervisors().subscribe(
+			this.dashboardService.getAllAssignedCasesBySupervisor(this.currentSuperVisor.id).subscribe(
+				data=>{
+				  this.caseAssignedBySupervisor=data;
+				  this.getCasesDetailsForAdmin();
+				},
+				err=>{
+					
+				}
+			  )
+		
+		}
+	)
+}
+
+getCasesDetailsForAdmin()
+{
+	this.dashboardService.getAllClinic().subscribe(
+		data=>{
+			
+			this.clinics=data;
+			this.chosenClinic=this.clinics.filter(clinic=>clinic.clinicalSupervisorId==this.currentSuperVisor.id)[0];
+			let clinicName=this.chosenClinic.clinicName;
+
+			this.dashboardService.getAllCases().subscribe(
+				data1=>{
+					this.cases=data1.filter(lCase=>lCase.clinicName==clinicName);
+					this.chosenCase=this.cases[0];
+					this.getStudentsInClinicForAdmin();
+					
+				}
+			)
+		}
+	)
+}
+
+
+getAllAssignedCasesBySupervisor()
+{
+		this.dashboardService.getAllAssignedCasesBySupervisor(this.userId).subscribe(
 			data=>{
-				this.supervisors=data;
-				this.dashboardService
+			  this.caseAssignedBySupervisor=data;
+			},
+			err=>{
+				
 			}
-		)
-	}
+		  )
 
-    this.dashboardService.getAllAssignedCasesBySupervisor(this.userId).subscribe(
-      data=>{
-        this.caseAssignedBySupervisor=data;
-      },
-	  err=>{
-		  
-	  }
-    )
-  }
+
+}
   
-  getAllClinics()
-  {
+getAllCaseseDetails()
+{
 	  this.dashboardService.getAllClinic().subscribe(
 		  data=>{
 			  data=data.filter(clinic=>clinic.clinicalSupervisorId==this.userId);
@@ -105,18 +160,16 @@ getSupervisorsDetails()
 			  this.dashboardService.getAllCases().subscribe(
 				  data1=>{
 					  this.cases=data1.filter(lCase=>lCase.clinicName==clinicName);
-			
-
 					  this.chosenCase=this.cases[0];
 					  
 				  }
 			  )
 		  }
 	  )
-  }
+}
 
-  getStudentsInClinic()
-  {
+getStudentsInClinic()
+{
 	  this.dashboardService.getAllStudents().subscribe(
 		  data=>{
 			  this.students=data.filter(student=>student.clinicalSupervisorId==this.userId);
@@ -124,34 +177,62 @@ getSupervisorsDetails()
 
 		  }
 	  )
-  }
+}
 
+getStudentsInClinicForAdmin()
+{
+	  this.dashboardService.getAllStudents().subscribe(
+		  data=>{
+			  this.students=data.filter(student=>student.clinicalSupervisorId==this.currentSuperVisor.id);
+			  this.chosenStudent=this.students[0];
+
+		  }
+	  )
+}
+
+changeClinic()
+{
+	this.currentSuperVisor=this.supervisors.filter(supervisor=>supervisor.id==this.chosenClinic.clinicalSupervisorId)[0];
+
+	this.dashboardService.getAllAssignedCasesBySupervisor(this.currentSuperVisor.id).subscribe(
+		data=>{
+		
+		  this.caseAssignedBySupervisor=data;
+		  this.getCasesDetailsForAdmin();
+		},
+		err=>{
+			
+		}
+	  )
+}
 
   
-	  	//Modal methodd
-		  open(content:string) {
-			this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
-				this.closeResult = `Closed with: ${result}`;
-			}, (reason) => {
+//Modal methodd
+open(content:string) 
+{
+	 this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
+	 this.closeResult = `Closed with: ${result}`;
+	 }, (reason) => {
 				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 	
 			});
 			
+}
+
+private getDismissReason(reason: ModalDismissReasons): string 
+{
+	if (reason === ModalDismissReasons.ESC) {
+		return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return  `with: ${reason}`;
+		}
 		}
 
-		private getDismissReason(reason: ModalDismissReasons): string {
-			if (reason === ModalDismissReasons.ESC) {
-				return 'by pressing ESC';
-			} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-				return 'by clicking on a backdrop';
-			} else {
-				return  `with: ${reason}`;
-			}
-		}
-
-		onSave()
-		{
-			const assigned=new AssignedCase();
+onSave()
+{
+	const assigned=new AssignedCase();
 			assigned.dateAssigned=new Date()
 			assigned.legalCaseId=this.chosenCase.id
 			assigned.studentId=this.chosenStudent.id;
@@ -176,10 +257,10 @@ getSupervisorsDetails()
 				}
 			)
 
-		}
+}
 
-		onAssignCancel(caseId:number,studentName:string)
-		{
+onAssignCancel(caseId:number,studentName:string)
+{
 			
 			
 			let studentId:number=0;
@@ -201,59 +282,102 @@ getSupervisorsDetails()
 				err=>{
 				}
 			)
+
 			
-			
-		}
-		createNotification(type:NotificationType,studentId:number,caseId:number)
-		{
-		  let n:NotificationtsToUsers=new NotificationtsToUsers();
-		  n.dateTime=new Date();
-		  n.sourceId=this.userId
+}
+createNotification(type:NotificationType,studentId:number,caseId:number)
+{
+	let studentNotification:NotificationtsToUsers=new NotificationtsToUsers();
+	studentNotification.dateTime=new Date();
+	studentNotification.sourceId=this.userId;
+
+	let supervisorNotification:NotificationtsToUsers=new NotificationtsToUsers();
+	supervisorNotification.dateTime=new Date();
+	supervisorNotification.sourceId=this.userId
+
 		  
-			if(type==NotificationType.ADD)
-			{
-			  n.details="המנחה שלך, "
-			  +this.currentSuperVisor.firstName+' '+
-			  this.currentSuperVisor.lastName+
-			  " הקצה עבורך את תיק מספר "+
-			  caseId;
-			}
+	if(type==NotificationType.ADD)
+	{
+		studentNotification.details="המנחה שלך, "
+		+this.currentSuperVisor.firstName+' '+
+		this.currentSuperVisor.lastName+
+		" הקצה עבורך את תיק מספר "+
+		caseId;
 
-			if(type==NotificationType.DELETE)
-			{
-				n.details="המנחה שלך, "+this.currentSuperVisor.firstName+' '+
-				this.currentSuperVisor.lastName+" ביטל את ההקצאה שלך לתיק מספר "+caseId;
-			}
-		   this.dashboardService.addNotification(n).subscribe(
-			data=>{
-				this.mapNotification(data[0],studentId);
+		if(this.currentRole==Roles.SUPERADMIN && this.currentSuperVisor.id!=this.admin.id)
+		{
+			supervisorNotification.details=", "
+			+this.admin.firstName+' '+
+			this.admin.lastName+
+			" הקצה את תיק מספר "+
+			caseId+
+			" עבור סטודנט מספר "+
+			studentId+
+			" בקליניקה שלך.";
+		}
+    }
+
+	if(type==NotificationType.DELETE)
+	{
+		studentNotification.details="המנחה שלך, "+this.currentSuperVisor.firstName+' '+
+		this.currentSuperVisor.lastName+" ביטל את ההקצאה שלך לתיק מספר "+caseId;
+		if(this.currentRole==Roles.SUPERADMIN && this.currentSuperVisor.id!=this.admin.id)
+		{
+			supervisorNotification.details=", "
+			+this.admin.firstName+' '+
+			this.admin.lastName+
+			" ביטל את הקצאת תיק מספר "+
+			caseId+
+			" עבור סטודנט מספר "+
+			studentId+
+			" בקליניקה שלך.";
+		}
+		
+	}
+	this.dashboardService.addNotification(studentNotification).subscribe(
+	data=>{
+			this.mapNotification(data[0],studentId);
 			  
-			},
-			err=>
-			{
-			}
-		  )
-		}
-
-		createNotificationForSupervisorFromAdmin(type: NotificationType, caseId: number,supervisorId:number)
+		 },
+	err=>
 		{
-
 		}
-	  
-		mapNotification(notificationId:string,studentId:number)
-		{
-		  let ng:NotificationManager=new NotificationManager();
-		  ng.unread=false;
-		  ng.notificationId=notificationId;
-		  ng.receiverId=studentId
-		  this.dashboardService.mapNotificationToUser(ng).subscribe(
+		  
+	)
+
+	if(this.currentRole==Roles.SUPERADMIN)
+	{
+		this.dashboardService.addNotification(supervisorNotification).subscribe(
 			data=>{
-			},
+					this.mapNotification(data[0],this.currentSuperVisor.id);
+					  
+				 },
 			err=>
-			{
-			}
-		  )
-		 
+				{
+				}
+				  
+			)
+	}
+}
+
+
+	
+	mapNotification(notificationId:string,receiverId:number)
+	{
+		let ng:NotificationManager=new NotificationManager();
+		ng.unread=false;
+		ng.notificationId=notificationId;
+		ng.receiverId=receiverId
+		this.dashboardService.mapNotificationToUser(ng).subscribe(
+		data=>
+		{
+		},
+		err=>
+		{
 		}
+			
+		)
+		 
+	}
 
 }

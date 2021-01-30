@@ -342,7 +342,16 @@ export class StudentsComponent implements OnInit {
         }
       });
       if (detected) {
-        alert("THe password is "+this.edittedStudent.password)
+        this.edittedStudent.firstName=this.edittedStudent.firstName;
+        this.edittedStudent.lastName=this.edittedStudent.lastName;
+        this.edittedStudent.id=this.edittedStudent.id;
+        this.edittedStudent.email=this.edittedStudent.email;
+        this.edittedStudent.phoneNumber=this.edittedStudent.phoneNumber;
+        this.edittedStudent.imgUrl=this.edittedStudent.imgUrl;
+        this.edittedStudent.password=this.edittedStudent.password;
+
+        
+
         this.dashboardService.editStudent(this.edittedStudent).subscribe((data) => {
           student=Object.create(this.edittedStudent);
           this.createNotification(NotificationType.EDIT)

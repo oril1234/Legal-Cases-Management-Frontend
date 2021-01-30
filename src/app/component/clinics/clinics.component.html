@@ -20,7 +20,8 @@
 					</thead>
 					<tbody>
 
-						<tr [ngClass]="{'not-active-clinic':!clinic.active}" *ngFor="let clinic of clinics">
+						<tr [ngClass]="{'not-active-clinic':!clinic.active}"
+							*ngFor="let clinic of clinics;let i = index">
 							<td style="text-align:right;">
 								<button class="btn-primary mr-1" (click)="openEditModal(editModal,clinic)"><i
 										class="fa fa-edit"></i></button>
@@ -55,9 +56,9 @@
 														מנחה</label>
 												</div>
 												<div class="col-9">
-													<select (change)="onChange()" style="width: 100%;"
-														name="clinicalSupervisorId"
-														[(ngModel)]="edittedClinic.clinicalSupervisorId">
+													<select #supervisorSelect
+														[(ngModel)]="edittedClinic.clinicalSupervisorId"
+														style="width: 100%;" name="clinicalSupervisorId">
 														<option *ngFor="let s of supervisors" [value]="s.id">
 															{{s.firstName+' '+s.lastName}}
 														</option>
@@ -83,7 +84,7 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-outline-dark"
-											(click)="modal.close('Save click');onEdit(clinic)">ערוך</button>
+											(click)="modal.close('Save click');onEdit(i)">ערוך</button>
 									</div>
 								</ng-template>
 
@@ -115,11 +116,11 @@
 
 							</td>
 							<td style="text-align:right;">
-								<button
-									(click)="clinic.active=!clinic.active">{{clinic.active?"העבר לארכיון":"החזר מארכיון"}}</button>
+								<button (click)="onChangeClinicState(i)">
+									{{clinic.active?"העבר לארכיון":"החזר מארכיון"}}</button>
 							</td>
 							<td style="text-align:right;">{{clinic.yearFounded}}</td>
-							<td style="text-align:right;">{{clinic.clinicalSupervisorId}}</td>
+							<td style="text-align:right;">{{getFullName(clinic.clinicalSupervisorId)}}</td>
 							<td style="text-align:right;">{{clinic.clinicName}}</td>
 						</tr>
 					</tbody>

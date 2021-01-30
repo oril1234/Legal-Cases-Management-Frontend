@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ClinicsComponent  implements OnInit {
   currentRole=parseInt(localStorage.getItem("Role")+"");
-  clinics!:Clinic[];
+  clinics:Clinic[]=[];
   addedClinic:Clinic=new Clinic()
   edittedClinic:Clinic=new Clinic()
   supervisors:ClinicalSupervisor[]=[];
@@ -36,6 +36,16 @@ public ngOnInit(): void {
   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 }
 
+
+getFullName(id:number):string
+{
+  let supervisor:ClinicalSupervisor= this.supervisors.filter(supervisor=>supervisor.id==id)[0];
+  if(typeof supervisor=="undefined")
+    return "";
+
+  return supervisor.firstName+" "+supervisor.lastName;
+}
+
 	  	//Modal methodd
 openAddModal(content:string) 
 {
@@ -52,6 +62,7 @@ openAddModal(content:string)
   openEditModal(content:string,clinic:Clinic) 
   {
       this.edittedClinic=Object.create(clinic);
+        
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
@@ -89,7 +100,13 @@ private getDismissReason(reason: ModalDismissReasons): string
 
         this.dashboardService.getAllClinic().subscribe(
           data=> {
-            this.clinics=data;
+            //this.clinics=data;
+            data.forEach(clinic=>{
+              if(clinic.active)
+                this.clinics=[clinic].concat(this.clinics);
+              else
+                this.clinics.push(clinic);  
+            })
           },
           err=>
           {
@@ -134,6 +151,12 @@ return "";
   
 
 		 this.dashboardService.addNewClinic(this.addedClinic).subscribe(
+       data=>{
+         if(this.addedClinic.active)
+          this.clinics=[this.addedClinic].concat(this.clinics);
+         else
+           this.clinics.push(this.addedClinic);
+       }
 			 
 		 )
 	}
@@ -141,33 +164,66 @@ return "";
 	onDelete(clinicName:string)
 	{
 		
+    
 		this.dashboardService.deleteClinic(clinicName).subscribe(
+      data=>{
+        this.clinics=this.clinics.filter(clinic=>clinic.clinicName!=clinicName)
+      }
 
 		);
 	}
 
-	onEdit(clinicToEdit:Clinic)
+	onEdit(index:number)
 	{
 
-    console.log(this.edittedClinic)
-
-
+    this.edittedClinic.description=this.edittedClinic.description;
+    this.edittedClinic.active=this.edittedClinic.active;
+    this.edittedClinic.clinicName=this.edittedClinic.clinicName;
+    this.edittedClinic.clinicalSupervisorId=this.edittedClinic.clinicalSupervisorId;
+    this.edittedClinic.yearFounded=this.edittedClinic.yearFounded;
+    //alert(this.edittedClinic.clinicalSupervisorId)
+    
+    
     this.dashboardService.updateClinicDetails(this.edittedClinic).subscribe(
       data=>{
-        alert("YES!!!!")
+        this.clinics[index]=Object.create(this.edittedClinic);
       },
       err=>{
-        alert("NO!!!!!!")
+        
       }
     )
     
-    
-		 
-		
+    	
 	}
 
- onChange()
+  onChangeClinicState(index:number)
+  {
+    this.edittedClinic=Object.create(this.clinics[index]);
+    this.edittedClinic.active=!this.edittedClinic.active;
+    this.edittedClinic.description=this.edittedClinic.description;
+    this.edittedClinic.active=this.edittedClinic.active;
+    this.edittedClinic.clinicName=this.edittedClinic.clinicName;
+    this.edittedClinic.clinicalSupervisorId=this.edittedClinic.clinicalSupervisorId;
+    this.edittedClinic.yearFounded=this.edittedClinic.yearFounded;
+    this.dashboardService.updateClinicDetails(this.edittedClinic).subscribe(
+      data=>{
+        
+        this.clinics=this.clinics.filter(clinic=>this.edittedClinic.clinicName!=clinic.clinicName);
+        if(this.edittedClinic.active)
+          this.clinics=[Object.create(this.edittedClinic)].concat(this.clinics);
+        else
+          this.clinics.push(Object.create(this.edittedClinic));
+
+      },
+      err=>{
+        
+      }
+    )
+  }
+
+ onChange(content:string)
  {
-   console.log(this.edittedClinic)
+   this.edittedClinic.clinicalSupervisorId=parseInt(content);
+   
  } 
 }

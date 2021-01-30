@@ -393,6 +393,7 @@ editPerson(person:Person)
 
   updateClinicDetails(clinic:Clinic)
   {
+
     let myUrl=BASE_URL +`/api/v1/clinic/${clinic.clinicName}`
     return this.http.put(`${myUrl}`,clinic); 
 
