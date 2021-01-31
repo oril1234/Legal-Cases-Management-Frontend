@@ -122,7 +122,6 @@ this.getAllSupervisors();
 	onEdit(supervisor:ClinicalSupervisor)
 	{
 
-		alert("The password is "+this.edittedSupervisor.password)
 		
 		this.edittedSupervisor.firstName=this.edittedSupervisor.firstName;
         this.edittedSupervisor.lastName=this.edittedSupervisor.lastName;
@@ -137,7 +136,6 @@ this.getAllSupervisors();
 			data=>{
 				supervisor=Object.create(this.edittedSupervisor)
 			},
-			err=>alert("Not edited!!!!")
 		 )
 		 
 	}

@@ -9,7 +9,7 @@
             <div class="card-body">
                 <h1 dir="rtl" class="mr-auto" style="text-align: right;">פרטי הקצאות תיקים</h1>
 
-                <select (change)="changeClinic()" [(ngModel)]="chosenClinic" name="chosenClinic">
+                <select *ngIf="currentRole==2" (change)="changeClinic()" [(ngModel)]="chosenClinic" name="chosenClinic">
                     <option *ngFor="let clinic of clinics" [ngValue]="clinic">
                         {{clinic.clinicName}}
                     </option>
