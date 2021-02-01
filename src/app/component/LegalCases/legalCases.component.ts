@@ -498,9 +498,6 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
-
-
-
 	addNewClient()
 	{
 		this.dashboardService.addNewClient(this.newClient).subscribe(

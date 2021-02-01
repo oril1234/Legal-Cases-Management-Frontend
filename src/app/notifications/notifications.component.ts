@@ -62,7 +62,11 @@ export class NotificationsComponent implements OnInit {
   {
     this.dashBoardService.getNotificationManagerObjects().subscribe(
       data=>{
+        //alert("The length of data is "+data.length)
         this.notificationManagerObjects=data;
+      },
+      err=>{
+        //alert("There was an error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
       }
     )
   }
@@ -83,7 +87,7 @@ export class NotificationsComponent implements OnInit {
   deleteNotification(id:string)
   {
     let tmpNManager:NotificationManager[]=this.notificationManagerObjects;
-    alert("The length is "+tmpNManager.length)
+    //alert("The length is "+tmpNManager.length)
     tmpNManager=tmpNManager.filter(nManager=>nManager.notificationId==id);
     let currentLength:number=tmpNManager.length;
     

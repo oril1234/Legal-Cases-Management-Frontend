@@ -287,6 +287,8 @@ onAssignCancel(caseId:number,studentName:string)
 }
 createNotification(type:NotificationType,studentId:number,caseId:number)
 {
+	let student=this.students.filter(student=>student.id==studentId)[0];
+	let studentFullName=student.firstName+" "+student.lastName;
 	let studentNotification:NotificationtsToUsers=new NotificationtsToUsers();
 	studentNotification.dateTime=new Date();
 	studentNotification.sourceId=this.userId;
@@ -298,40 +300,60 @@ createNotification(type:NotificationType,studentId:number,caseId:number)
 		  
 	if(type==NotificationType.ADD)
 	{
-		studentNotification.details="המנחה שלך, "
-		+this.currentSuperVisor.firstName+' '+
-		this.currentSuperVisor.lastName+
-		" הקצה עבורך את תיק מספר "+
-		caseId;
-
-		if(this.currentRole==Roles.SUPERADMIN && this.currentSuperVisor.id!=this.admin.id)
+		if(this.currentRole==Roles.SUPERADMIN && this.currentSuperVisor.id!=this.admin.id )
 		{
+			studentNotification.details="מנהל הקליניקות, "
+			+this.admin.firstName+' '+
+			this.admin.lastName+
+			" הקצה עבורך את תיק מספר "+
+			caseId;
 			supervisorNotification.details=", "
 			+this.admin.firstName+' '+
 			this.admin.lastName+
 			" הקצה את תיק מספר "+
 			caseId+
-			" עבור סטודנט מספר "+
-			studentId+
+			" עבור הסטודנט "+
+			studentFullName
+			+
 			" בקליניקה שלך.";
 		}
+		else if(this.currentRole==Roles.SUPERVISOR || this.currentSuperVisor.id==this.admin.id)
+		{
+			studentNotification.details="המנחה שלך, "
+			+this.currentSuperVisor.firstName+' '+
+			this.currentSuperVisor.lastName+
+			" הקצה עבורך את תיק מספר "+
+			caseId;
+		}
+
     }
 
 	if(type==NotificationType.DELETE)
 	{
-		studentNotification.details="המנחה שלך, "+this.currentSuperVisor.firstName+' '+
-		this.currentSuperVisor.lastName+" ביטל את ההקצאה שלך לתיק מספר "+caseId;
-		if(this.currentRole==Roles.SUPERADMIN && this.currentSuperVisor.id!=this.admin.id)
+		if(this.currentRole==Roles.SUPERADMIN && this.currentSuperVisor.id!=this.admin.id )
 		{
+			studentNotification.details="מנהל הקליניקות, "
+			+this.admin.firstName+' '+
+			this.admin.lastName+
+			" ביטל את הקצאת תיק מספר "+
+			caseId+
+			" שהיה מוקצה עבורך";
 			supervisorNotification.details=", "
 			+this.admin.firstName+' '+
 			this.admin.lastName+
 			" ביטל את הקצאת תיק מספר "+
 			caseId+
-			" עבור סטודנט מספר "+
-			studentId+
+			" עבור הסטודנט "+
+			studentFullName
+			+
 			" בקליניקה שלך.";
 		}
+		else if(this.currentRole==Roles.SUPERVISOR || this.currentSuperVisor.id==this.admin.id)
+		{
+			studentNotification.details="המנחה שלך, "+this.currentSuperVisor.firstName+' '+
+			this.currentSuperVisor.lastName+" ביטל את ההקצאה שלך לתיק מספר "+caseId;
+		}
+
 		
 	}
 	this.dashboardService.addNotification(studentNotification).subscribe(
