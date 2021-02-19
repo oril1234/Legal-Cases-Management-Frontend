@@ -17,19 +17,22 @@
                 <table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
                     <thead style="position: sticky; top: 0">
                         <tr>
-                            <th style="position: sticky; top: 0;text-align: right;" scope="col"></th>
+                            <th *ngIf="this.currentRole!=0" style="position: sticky; top: 0;text-align: right;"
+                                scope="col"></th>
 
+                            <th style="text-align:right;" scope="col">תאריך יעד</th>
+                            <th style="text-align:right;" scope="col">תיאור משימה</th>
                             <th style="text-align:right;" scope="col">סטטוס טיפול</th>
                             <th style="text-align:right;" scope="col">נושא</th>
                             <th style="text-align:right;" scope="col">תאריך הקצאה</th>
-                            <th style="text-align:right;" scope="col">שם סטודנט</th>
+                            <th *ngIf="this.currentRole!=0" style="text-align:right;" scope="col">שם סטודנט</th>
                             <th style="text-align:right;" scope="col">מספר תיק</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let caseAssignedBySupervisor of caseAssignedBySupervisor">
-                            <td style="display: flex;">
+                            <td *ngIf="this.currentRole!=0" style="display: flex;">
 
                                 <button class="btn btn-sm btn-danger btn-delete-account" (click)="open(deleteModal,'')">
                                     <span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
@@ -61,19 +64,22 @@
                                 </ng-template>
                             </td>
 
-
+                            <td style="text-align:right;">{{caseAssignedBySupervisor.dueDate}}</td>
+                            <td style="text-align:right;">{{caseAssignedBySupervisor.taskDescription}}</td>
                             <td style="text-align:right;">{{caseAssignedBySupervisor.status}}</td>
                             <td style="text-align:right;">{{caseAssignedBySupervisor.subject}}</td>
                             <td style="text-align:right;">{{caseAssignedBySupervisor.dateAssigned}}</td>
-                            <td style="text-align:right;">{{caseAssignedBySupervisor.studentName}}</td>
+                            <td *ngIf="this.currentRole!=0" style="text-align:right;">
+                                {{caseAssignedBySupervisor.studentName}}
+                            </td>
                             <td style="text-align:right;">{{caseAssignedBySupervisor.id}}</td>
 
                         </tr>
                     </tbody>
                 </table>
 
-                <button style="color: white; float: right; font-size: 15;" class="btn btn-rounded btn-success mb-2"
-                    (click)="open(addModal)"> בצע הקצאה חדשה</button>
+                <button *ngIf="this.currentRole!=0" style="color: white; float: right; font-size: 15;"
+                    class="btn btn-rounded btn-success mb-2" (click)="open(addModal)"> בצע הקצאה חדשה</button>
             </div>
         </div>
 
@@ -86,13 +92,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="width: 300px;">
+            <div class="modal-body">
 
                 <div class="row">
                     <div class="col-6"> <label>
                             מספר תיק</label></div>
                     <div class="col-6">
-                        <select name="chosenCase" style="width: 100px;" [(ngModel)]="chosenCase">
+                        <select name="chosenCase" style="width: 100%;" [(ngModel)]="chosenCase">
                             <option *ngFor="let case of cases" [ngValue]="case">
                                 {{case.id }}
                             </option>
@@ -105,7 +111,7 @@
                     <div class="col-6"> <label>
                             סטודנט מוקצה</label></div>
                     <div class="col-6">
-                        <select style="width: 100px;" name="chosenStudent" [(ngModel)]="chosenStudent">
+                        <select style="width: 100%;" name="chosenStudent" [(ngModel)]="chosenStudent">
                             <option *ngFor="let student of students" [ngValue]="student">
                                 {{student.firstName}} {{student.lastName}}
                             </option>
@@ -114,11 +120,27 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-6"> <label>
+                            תיאור משימה</label></div>
+                    <div class="col-6">
+                        <textarea name="taskDescription" style="width: 100%;" [(ngModel)]="taskDescription">
+
+                        </textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6"> <label>
+                            תאריך יעד</label></div>
+                    <div class="col-6">
+                        <input type="date" name="dueDate" style="width: 100%;" [(ngModel)]="dueDate">
+                    </div>
+                </div>
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-                    (click)="modal.close('Save click');onSave()">אשר</button>
+                    (click)="modal.close('Save click');onAdd()" [disabled]="!validateTaskDescription()">אשר</button>
             </div>
         </ng-template>
 

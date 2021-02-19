@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ThemeService } from "ng2-charts";
-import { DashboardService } from "src/app/dashboard.service";
+import { HttpService } from "src/app/http.service";
 import jwt_decode from "jwt-decode";
 import { ClinicalSupervisor } from "src/app/_models/clinical-supervisor";
 import { LegalCaseCounter } from "src/app/_models/legal-case-counter";
@@ -16,7 +16,7 @@ export class StudentDashboardComponent implements OnInit {
   totalCasesInClinic:number=0
   supervisor!: ClinicalSupervisor;
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private httpService: HttpService) {
     this.getAllMyCases();
     this.getNumberOfCasesByChosenClinic();
     this.getClinicalSupervisor();
@@ -30,7 +30,7 @@ export class StudentDashboardComponent implements OnInit {
         jwt_decode(localStorage.getItem("authenticationToken") + "")
       )
     ).sub;
-    this.dashboardService
+    this.httpService
       .getNumberOfCasesAssignedToStudent(id)
       .subscribe((data) => {
         this.casesAssignedStudentNumber = data;
@@ -47,13 +47,13 @@ export class StudentDashboardComponent implements OnInit {
         jwt_decode(localStorage.getItem("authenticationToken") + "")
       )
     ).sub;
-    this.dashboardService.getStudentClinicalSupervisorByStudentId(id).subscribe(
+    this.httpService.getStudentClinicalSupervisorByStudentId(id).subscribe(
       (data) => {
         this.supervisor = data;
-        this.dashboardService.getAllCases().subscribe(
+        this.httpService.getAllCases().subscribe(
           data1=>{
             let cases:LegalCase[]=data1;
-            this.dashboardService.getAllClinic().subscribe(
+            this.httpService.getAllClinic().subscribe(
               data2=>{
                 data2=data2.filter(superv=>superv.clinicalSupervisorId==this.supervisor.id);
                 cases=cases.filter(lCase=>lCase.clinicName==data2[0].clinicName);

@@ -13,6 +13,9 @@ import { Person } from 'src/app/_models/person';
 let BASE_URL:string = "http://localhost:9090";
 
 
+
+
+
 if (environment.production) {
   // Amazon AWS Backend
   BASE_URL = "http://oglegal.us-east-1.elasticbeanstalk.com"
@@ -31,6 +34,7 @@ export class AuthService {
     username: this.getUserName()
   }
 */
+
 
 
 roles = new BehaviorSubject<Roles>(Roles.SUPERVISOR);

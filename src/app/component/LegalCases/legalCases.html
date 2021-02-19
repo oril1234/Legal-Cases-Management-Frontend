@@ -204,7 +204,7 @@
                         <div class="col-5"> <label>
                                 מספר תיק</label></div>
                         <div class="col-7">
-                            <input style="width: 400px;" type="number" [(ngModel)]="addedCase.id" name="id">
+                            <input style="width: 400px;" type="number" [(ngModel)]="addedCase.id" name="id" disabled>
                         </div>
                     </div>
 
@@ -273,7 +273,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-                    (click)="modal.close('Save click');onSave()" [disabled]="!validateAddedCaseFields()">הוסף</button>
+                    (click)="modal.close('Save click');onAdd()" [disabled]="!validateAddedCaseFields()">הוסף</button>
             </div>
         </ng-template>
 
@@ -394,8 +394,4 @@
         </ng-template>
 
     </div>
-
-
-
-
 </div>

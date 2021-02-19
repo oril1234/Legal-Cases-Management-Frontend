@@ -3,5 +3,7 @@ export class CaseAssignedSupervisorsList {
     studentName:string;
     dateAssigned:Date;
     status:string;
-    subject:string    
+    subject:string;
+    taskDescription: string;
+    dueDate:Date;
 }

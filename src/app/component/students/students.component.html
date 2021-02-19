@@ -5,14 +5,14 @@
 </ol>
 <div style="margin-top: 1%;" class="row">
 	<div class="col-12">
-		<div class="card">
+		<div class="card" style="overflow:scroll;">
 			<div class="=card-header" style="text-align: right;"><br>
 				<h1>{{currentClinic}}- סטודנטים </h1>
 			</div>
 			<div class="card-body">
 
-				<table class="table">
-					<thead>
+				<table class="table" style="height: 150px;border-collapse: collapse; width: 100%;">
+					<thead style="position: sticky; top: 0">
 						<tr>
 							<th *ngIf="currentRole!=0" scope="col"></th>
 							<th scope="col" style="text-align:right;">מספר טלפון</th>
@@ -24,7 +24,7 @@
 					<tbody>
 
 						<tr *ngFor="let student of students">
-							<td *ngIf="currentRole!=0">
+							<td *ngIf="currentRole!=0" style="display: flex;">
 								<button class="btn-primary mr-1" (click)="openEditModal(editModal,student)"><i
 										class="fa fa-edit"></i></button>
 								<!--Edit Modal -->
@@ -36,7 +36,7 @@
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<div class="modal-body" style="width: 300px;">
+									<div class="modal-body">
 										<form dir="rtl">
 											<div class="row">
 												<div class="col-6">
@@ -158,7 +158,7 @@
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
-		<div class="modal-body" style="width: 300px;">
+		<div class="modal-body" style="padding-right:10% ;">
 			<form style="padding-left: 0;" dir="rtl">
 
 				<div class="row">
@@ -230,10 +230,28 @@
 		</div>
 	</ng-template>
 
+	<!--Add Modal -->
+	<ng-template #errorModal let-modal>
+		<div class="modal-header">
+			<h4 class="modal-title" id="modal-basic-title">שגיאה</h4>
+		</div>
+		<div class="modal-body">
+			<div dir="rtl" class="row">
+				<div class="col-2">
+					<i style="background-color: red;color:white;font-size: 25px;padding: 10%;" class="fa fa-times"></i>
+				</div>
+				<div class="col-10">
+					<p>הוספת סטודנט נכשלה. ייתכן כי נעשה ניסיון להזין מספר תעודת זהות שכבר קיים במערכת. </p>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary btn-rounded mb-2"
+				(click)="modal.close('Save click')">המשך</button>
+		</div>
+	</ng-template>
 
 
-
-	<!--	<button class="btn btn-lg btn-outline-primary" (click)="open1(content1)">Launch demo modal</button>-->
 
 
 </div>

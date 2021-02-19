@@ -31,7 +31,7 @@ NotificationManager
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService {
+export class HttpService {
 
   constructor(private http:HttpClient) { }
 
@@ -151,7 +151,12 @@ editPerson(person:Person)
     return this.http.post<number>(`${myUrl}`,clinicName); 
   }        
   
-  
+  getStudentById(id:number)
+  {
+    let myUrl=BASE_URL + `/api/v1/student/${id}`
+    return this.http.get<Student>(`${myUrl}`); 
+
+  }
 
   addNewStudent(student:Student)
   {
@@ -233,6 +238,15 @@ editPerson(person:Person)
     return this.http.post<any>(`${myUrl}`,legalcase); 
 
   }
+
+  getLegalCaseGeneratedId()
+  {
+    let myUrl=BASE_URL + "/api/v1/legalcase/generateId"
+    return this.http.get<number>(`${myUrl}`); 
+
+  }
+
+
   deleteCase(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/legalcase/${id}`

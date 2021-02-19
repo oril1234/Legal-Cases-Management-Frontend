@@ -1,12 +1,8 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { NgbCarouselConfig, NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { AssertNotNull } from '@angular/compiler';
-import { DashboardService } from 'src/app/dashboard.service';
+import { Component,OnInit } from '@angular/core';
+import { NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
+import { HttpService } from 'src/app/http.service';
 import { LegalCase } from 'src/app/_models/legal-case';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup } from '@angular/forms';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Clinic } from 'src/app/_models/clinic';
 import jwt_decode from "jwt-decode";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,12 +14,6 @@ import { NotificationtsToUsers } from 'src/app/_models/notification';
 import { NotificationManager } from 'src/app/_models/notification-manager';
 import { Person } from 'src/app/_models/person';
 import { AssignedCase } from 'src/app/_models/assigned-case';
-
-
-
-
-
-
 @Component({
 	selector: 'app-ngbd-buttons-radio',
 	templateUrl: './legalCases.html',
@@ -31,47 +21,90 @@ import { AssignedCase } from 'src/app/_models/assigned-case';
 })
 export class LegalCasesComponent implements OnInit
 {
+	//details of admin
 	admin:Person=new Person()
+
+	//Title of cases in this page
 	title:string="פרטי תיקים בקליניקה";
+
+	//Case details
 	cases: LegalCase[];
+
+	//Cases that were assigned to students
 	assignedCases:AssignedCase[]=[]
+
+	//All legal Clinics
 	clinics: Clinic[];
+
+	//A specific clinic
 	chosenClinic: Clinic = new Clinic()
+
+	//All Clinical supervisors
 	supervisors: ClinicalSupervisor[]
+
+	//Specific clinical supervisor
 	currentSuperVisor: ClinicalSupervisor
+
+	//Role of connected user
 	currentRole = parseInt(localStorage.getItem('Role') + "");
+	
+	//A string representation of the reaseon to close o div modal 
 	closeResult = "";
+
+	//Status of displayed cases ( in court or not )
 	currentStatus:string = ""
+
+	//A specific clinic name
 	clinicName: string = ""
+
+	//A specific client details
 	currentClient: Client = new Client();
+
+	//A newly added client to system
 	newClient: Client = new Client()
+
+	//Id of connected user
 	userId = parseInt(
 		JSON.parse(
 			JSON.stringify(
 				jwt_decode(localStorage.getItem("authenticationToken") + "")
 			)
 		).sub);
+	
+	//Full name of connected user	
 	userFullName: string = ""
+
+	//Details of connected user
 	userDetails: Person = new Person();
+
+	//All clients details
 	clients: Client[] = []
+
+	//A specific client details to open a case for			
 	chosenClient: Client = new Client()
 
+	//A newly added case
 	addedCase: LegalCase = new LegalCase()
+
+	//A case to edit its details
 	edittedCase: LegalCase = new LegalCase()
 
+	//Default case type of new added case
 	defaultCaseType: string = "פלילי"
+
+	//All possible case types
 	caseTypes: string[] = [`פלילי`, `שכר עבודה בסמכות רשם`, `הטרדה מאיימת וצו הגנה`, `ערעור ביטוח לאומי`,
 		`האזנת סתר`, `עתירה לבג"ץ`, `ביצוע תביעה בהוצאה לפועל`, `ביטול קנס מנהלי`, `תביעה קטנה`, 'ערעור מסים',
 	`יישוב סכסוך`]
 
 
-	constructor(private dashboardService: DashboardService, private modalService: NgbModal,
+	constructor(private httpService: HttpService, private modalService: NgbModal,
 		private route: ActivatedRoute,
 		private router: Router
 	)
 	{
 
-		
+		//This condition is true only if user is admin because only then there's additional data i url
 		if (this.route.snapshot.paramMap.get('status'))
 		{
 			this.currentStatus = this.route.snapshot.paramMap.get('status') + "";
@@ -99,9 +132,10 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
+	//Fetching details of connected user
 	getPersonDetails()
 	{
-		this.dashboardService.getPersonById(this.userId).subscribe(
+		this.httpService.getPersonById(this.userId).subscribe(
 			data =>
 			{
 				this.userDetails = data;
@@ -109,9 +143,10 @@ export class LegalCasesComponent implements OnInit
 		)
 
 
+		//Clinical supervisor's details are fetched if connected user is student
 		if (this.currentRole == Roles.STUDENT)
 		{
-			this.dashboardService.getStudentsClinicalSupervisorDetails(this.userId).subscribe(
+			this.httpService.getStudentsClinicalSupervisorDetails(this.userId).subscribe(
 				data =>
 				{
 					this.currentSuperVisor = data;
@@ -122,9 +157,10 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
+	//Fetching all details of admin
 	getAdminDetails()
 	{
-		this.dashboardService.getAllPersons().subscribe(
+		this.httpService.getAllPersons().subscribe(
 			data=>{
 				data=data.filter(person=>person.role=="Super Admin")
 				this.admin=data[0];
@@ -135,9 +171,10 @@ export class LegalCasesComponent implements OnInit
 	}
 
 
+	//Fetching all clients details
 	getClients()
 	{
-		this.dashboardService.getAllClients().subscribe(
+		this.httpService.getAllClients().subscribe(
 			data =>
 			{
 				this.clients = data;
@@ -152,7 +189,7 @@ export class LegalCasesComponent implements OnInit
 	getAllClinics()
 	{
 		
-		this.dashboardService.getAllClinic().subscribe(
+		this.httpService.getAllClinic().subscribe(
 			data =>
 			{
 				this.clinics = data;
@@ -170,20 +207,24 @@ export class LegalCasesComponent implements OnInit
 	}
 
 
+	//Fetching legal cases details
 	getAllCases()
 	{
 
+		//Fetching details of legal cases in court 
 		if (this.route.snapshot.paramMap.get('status') == 'allInCourt')
-			this.dashboardService.selectAllLegalCasesInCourt().subscribe(
+			this.httpService.selectAllLegalCasesInCourt().subscribe(
 				data =>
 				{
 					this.cases = data;
 
 				}
 			);
+
+		//Fetching details of legal cases not in court, meaning handled by clinics	
 		else if (this.route.snapshot.paramMap.get('status') == 'notInCourt')
 		{
-			this.dashboardService.selectAllLegalCasesNotInCourt().subscribe(
+			this.httpService.selectAllLegalCasesNotInCourt().subscribe(
 				data =>
 				{
 					this.cases = data;
@@ -192,9 +233,10 @@ export class LegalCasesComponent implements OnInit
 		}
 
 
+		//Fetching all legal cases in clinic of clinical supervisors if he's the connected user
 		else if (this.currentRole == Roles.SUPERVISOR)
 		{
-			this.dashboardService.getAllCases().subscribe(
+			this.httpService.getAllCases().subscribe(
 				data =>
 				{
 					this.cases = data;
@@ -203,22 +245,14 @@ export class LegalCasesComponent implements OnInit
 			);
 		}
 
-		else if (this.currentRole == Roles.STUDENT)
-		{
-			this.dashboardService.getAllCasesAssignedToStudennt(this.userId).subscribe(
-				data =>
-				{
-					this.cases = data;
-				}
-			)
-		}
 
 
 	}
 
+	//Fetching all assignments details of cases to students
 	getAllCaseseAssigned()
 	{
-		this.dashboardService.getAllAssignedCases().subscribe(
+		this.httpService.getAllAssignedCases().subscribe(
 			data=>{
 				this.assignedCases=data;
 				
@@ -229,9 +263,14 @@ export class LegalCasesComponent implements OnInit
 	
 
 
-	//Modal methodd
+	//Method to open a modal window for adding new legal case 
 	openAddCaseModal(content: string)
 	{
+		this.httpService.getLegalCaseGeneratedId().subscribe(
+			data=>{
+				this.addedCase.id=data;
+			}
+		)
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
 		{
 			this.closeResult = `Closed with: ${result}`;
@@ -243,7 +282,7 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
-		//Modal methodd
+	//Method to open a modal window for editing existing legal case 
 	openEditCaseModal(content: string,legalCase:LegalCase)
 	{
 		this.edittedCase=Object.create(legalCase);
@@ -258,6 +297,7 @@ export class LegalCasesComponent implements OnInit
 	
 	}
 
+	//Method to open a modal window for deleting a legal case
 	openDeleteModal(content: string)
 	{
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
@@ -270,6 +310,7 @@ export class LegalCasesComponent implements OnInit
 		});
 	}
 
+	//Method to open a modal window for displaying client details
 	openClientDetailsModal(content:string)
 	{
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
@@ -282,6 +323,7 @@ export class LegalCasesComponent implements OnInit
 		});
 	}
 
+	//Method to open a modal window for adding new client
 	openAddClientModal(content:string)
 	{
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
@@ -295,6 +337,7 @@ export class LegalCasesComponent implements OnInit
 	}
 
 
+	//Method to fetch the reason of closing a modal window
 	private getDismissReason(reason: ModalDismissReasons): string
 	{
 		if (reason === ModalDismissReasons.ESC)
@@ -313,17 +356,19 @@ export class LegalCasesComponent implements OnInit
 	}
 
 
+
 	//Invoked when adding new case
-	onSave()
+	onAdd()
 	{
 
 		this.addedCase.dateAdded = new Date();;
-		this.addedCase.status = "חדש";
+		this.addedCase.status = "ממתין להקצאה";
 		this.addedCase.caseType = this.defaultCaseType;
 		this.addedCase.clientId = this.chosenClient.id
 		this.addedCase.clinicName = this.chosenClinic.clinicName
+		this.addedCase.courtCaseId=0;
 
-		this.dashboardService.addNewCase(this.addedCase).subscribe(
+		this.httpService.addNewCase(this.addedCase).subscribe(
 			data =>
 			{
 				this.cases.push(this.addedCase);
@@ -340,6 +385,7 @@ export class LegalCasesComponent implements OnInit
 	}
 
 
+	//This method checks all fields of new legal case are valid, otherwise adding will not be possible
 	validateAddedCaseFields():boolean
 	{
 	  let isValidated=typeof this.addedCase.id !== 'undefined' && this.addedCase.id>0;
@@ -350,6 +396,7 @@ export class LegalCasesComponent implements OnInit
 	  return isValidated;
 	}
 
+	//This method checks all fields of edited legal case are valid, otherwise editing will not be possible
 	validateEdittedCaseFields():boolean
 	{
 	  let isValidated=typeof this.edittedCase.subject !== 'undefined' && this.edittedCase.subject!="";
@@ -361,10 +408,10 @@ export class LegalCasesComponent implements OnInit
 	}
 
 
-	//Invoked for deleting case
+	//Invoked for deleting legal case
 	onDelete(id: string)
 	{
-		this.dashboardService.deleteCase(parseInt(id)).subscribe(
+		this.httpService.deleteCase(parseInt(id)).subscribe(
 			data =>
 			{
 				this.cases = this.cases.filter(lCase => lCase.id != parseInt(id))
@@ -379,7 +426,7 @@ export class LegalCasesComponent implements OnInit
 	{
 
 
-		this.dashboardService.editCase(lcase).subscribe(
+		this.httpService.editCase(lcase).subscribe(
 			data =>
 			{
 				if (this.currentRole == Roles.STUDENT)
@@ -391,13 +438,12 @@ export class LegalCasesComponent implements OnInit
 			}
 
 		)
-
-
 	}
 
+	//Displaying details of a speific client
 	showDetails(id: number)
 	{
-		this.dashboardService.getClientById(id).subscribe(
+		this.httpService.getClientById(id).subscribe(
 			data =>
 			{
 				this.currentClient = data;
@@ -422,6 +468,10 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
+	/*
+	If connected user is a admin, this method will be invoked to send notification to clinical supervisor
+	of a clinic in which the admin made an action (Add/delete/edit legal case)
+	*/ 
 	createNotificationForSupervisorFromAdmin(type: NotificationType, caseId: number,supervisorId:number)
 	{
 		let n: NotificationtsToUsers = new NotificationtsToUsers();
@@ -444,20 +494,21 @@ export class LegalCasesComponent implements OnInit
 			" מחר את תיק מסםר " + caseId + " מהקליניקה שלך"
 		}
 
-		this.dashboardService.addNotification(n).subscribe(
+		this.httpService.addNotification(n).subscribe(
 			data=>{
 				let notificationId:string=data[0];
 				let ng: NotificationManager = new NotificationManager();
 				ng.unread = false;
 				ng.notificationId = notificationId;
 				ng.receiverId = supervisorId;
-				this.dashboardService.mapNotificationToUser(ng).subscribe(
+				this.httpService.mapNotificationToUser(ng).subscribe(
 
 				)
 			}
 		)	
 	}
 
+	//Notifying students for changes in cases they are assigned to made by clinical supervisor or admin
 	createNotificationForStudnets(caseId: number)
 	{
 		let assignedCases=this.assignedCases.filter(aCase=>aCase.legalCaseId==caseId);
@@ -469,7 +520,7 @@ export class LegalCasesComponent implements OnInit
 		n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
 		" ערך את פרטי התיק " + caseId + " המוקצה עבורך";	
 		
-		this.dashboardService.addNotification(n).subscribe(
+		this.httpService.addNotification(n).subscribe(
 			data=>{
 				let notificationId:string=data[0];
 				assignedCases.forEach(aCase=>{
@@ -480,7 +531,7 @@ export class LegalCasesComponent implements OnInit
 						ng.unread = false;
 						ng.notificationId = notificationId;
 						ng.receiverId = aCase.studentId;
-						this.dashboardService.mapNotificationToUser(ng).subscribe(
+						this.httpService.mapNotificationToUser(ng).subscribe(
 							data =>
 							{
 							},
@@ -498,9 +549,10 @@ export class LegalCasesComponent implements OnInit
 
 	}
 
+	//Adding new client tyo system
 	addNewClient()
 	{
-		this.dashboardService.addNewClient(this.newClient).subscribe(
+		this.httpService.addNewClient(this.newClient).subscribe(
 			data =>
 			{
 				this.clients.push(this.newClient);

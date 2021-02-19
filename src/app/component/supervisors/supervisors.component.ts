@@ -1,8 +1,7 @@
 import {  Component, OnInit } from '@angular/core';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
-import { DashboardService } from 'src/app/dashboard.service';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup } from '@angular/forms';
+import { HttpService } from 'src/app/http.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -34,7 +33,7 @@ export class SupervisorsComponent implements OnInit {
     closeResult=""
 
 
-  constructor(private dashboardService:DashboardService,private modalService: NgbModal) {
+  constructor(private httpService:HttpService,private modalService: NgbModal) {
 this.getAllSupervisors();
   }
 
@@ -43,7 +42,7 @@ this.getAllSupervisors();
   }
   getAllSupervisors()
   {
-    this.dashboardService.getAllSupervisors().subscribe(
+    this.httpService.getAllSupervisors().subscribe(
       data=> {
         this.supervisors=data;
       }
@@ -101,7 +100,7 @@ this.getAllSupervisors();
 
 		this.addedSupervisor.sinceYear=new Date().getFullYear();
 		this.addedSupervisor.imgUrl="";
-		 this.dashboardService.addNewSupervisor(this.addedSupervisor).subscribe(
+		 this.httpService.addNewSupervisor(this.addedSupervisor).subscribe(
 			data=>{
 				this.supervisors.push(this.addedSupervisor);
 			},
@@ -111,7 +110,7 @@ this.getAllSupervisors();
   
 	onDelete(id:number)
 	{
-		this.dashboardService.deleteSupervisor(id).subscribe(
+		this.httpService.deleteSupervisor(id).subscribe(
 			date=>{
 				this.supervisors=this.supervisors.filter(cSupervisor=>cSupervisor.id!=id)
 			}
@@ -132,7 +131,7 @@ this.getAllSupervisors();
         this.edittedSupervisor.password=this.edittedSupervisor.password;
 		this.edittedSupervisor.role=this.edittedSupervisor.role;
 		this.edittedSupervisor.sinceYear=this.edittedSupervisor.sinceYear;
-		 this.dashboardService.editSupervisor(this.edittedSupervisor).subscribe(
+		 this.httpService.editSupervisor(this.edittedSupervisor).subscribe(
 			data=>{
 				supervisor=Object.create(this.edittedSupervisor)
 			},

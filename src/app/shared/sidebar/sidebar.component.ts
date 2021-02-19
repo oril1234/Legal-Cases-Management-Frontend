@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Roles } from 'src/app/_models/roles.enum';
 import { AuthService } from 'src/app/auth/shared/auth.service';
 import jwt_decode from 'jwt-decode'
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import { Clinic } from 'src/app/_models/clinic';
 
 declare var $: any;
@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authservice:AuthService,
-    private dashboardService:DashboardService
+    private httpService:HttpService
   ) {
 
 
@@ -57,7 +57,7 @@ export class SidebarComponent implements OnInit {
 
   getAllClinics()
   {
-    this.dashboardService.getAllClinic().subscribe(
+    this.httpService.getAllClinic().subscribe(
       data=>
       {
         this.clinics=data;

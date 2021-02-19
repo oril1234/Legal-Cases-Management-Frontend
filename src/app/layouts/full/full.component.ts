@@ -5,7 +5,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import {Roles} from '../../_models/roles.enum'
 import {AuthService} from '../../auth/shared/auth.service'
 import jwt_decode from "jwt-decode"
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { Person } from 'src/app/_models/person';
 declare var $: any;
@@ -24,8 +24,9 @@ export class FullComponent implements OnInit {
   notificationsNumber=0;
   showNotifications:boolean=true
 
-  constructor(public router: Router,private authservice:AuthService,private dashBoardService:DashboardService,
+  constructor(public router: Router,private authservice:AuthService,private httpService:HttpService,
     private notificationsService:NotificationsService) {
+
     if(localStorage.getItem("authenticationToken")!=null)
     {
      this.userId= parseInt(
@@ -76,7 +77,7 @@ export class FullComponent implements OnInit {
     let decoded=jwt_decode(localStorage.getItem("authenticationToken")+"")
     let id:number=parseInt(JSON.parse(JSON.stringify(decoded)).sub);
     
-    this.dashBoardService.getNotificationsNumberByPersonID(id).subscribe(
+    this.httpService.getNotificationsNumberByPersonID(id).subscribe(
       data=>{
         this.notificationsNumber=data;
         
@@ -91,7 +92,7 @@ export class FullComponent implements OnInit {
   getFullName()
   {
     let id=JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub;
-    this.dashBoardService. getPersonFullNameById(id).subscribe(
+    this.httpService. getPersonFullNameById(id).subscribe(
       data=>{
         this.fullName=data[0];
 
@@ -105,7 +106,7 @@ export class FullComponent implements OnInit {
 
   getPersonDetails()
   {
-    this.dashBoardService.getPersonById(this.userId).subscribe(
+    this.httpService.getPersonById(this.userId).subscribe(
       data=>
      { 
        this.person=data;

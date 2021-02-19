@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import { Clinic } from 'src/app/_models/clinic';
 import {Chart} from 'chart.js'
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +27,7 @@ export class ClincsStatisticsComponent implements OnInit {
   
 
 
-  constructor(private dashboardService:DashboardService, private modalService:NgbModal) {
+  constructor(private httpService:HttpService, private modalService:NgbModal) {
     this.getAllClinics();
     this.getCasesNumByClinic();
     
@@ -62,7 +62,7 @@ export class ClincsStatisticsComponent implements OnInit {
 
   getAllClinics()
   {
-    this.dashboardService.getAllClinic().subscribe(
+    this.httpService.getAllClinic().subscribe(
 			data=> {
 
         let between=new BetweenDates();
@@ -73,7 +73,7 @@ export class ClincsStatisticsComponent implements OnInit {
         this.casesNumber = [];
         this.clinics.forEach(clinic=>
           {
-            this.dashboardService.numberOfCasesToCourtInChosenClinicBetween2Dates(clinic.clinicName, between).subscribe(
+            this.httpService.numberOfCasesToCourtInChosenClinicBetween2Dates(clinic.clinicName, between).subscribe(
               amount=>{
 
                 const newData = {

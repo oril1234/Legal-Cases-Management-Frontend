@@ -1,5 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
-import {DashboardService} from '../dashboard.service'
+import {HttpService} from '../http.service'
 // import { ChartsModule } from 'ng2-charts';
 declare var require: any;
 @Component({
@@ -16,7 +16,7 @@ export class DashboardComponent implements AfterViewInit {
   supervisorsNum=0;
   casesReceivedThisYearNum=0;
   currentRole:number=parseInt(localStorage.getItem("Role")+"")
-  constructor(public dashservice:DashboardService) {
+  constructor(public dashservice:HttpService) {
     this.subtitle = 'This is some text within a card block.';
     this.getStudentsNum()
     this.getNumberOfActiveClinics();

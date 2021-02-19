@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Chart} from 'chart.js'
 import { StudentsComponent } from 'src/app/component/students/students.component';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import { LegalCaseCounter } from 'src/app/_models/legal-case-counter';
 import { Student } from 'src/app/_models/student';
 import jwt_decode from 'jwt-decode'
@@ -17,7 +17,7 @@ export class StudentsStatisticsComponent implements OnInit {
     studentsChart!:Chart
     clinicName:string=""
 
-  constructor(private dashboardService:DashboardService) {
+  constructor(private httpService:HttpService) {
     this.getAllClinics()
    }
 
@@ -27,7 +27,7 @@ export class StudentsStatisticsComponent implements OnInit {
   getAllClinics()
   {
     let id:number=parseInt(JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub);
-    this.dashboardService.getNumberOfCasesPerStudentBySupervisorId(id).subscribe(
+    this.httpService.getNumberOfCasesPerStudentBySupervisorId(id).subscribe(
       data=> {
         
         this.lcaseCounter=data;

@@ -1,15 +1,9 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { NgbCarouselConfig, NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { AssertNotNull } from '@angular/compiler';
-import { DashboardService } from 'src/app/dashboard.service';
-import { LegalCase } from 'src/app/_models/legal-case';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from 'src/app/http.service';
+import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Clinic } from 'src/app/_models/clinic';
 import jwt_decode from "jwt-decode";
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import {Router } from '@angular/router';
 import { Client } from '../../_models/client'
 import { Roles } from 'src/app/_models/roles.enum';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
@@ -21,8 +15,7 @@ import { PolicyPaper } from 'src/app/_models/policy-paper';
 
 @Component({
   selector: 'app-policy-paper',
-  templateUrl: './policy-paper.component.html',
-  styleUrls: ['./policy-paper.component.css']})
+  templateUrl: './policy-paper.component.html'})
 export class PolicyPaperComponent implements OnInit {
 
 	admin=new Person()
@@ -34,8 +27,6 @@ export class PolicyPaperComponent implements OnInit {
 	closeResult = "";
 	currentStatus = ""
 	clinicName: string = ""
-	currentClient: Client = new Client();
-	newClient: Client = new Client()
 	userId = parseInt(
 		JSON.parse(
 			JSON.stringify(
@@ -52,7 +43,7 @@ export class PolicyPaperComponent implements OnInit {
 
 
 
-	constructor(private dashboardService: DashboardService, private modalService: NgbModal,private router:Router	)
+	constructor(private httpService: HttpService, private modalService: NgbModal,private router:Router	)
 	{
 
 	this.getPersonDetails();
@@ -69,7 +60,7 @@ export class PolicyPaperComponent implements OnInit {
 
 	getPersonDetails()
 	{
-		this.dashboardService.getPersonById(this.userId).subscribe(
+		this.httpService.getPersonById(this.userId).subscribe(
 			data=>{
 				this.userDetails=data;
 			}
@@ -81,7 +72,7 @@ export class PolicyPaperComponent implements OnInit {
 	
 	getAdminDetails()
 	{
-		this.dashboardService.getAllPersons().subscribe(
+		this.httpService.getAllPersons().subscribe(
 			data=>{
 				data=data.filter(person=>person.role=="Super Admin")
 				this.admin=data[0];
@@ -97,7 +88,7 @@ export class PolicyPaperComponent implements OnInit {
 	//Getting all the clinics for assigning new cases to specific clinic
 	getAllClinics()
 	{
-		this.dashboardService.getAllClinic().subscribe(
+		this.httpService.getAllClinic().subscribe(
 			data =>
 			{
 				this.clinics = data;
@@ -122,7 +113,7 @@ export class PolicyPaperComponent implements OnInit {
 
 	getAllPolicyPapers()
 	{
-			this.dashboardService.getAllPolicyPapers().subscribe(
+			this.httpService.getAllPolicyPapers().subscribe(
 				data =>
 				{
 					this.policyPapers = data;
@@ -177,7 +168,7 @@ export class PolicyPaperComponent implements OnInit {
 		this.addedPolicyPaper.status = "חדש";
 		this.addedPolicyPaper.clinicName = this.clinicName
 
-		this.dashboardService.addNewPolicyPaper(this.addedPolicyPaper).subscribe(
+		this.httpService.addNewPolicyPaper(this.addedPolicyPaper).subscribe(
 			data =>
 			{
 				this.policyPapers.push(this.addedPolicyPaper);
@@ -232,7 +223,7 @@ export class PolicyPaperComponent implements OnInit {
 	//Invoked for deleting case
 	onDelete(id: number)
 	{
-		this.dashboardService.deletePolicyPaper(id).subscribe(
+		this.httpService.deletePolicyPaper(id).subscribe(
 			data =>
 			{
 				this.policyPapers = this.policyPapers.filter(paper =>paper.id!=id)
@@ -245,7 +236,7 @@ export class PolicyPaperComponent implements OnInit {
 	//Invoked for updating a case
 	onEdit(policyPaper: PolicyPaper)
 	{
-		this.dashboardService.editPolicyPaper(policyPaper).subscribe(
+		this.httpService.editPolicyPaper(policyPaper).subscribe(
 			data =>
 			{
 				this.createNotification(NotificationType.EDIT,policyPaper.id)	
@@ -306,7 +297,7 @@ export class PolicyPaperComponent implements OnInit {
 			}
 		}
 
-	  this.dashboardService.addNotification(n).subscribe(
+	  this.httpService.addNotification(n).subscribe(
 		data=>{
 			this.mapNotification(data[0]);
 			
@@ -333,7 +324,7 @@ export class PolicyPaperComponent implements OnInit {
 		{
 			ng.receiverId=this.chosenClinic.clinicalSupervisorId;
 		}
-	  this.dashboardService.mapNotificationToUser(ng).subscribe(
+	  this.httpService.mapNotificationToUser(ng).subscribe(
 		data=>{
 		},
 		err=>

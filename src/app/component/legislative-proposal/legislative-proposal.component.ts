@@ -1,15 +1,9 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { NgbCarouselConfig, NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { AssertNotNull } from '@angular/compiler';
-import { DashboardService } from 'src/app/dashboard.service';
-import { LegalCase } from 'src/app/_models/legal-case';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from 'src/app/http.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Clinic } from 'src/app/_models/clinic';
 import jwt_decode from "jwt-decode";
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import {Router } from '@angular/router';
 import { Client } from '../../_models/client'
 import { Roles } from 'src/app/_models/roles.enum';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
@@ -21,51 +15,63 @@ import { LegislativeProposal } from 'src/app/_models/legislative-proposal';
 
 @Component({
   selector: 'app-legislative-proposal',
-  templateUrl: './legislative-proposal.component.html',
-  styleUrls: ['./legislative-proposal.component.css']
-})
+  templateUrl: './legislative-proposal.component.html'})
 export class LegislativeProposalComponent implements OnInit {
 
+	///Admin details
 	admin=new Person()
+	//All Legislative proposals
 	proposals: LegislativeProposal[];
+
+	//All clinics
 	clinics: Clinic[];
+
+	//All clinical supervisors
 	supervisors: ClinicalSupervisor[]
+
+	//A specific clinical supervisor
 	currentSuperVisor: ClinicalSupervisor
+
+	//Role of connected user
 	currentRole = parseInt(localStorage.getItem('Role') + "");
+
+	//Reason to close modal window
 	closeResult = "";
-	currentStatus = ""
+
+	//Name of specific clinic
 	clinicName: string = ""
-	currentClient: Client = new Client();
-	newClient: Client = new Client()
+
+	//Id of connected user
 	userId = parseInt(
 		JSON.parse(
 			JSON.stringify(
 				jwt_decode(localStorage.getItem("authenticationToken") + "")
 			)
 		).sub);
+
+	//Connected user full name	
 	userFullName: string = ""
+
+	//All user details
 	userDetails:Person=new Person();
-	clients: Client[] = []
+
+	//A pecific clinic details
 	chosenClinic: Clinic = new Clinic()
 
+	//New legislative prposal to add
 	addedProposal: LegislativeProposal = new LegislativeProposal()
-	edittedCase: LegalCase = new LegalCase()
 
-	defaultCaseType: string = "פלילי"
-	caseTypes: string[] = [`פלילי`, `שכר עבודה בסמכות רשם`, `הטרדה מאיימת וצו הגנה`, `ערעור ביטוח לאומי`,
-		`האזנת סתר`, `עתירה לבג"ץ`, `ביצוע תביעה בהוצאה לפועל`, `ביטול קנס מנהלי`, `תביעה קטנה`,'ערעור מסים']
+	//Edited legislative proposal
+	edittedProposal: LegislativeProposal = new LegislativeProposal()
 
 
-	constructor(private dashboardService: DashboardService, private modalService: NgbModal,private router:Router	)
+	constructor(private httpService: HttpService, private modalService: NgbModal,private router:Router	)
 	{
 
 		this.getPersonDetails();
     	this.getAllClinics();
 		if(this.currentRole==Roles.SUPERVISOR)
 			this.getAdminDetails();
-	
-
-	
 	}
 	public ngOnInit(): void
 	{
@@ -74,10 +80,10 @@ export class LegislativeProposalComponent implements OnInit {
 	}
 
 
-
+	//Personal details of connected user
 	getPersonDetails()
 	{
-		this.dashboardService.getPersonById(this.userId).subscribe(
+		this.httpService.getPersonById(this.userId).subscribe(
 			data=>{
 				this.userDetails=data;
 			}
@@ -86,9 +92,10 @@ export class LegislativeProposalComponent implements OnInit {
 		
 	}
 
+	//Admin details
 	getAdminDetails()
 	{
-		this.dashboardService.getAllPersons().subscribe(
+		this.httpService.getAllPersons().subscribe(
 			data=>{
 				data=data.filter(person=>person.role=="Super Admin")
 				this.admin=data[0];
@@ -103,7 +110,7 @@ export class LegislativeProposalComponent implements OnInit {
 	//Getting all the clinics for assigning new cases to specific clinic
 	getAllClinics()
 	{
-		this.dashboardService.getAllClinic().subscribe(
+		this.httpService.getAllClinic().subscribe(
 			data =>
 			{
 				this.clinics = data;
@@ -125,11 +132,12 @@ export class LegislativeProposalComponent implements OnInit {
 	}
 
 
+	//Getting all legislative proposal
 	getAllProposals()
 	{
 
 
-			this.dashboardService.getAllProposal().subscribe(
+			this.httpService.getAllProposal().subscribe(
 				data =>
 				{
 					
@@ -142,9 +150,15 @@ export class LegislativeProposalComponent implements OnInit {
 
 	}
 
-	//Modal methodd
-	open(content: string)
+	//Open modal window for adding new legislative proposal
+	openAddModal(content: string)
 	{
+		this.httpService.getLegalCaseGeneratedId().subscribe(
+			data=>{
+				this.addedProposal.id=data;
+			}
+		)
+		
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
 		{
 			this.closeResult = `Closed with: ${result}`;
@@ -156,10 +170,34 @@ export class LegislativeProposalComponent implements OnInit {
 
 	}
 
-	openDeleteModal(firstName: string, lastName: string, id: string)
+	//Open modal window for editing legislative proposal
+	openEditModal(content:string,proposal:LegislativeProposal)
 	{
+		this.edittedProposal=Object.create(proposal);
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 
+		});
 	}
+
+	//Open modal window for deleting legislative proposal
+	openDeleteModal(content:string)
+	{
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
+	}
+
+	//Get the reason to close modal window
 	private getDismissReason(reason: ModalDismissReasons): string
 	{
 		if (reason === ModalDismissReasons.ESC)
@@ -177,8 +215,8 @@ export class LegislativeProposalComponent implements OnInit {
 	}
 
 
-	//Invoked when adding new case
-	onSave()
+	//Invoked when adding new legislative proposal
+	onAdd()
 	{
 
 		
@@ -188,7 +226,7 @@ export class LegislativeProposalComponent implements OnInit {
 		else
 			this.addedProposal.clinicName==this.chosenClinic.clinicName;	
 
-		this.dashboardService.addNewProposal(this.addedProposal).subscribe(
+		this.httpService.addNewProposal(this.addedProposal).subscribe(
 			data =>
 			{
 				this.proposals.push(this.addedProposal);
@@ -206,46 +244,26 @@ export class LegislativeProposalComponent implements OnInit {
 
 	}
 
-  /*
-	validateFields(): boolean
+	//Validate fields of new proposal
+	validateNewProposal():boolean
 	{
-		if (this.addedProposal.id == 0)
-		{
-			alert("מספר תיק חסר ")
-			return false
-		}
-		if (this.currentRole == Roles.SUPERADMIN &&
-			typeof this.addedProposal.clinicName == undefined || this.addedProposal.clinicName == '')
-		{
-			alert("יש להוסיף שם קליניקה")
-			return false
-		}
-		if (typeof this.addedProposal.subject == undefined || this.addedProposal.subject == '')
-		{
-			alert("יש להגדיר נושא לתיק")
-			return false
-		}
-
-		if (typeof this.addedProposal.caseType == undefined || this.addedProposal.caseType == '')
-		{
-			alert("יש להגדיר את סוג התיק")
-			return false
-		}
-
-		if (typeof this.addedProposal.clientId == undefined || this.addedProposal.clientId == 0)
-		{
-			alert("יש להוסף לקוח לתיק")
-			return false
-		}
-
-		return true;
+		return typeof this.addedProposal.subject!="undefined" && this.addedProposal.subject!=""
+		&& typeof this.addedProposal.proposalType!="undefined" && this.addedProposal.proposalType!="";
 	}
-  */
+
+	validateEditProposal():boolean
+	{
+		return typeof this.edittedProposal.subject!="undefined" && this.edittedProposal.subject!=""
+		&& typeof this.edittedProposal.proposalType!="undefined" && this.edittedProposal.proposalType!=""
+		&& typeof this.edittedProposal.status!="undefined" && this.edittedProposal.status!="";
+	}
+
+
 
 	//Invoked for deleting case
 	onDelete(id: string)
 	{
-		this.dashboardService.deleteProposal(parseInt(id)).subscribe(
+		this.httpService.deleteProposal(parseInt(id)).subscribe(
 			data =>
 			{
 				this.proposals = this.proposals.filter(lCase => lCase.id != parseInt(id))
@@ -257,12 +275,19 @@ export class LegislativeProposalComponent implements OnInit {
 
 
 	//Invoked for updating a case
-	onEdit(proposal: LegislativeProposal)
+	onEdit(index:number)
 	{
-		this.dashboardService.editProposal(proposal).subscribe(
+		this.edittedProposal.id=this.edittedProposal.id;
+		this.edittedProposal.clinicName=this.edittedProposal.clinicName;
+		this.edittedProposal.proposalType=this.edittedProposal.proposalType
+		this.edittedProposal.status=this.edittedProposal.status
+		this.edittedProposal.subject=this.edittedProposal.subject
+		
+		this.httpService.editProposal(this.edittedProposal).subscribe(
 			data =>
 			{
-				this.createNotification(NotificationType.EDIT,proposal.id)
+				this.proposals[index]=Object.create(this.edittedProposal);
+				this.createNotification(NotificationType.EDIT,this.edittedProposal.id)
 					
 			},
 			err =>
@@ -321,7 +346,7 @@ export class LegislativeProposalComponent implements OnInit {
 			}
 		}
 
-	  this.dashboardService.addNotification(n).subscribe(
+	  this.httpService.addNotification(n).subscribe(
 		data=>{
 			this.mapNotification(data[0]);
 			
@@ -348,7 +373,7 @@ export class LegislativeProposalComponent implements OnInit {
 		{
 			ng.receiverId=this.chosenClinic.clinicalSupervisorId;
 		}
-	  this.dashboardService.mapNotificationToUser(ng).subscribe(
+	  this.httpService.mapNotificationToUser(ng).subscribe(
 		data=>{
 		},
 		err=>

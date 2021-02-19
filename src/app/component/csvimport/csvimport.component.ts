@@ -2,7 +2,7 @@ import { UploaderService } from "../../services/uploader.service";
 import {FormBuilder} from "@angular/forms";
 import { Component, ViewEncapsulation, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DashboardService } from "src/app/dashboard.service";
+import { HttpService } from "src/app/http.service";
 import {  HttpParams, HttpClient } from '@angular/common/http';
 import { tap } from "rxjs/operators";
 import { MatStepper } from '@angular/material/stepper';
@@ -27,7 +27,7 @@ export class CsvImportComponent implements OnInit {
 	isLinear = true;
 	firstFormGroup: FormGroup;
 	secondFormGroup: FormGroup;
-	constructor(private http:HttpClient, private dashboardService: DashboardService, private _formBuilder: FormBuilder, private uploader: UploaderService) {}
+	constructor(private http:HttpClient, private httpService: HttpService, private _formBuilder: FormBuilder, private uploader: UploaderService) {}
 
 	ngOnInit() {
 		

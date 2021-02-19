@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BetweenDates } from 'src/app/_models/between-dates';
 
@@ -15,7 +15,7 @@ export class CaseInCourtComponent implements OnInit {
   startDate=new Date('2020-1-1');
   endDate=new Date('2021-1-1');
 
-  constructor(private dashboardService:DashboardService,private modalService:NgbModal) {
+  constructor(private httpService:HttpService,private modalService:NgbModal) {
 this.getNumberOfCasesInCouret();
    }
 
@@ -28,7 +28,7 @@ this.getNumberOfCasesInCouret();
     between.startDate=this.startDate;
     between.endDate=this.endDate;
 
-    this.dashboardService.numberOfCasesToCourtInAllClinicsBetween2Dates(between).subscribe(
+    this.httpService.numberOfCasesToCourtInAllClinicsBetween2Dates(between).subscribe(
       data=>{
         this.caseInCourtNumber=data;
       },

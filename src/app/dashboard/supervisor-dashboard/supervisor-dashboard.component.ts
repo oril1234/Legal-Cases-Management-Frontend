@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import jwt_decode from 'jwt-decode'
 import { Student } from 'src/app/_models/student';
 import { LegalCase } from 'src/app/_models/legal-case';
@@ -43,7 +43,7 @@ export class SupervisorDashboardComponent implements OnInit {
   
 
 
-  constructor(private dashBoardService:DashboardService,private modalService:NgbModal) {
+  constructor(private httpService:HttpService,private modalService:NgbModal) {
     this.getClinicName();
    }
 
@@ -53,7 +53,7 @@ export class SupervisorDashboardComponent implements OnInit {
   getClinicName()
   {
     this.id=parseInt(JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub);
-    this.dashBoardService.getAllClinic().subscribe(
+    this.httpService.getAllClinic().subscribe(
       data=>{
       
         let clinics:Clinic[]=data;
@@ -102,7 +102,7 @@ export class SupervisorDashboardComponent implements OnInit {
 
     // numberOfCasesToCourtInChosenClinicBetween2Dates(clinic, dates)
 
-    this.dashBoardService.numberOfCasesToCourtInChosenClinicBetween2Dates(this.clinicName, between).subscribe(
+    this.httpService.numberOfCasesToCourtInChosenClinicBetween2Dates(this.clinicName, between).subscribe(
       data=>{
         this.casesInCourtNumber = data;
         // console.log(data);
@@ -128,7 +128,7 @@ export class SupervisorDashboardComponent implements OnInit {
   numberOfClinicsToCourt2Dates()
   {
     /*
-    this.dashBoardService.numberOfCasesToCourtInChosenClinicBetween2Dates().subscribe(
+    this.httpService.numberOfCasesToCourtInChosenClinicBetween2Dates().subscribe(
       data=>{
       },
       error=>{
@@ -141,7 +141,7 @@ export class SupervisorDashboardComponent implements OnInit {
   getTotalNumberOfStudentsInClinic()
   {
 
-    this.dashBoardService.getAllStudents().subscribe(
+    this.httpService.getAllStudents().subscribe(
       data=>{
         let students:Student[]=data.filter(student=>student.clinicalSupervisorId==this.id);
         
@@ -155,7 +155,7 @@ export class SupervisorDashboardComponent implements OnInit {
    
 
         
-        this.dashBoardService.getAllCases().subscribe(
+        this.httpService.getAllCases().subscribe(
           data1=>
           {
                 
@@ -179,7 +179,7 @@ export class SupervisorDashboardComponent implements OnInit {
 
   GetNumberOfResearchesInClinic()
   {
-    this.dashBoardService.getAllResearches().subscribe(
+    this.httpService.getAllResearches().subscribe(
       data=>{
         let researches:Research[]=data;
         researches=researches.filter(research=> research.clinicName==this.clinicName);

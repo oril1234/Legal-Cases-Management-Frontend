@@ -1,15 +1,9 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { NgbCarouselConfig, NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { AssertNotNull } from '@angular/compiler';
-import { DashboardService } from 'src/app/dashboard.service';
-import { LegalCase } from 'src/app/_models/legal-case';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from 'src/app/http.service';
+import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Clinic } from 'src/app/_models/clinic';
 import jwt_decode from "jwt-decode";
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import {Router } from '@angular/router';
 import { Client } from '../../_models/client'
 import { Roles } from 'src/app/_models/roles.enum';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
@@ -21,8 +15,7 @@ import { Research } from 'src/app/_models/research';
 
 @Component({
 	selector: 'app-research',
-	templateUrl: './research.component.html',
-	styleUrls: ['./research.component.css']
+	templateUrl: './research.component.html'
 })
 export class ResearchComponent implements OnInit {
 
@@ -49,14 +42,14 @@ export class ResearchComponent implements OnInit {
 	chosenClinic: Clinic = new Clinic()
 
 	addedResearch: Research = new Research()
-	edittedCase: Research = new Research()
+	edittedResearch: Research = new Research()
 
 	defaultCaseType: string = "פלילי"
 	caseTypes: string[] = [`פלילי`, `שכר עבודה בסמכות רשם`, `הטרדה מאיימת וצו הגנה`, `ערעור ביטוח לאומי`,
 		`האזנת סתר`, `עתירה לבג"ץ`, `ביצוע תביעה בהוצאה לפועל`, `ביטול קנס מנהלי`, `תביעה קטנה`,'ערעור מסים']
 
 
-	constructor(private dashboardService: DashboardService, private modalService: NgbModal,private router:Router	)
+	constructor(private httpService: HttpService, private modalService: NgbModal,private router:Router	)
 	{
 
 	this.getPersonDetails();
@@ -73,7 +66,7 @@ export class ResearchComponent implements OnInit {
 
 	getPersonDetails()
 	{
-		this.dashboardService.getPersonById(this.userId).subscribe(
+		this.httpService.getPersonById(this.userId).subscribe(
 			data=>{
 				this.userDetails=data;
 			}
@@ -85,7 +78,7 @@ export class ResearchComponent implements OnInit {
 	
 	getAdminDetails()
 	{
-		this.dashboardService.getAllPersons().subscribe(
+		this.httpService.getAllPersons().subscribe(
 			data=>{
 				data=data.filter(person=>person.role=="Super Admin")
 				this.admin=data[0];
@@ -101,7 +94,7 @@ export class ResearchComponent implements OnInit {
 	//Getting all the clinics for assigning new cases to specific clinic
 	getAllClinics()
 	{
-		this.dashboardService.getAllClinic().subscribe(
+		this.httpService.getAllClinic().subscribe(
 			data =>
 			{
 				this.clinics = data;
@@ -126,7 +119,7 @@ export class ResearchComponent implements OnInit {
 
 	getAllResearches()
 	{
-			this.dashboardService.getAllResearches().subscribe(
+			this.httpService.getAllResearches().subscribe(
 				data =>
 				{
 					this.researches = data;
@@ -140,8 +133,14 @@ export class ResearchComponent implements OnInit {
 	}
 
 	//Modal methodd
-	open(content: string)
+	openAddModal(content: string)
 	{
+		this.httpService.getLegalCaseGeneratedId().subscribe(
+			data=>{
+				this.addedResearch.id=data;
+			}
+		)
+		
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
 		{
 			this.closeResult = `Closed with: ${result}`;
@@ -153,9 +152,30 @@ export class ResearchComponent implements OnInit {
 
 	}
 
-	openDeleteModal(firstName: string, lastName: string, id: string)
+	openEditModal(content:string,research:Research)
 	{
+		this.edittedResearch=Object.create(research);
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 
+		});
+
+	}
+
+	openDeleteModal(content:string)
+	{
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
 	}
 	private getDismissReason(reason: ModalDismissReasons): string
 	{
@@ -175,13 +195,13 @@ export class ResearchComponent implements OnInit {
 
 
 	//Invoked when adding new case
-	onSave()
+	onAdd()
 	{
 
 		this.addedResearch.status = "חדש";
 		this.addedResearch.clinicName = this.clinicName
 
-		this.dashboardService.addNewResearch(this.addedResearch).subscribe(
+		this.httpService.addNewResearch(this.addedResearch).subscribe(
 			data =>
 			{
 				this.researches.push(this.addedResearch);
@@ -197,46 +217,24 @@ export class ResearchComponent implements OnInit {
 
 	}
 
-  /*
-	validateFields(): boolean
+	//Validate fields of new proposal
+	validateNewResearch():boolean
 	{
-		if (this.addedProposal.id == 0)
-		{
-			alert("מספר תיק חסר ")
-			return false
-		}
-		if (this.currentRole == Roles.SUPERADMIN &&
-			typeof this.addedProposal.clinicName == undefined || this.addedProposal.clinicName == '')
-		{
-			alert("יש להוסיף שם קליניקה")
-			return false
-		}
-		if (typeof this.addedProposal.subject == undefined || this.addedProposal.subject == '')
-		{
-			alert("יש להגדיר נושא לתיק")
-			return false
-		}
-
-		if (typeof this.addedProposal.caseType == undefined || this.addedProposal.caseType == '')
-		{
-			alert("יש להגדיר את סוג התיק")
-			return false
-		}
-
-		if (typeof this.addedProposal.clientId == undefined || this.addedProposal.clientId == 0)
-		{
-			alert("יש להוסף לקוח לתיק")
-			return false
-		}
-
-		return true;
+		return typeof this.addedResearch.subject!="undefined" && this.addedResearch.subject!=""
+		&& typeof this.addedResearch.researchType!="undefined" && this.addedResearch.researchType!="";
 	}
-  */
+
+	validateEditResearch():boolean
+	{
+		return typeof this.edittedResearch.subject!="undefined" && this.edittedResearch.subject!=""
+		&& typeof this.edittedResearch.researchType!="undefined" && this.edittedResearch.researchType!=""
+		&& typeof this.edittedResearch.status!="undefined" && this.edittedResearch.status!="";
+	}
 
 	//Invoked for deleting case
 	onDelete(id: number)
 	{
-		this.dashboardService.deleteResearch(id).subscribe(
+		this.httpService.deleteResearch(id).subscribe(
 			data =>
 			{
 				this.researches = this.researches.filter(lCase => lCase.id !=id)
@@ -247,12 +245,20 @@ export class ResearchComponent implements OnInit {
 
 
 	//Invoked for updating a case
-	onEdit(research: Research)
+	onEdit(index:number)
 	{
-		this.dashboardService.editResearch(research).subscribe(
+		
+		this.edittedResearch.id=this.edittedResearch.id;
+		this.edittedResearch.clinicName=this.edittedResearch.clinicName;
+		this.edittedResearch.researchType=this.edittedResearch.researchType
+		this.edittedResearch.status=this.edittedResearch.status
+		this.edittedResearch.subject=this.edittedResearch.subject
+
+		this.httpService.editResearch(this.edittedResearch).subscribe(
 			data =>
 			{
-				this.createNotification(NotificationType.EDIT,research.id)	
+				this.researches[index]=Object.create(this.edittedResearch);
+				this.createNotification(NotificationType.EDIT,this.edittedResearch.id)	
 			},
 			err =>
 			{
@@ -310,7 +316,7 @@ export class ResearchComponent implements OnInit {
 			}
 		}
 
-	  this.dashboardService.addNotification(n).subscribe(
+	  this.httpService.addNotification(n).subscribe(
 		data=>{
 			this.mapNotification(data[0]);
 			
@@ -337,7 +343,7 @@ export class ResearchComponent implements OnInit {
 		{
 			ng.receiverId=this.chosenClinic.clinicalSupervisorId;
 		}
-	  this.dashboardService.mapNotificationToUser(ng).subscribe(
+	  this.httpService.mapNotificationToUser(ng).subscribe(
 		data=>{
 		},
 		err=>

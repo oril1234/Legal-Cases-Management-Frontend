@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import {  ReactiveFormsModule,FormsModule} from '@angular/forms';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -21,7 +21,7 @@ export class CloseCasesComponent implements OnInit {
 
     });
 
-  constructor(private dashboardService:DashboardService) { 
+  constructor(private httpService:HttpService) { 
   
   
     this.getClosedCasesLastPastYear();
@@ -34,7 +34,7 @@ export class CloseCasesComponent implements OnInit {
 
   getClosedCasesLastPastYear()
   {
-    this.dashboardService.getNumberOfClosedCasesPassedYear().subscribe(
+    this.httpService.getNumberOfClosedCasesPassedYear().subscribe(
       data=>{
         this.closedCasesNumber=data;
       },

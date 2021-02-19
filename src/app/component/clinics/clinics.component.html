@@ -84,7 +84,8 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-outline-dark"
-											(click)="modal.close('Save click');onEdit(i)">ערוך</button>
+											(click)="modal.close('Save click');onEdit(i)"
+											[disabled]="!validateClinicDescriptionForeditedClinic()">ערוך</button>
 									</div>
 								</ng-template>
 
@@ -140,24 +141,25 @@
 					<div class="modal-body">
 						<form dir="rtl" style="padding: 0;">
 							<div class="row">
-								<div class="col-5">
+								<div class="col-3">
 									<label>
 										שם הקליניקה</label>
 								</div>
-								<div class="col-7">
-									<input name="clinicName" type="text" [(ngModel)]="addedClinic.clinicName">
+								<div class="col-9">
+									<input style="width: 100%;" name="clinicName" type="text"
+										[(ngModel)]="addedClinic.clinicName">
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-5">
+								<div class="col-3">
 									<label>
 										מנחה
 									</label>
 								</div>
-								<div class="col-7">
-									<select name="supervisor" style="width: 150px;" [(ngModel)]="supervisor">
+								<div class="col-9">
+									<select style="width: 100%;" name="supervisor" [(ngModel)]="supervisor">
 										<option *ngFor="let s of supervisors" [ngValue]="s">
-											{{s.firstName}}
+											{{s.firstName+' '+s.lastName}}
 										</option>
 									</select>
 								</div>
@@ -165,8 +167,8 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-outline-dark"
-							(click)="modal.close('Save click');onSave()">הוסף</button>
+						<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click');onAdd()"
+							[disabled]="!validateClinicNameForNewClinic()">הוסף</button>
 					</div>
 				</ng-template>
 

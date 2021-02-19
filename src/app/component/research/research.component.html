@@ -22,10 +22,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let research of researches">
+                        <tr *ngFor="let research of researches;let i=index">
                             <td style="display: flex;">
                                 <button style="font-size: 10pt;" class="btn-primary mr-1"><i class="fa fa-edit"
-                                        (click)="open(editModal,'')"></i></button>
+                                        (click)="openEditModal(editModal,research)"></i></button>
 
                                 <!--Edit Modal -->
 
@@ -45,8 +45,8 @@
                                                 <div class="col-5"> <label>
                                                         מספר מחקר</label></div>
                                                 <div class="col-7">
-                                                    <input style="width: 250px;" type="number" [(ngModel)]="research.id"
-                                                        name="id" disabled>
+                                                    <input style="width: 250px;" type="number"
+                                                        [(ngModel)]="edittedResearch.id" name="id" disabled>
                                                 </div>
                                             </div>
 
@@ -55,7 +55,7 @@
                                                 <div class="col-5"> <label>
                                                         נושא</label></div>
                                                 <div class="col-7">
-                                                    <input style="width: 250px;" [(ngModel)]="research.subject"
+                                                    <input style="width: 250px;" [(ngModel)]="edittedResearch.subject"
                                                         name="subject">
                                                 </div>
                                             </div>
@@ -64,8 +64,9 @@
                                                 <div class="col-5"> <label>
                                                         קליניקה</label></div>
                                                 <div class="col-7">
-                                                    <input style="width: 250px;" [(ngModel)]="research.clinicName"
-                                                        type="text" name="clinicName" disabled>
+                                                    <input style="width: 250px;"
+                                                        [(ngModel)]="edittedResearch.clinicName" type="text"
+                                                        name="clinicName" disabled>
                                                 </div>
                                             </div>
 
@@ -73,8 +74,9 @@
                                                 <div class="col-5"> <label>
                                                         סיווג מחקר</label></div>
                                                 <div class="col-7">
-                                                    <input style="width: 250px;" [(ngModel)]="research.researchType"
-                                                        type="text" name="researchType">
+                                                    <input style="width: 250px;"
+                                                        [(ngModel)]="edittedResearch.researchType" type="text"
+                                                        name="researchType">
                                                 </div>
                                             </div>
 
@@ -84,7 +86,7 @@
                                                         סטטוס הצעה</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input style="width: 250px;" [(ngModel)]="research.status"
+                                                    <input style="width: 250px;" [(ngModel)]="edittedResearch.status"
                                                         name="status">
                                                 </div>
                                             </div>
@@ -93,12 +95,13 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-                                            (click)="modal.close('Save click');onEdit(research)">אשר</button>
+                                            (click)="modal.close('Save click');onEdit(i)"
+                                            [disabled]="!validateEditResearch()">אשר</button>
                                     </div>
                                 </ng-template>
 
                                 <button *ngIf="currentRole!=0" class="btn btn-sm btn-danger btn-delete-account"
-                                    (click)="open(deleteModal,'')">
+                                    (click)="openDeleteModal(deleteModal)">
                                     <span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
                                             class="fa fa-trash-alt"></i></span>
                                 </button>
@@ -137,7 +140,7 @@
 
 
                 <button *ngIf="currentRole!=0" style="color: white; float: right; font-size: 15;"
-                    class="btn btn-rounded btn-success mb-2" (click)="open(addModal)"> פתיחת מחקר חדש</button>
+                    class="btn btn-rounded btn-success mb-2" (click)="openAddModal(addModal)"> פתיחת מחקר חדש</button>
             </div>
         </div>
 
@@ -210,7 +213,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-                    (click)="modal.close('Save click');onSave()">הוסף</button>
+                    (click)="modal.close('Save click');onAdd()" [disabled]="!validateNewResearch()">הוסף</button>
             </div>
         </ng-template>
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import jwt_decode from "jwt-decode";
-import { DashboardService } from '../dashboard.service';
+import { HttpService } from '../http.service';
 import { Person } from '../_models/person';
 
 
@@ -32,7 +32,7 @@ export class PersonalDetailsComponent implements OnInit {
     photoUrl:string=""
   
     
-    constructor(private dashboardService: DashboardService, private modalService: NgbModal,
+    constructor(private httpService: HttpService, private modalService: NgbModal,
       private route: ActivatedRoute,
       private router: Router
     )
@@ -51,7 +51,7 @@ export class PersonalDetailsComponent implements OnInit {
 
   getPersonDetails()
   {
-    this.dashboardService.getPersonById(this.userId).subscribe(
+    this.httpService.getPersonById(this.userId).subscribe(
       data=>{
         
         this.person=data;
@@ -69,7 +69,7 @@ export class PersonalDetailsComponent implements OnInit {
   editPerson()
   {
     this.resetBooleanFields();
-    this.dashboardService.editPerson(this.person).subscribe(
+    this.httpService.editPerson(this.person).subscribe(
       data=>{
         this.resetBooleanFields()
       },

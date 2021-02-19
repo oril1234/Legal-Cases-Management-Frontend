@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import { Clinic } from 'src/app/_models/clinic';
 import {Chart} from 'chart.js'
 
@@ -21,7 +21,7 @@ export class ProjectMonthComponent implements OnInit {
   
 
 
-  constructor(private dashboardService:DashboardService) {
+  constructor(private httpService:HttpService) {
     this.getAllClinics();
     this.getCasesNumByClinic();
    }
@@ -32,12 +32,12 @@ export class ProjectMonthComponent implements OnInit {
   }
   getAllClinics()
   {
-    this.dashboardService.getAllClinic().subscribe(
+    this.httpService.getAllClinic().subscribe(
 			data=> {
 				this.clinics=data;
         this.clinics.forEach(element=>
           {
-            this.dashboardService.getNumberOfCasesByClinicName(element.clinicName).subscribe(
+            this.httpService.getNumberOfCasesByClinicName(element.clinicName).subscribe(
               data2=>{
                 const newData={clinicName:element.clinicName,casesNumber:data2};
                 let splitted=newData.clinicName.split(" ");

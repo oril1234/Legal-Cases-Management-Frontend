@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 
 @Component({
   selector: 'app-super-admin-dashboard',
@@ -11,7 +11,7 @@ studentsNumber:number=0;
 activeClinicsNumber:number=0;
 supervisorsNumber:number=0;
 casesReceivedThisYearNumber:number=0
-  constructor(private dashBoardService:DashboardService) { 
+  constructor(private httpService:HttpService) { 
 
     this.getTotalNumberOfStudents();
     this.getTotalNumberOfActiveClinics();
@@ -24,7 +24,7 @@ casesReceivedThisYearNumber:number=0
 
   getTotalNumberOfStudents()
   {
-    this.dashBoardService.getStudentsNum().subscribe(
+    this.httpService.getStudentsNum().subscribe(
       data=>{
         this.studentsNumber=data;
       }
@@ -33,7 +33,7 @@ casesReceivedThisYearNumber:number=0
 
   getTotalNumberOfActiveClinics()
   {
-    this.dashBoardService.getNumberOfActiveClinics().subscribe(
+    this.httpService.getNumberOfActiveClinics().subscribe(
       data=>{
         this.activeClinicsNumber=data;
       }
@@ -42,7 +42,7 @@ casesReceivedThisYearNumber:number=0
 
   getTotalNumberOfSuperVisors()
   {
-    this.dashBoardService.getNumberOfClinicalSupervisors().subscribe(
+    this.httpService.getNumberOfClinicalSupervisors().subscribe(
       data=>{
         this.supervisorsNumber=data;
       }
@@ -51,7 +51,7 @@ casesReceivedThisYearNumber:number=0
 
   getTotalNumberOfCaseReceivedThisYear()
   {
-    this.dashBoardService.numberOfCasesReceivedThisPastYear().subscribe(
+    this.httpService.numberOfCasesReceivedThisPastYear().subscribe(
       data=>
       {
         this.casesReceivedThisYearNumber=data;

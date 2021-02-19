@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import {Roles} from '../../_models/roles.enum'
 import jwt_decode from "jwt-decode"
 import { Person } from 'src/app/_models/person';
@@ -21,7 +21,7 @@ export class NavigationComponent {
 
   public showSearch = false;
   currentRole:Roles=Roles.STUDENT;
-  constructor(public router: Router,private dashboardService:DashboardService) {
+  constructor(public router: Router,private httpService:HttpService) {
     this.router = router;
     if(localStorage.getItem("authenticationToken")!=null){
         this.userId=parseInt(
@@ -46,7 +46,7 @@ export class NavigationComponent {
 
   getPersonDetails()
   {
-    this.dashboardService.getPersonById(this.userId).subscribe(
+    this.httpService.getPersonById(this.userId).subscribe(
       data=>{
         this.person=data;
       }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from 'src/app/dashboard.service';
+import { HttpService } from 'src/app/http.service';
 import { Clinic } from 'src/app/_models/clinic';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -10,23 +10,35 @@ import { Router } from '@angular/router';
   selector: 'app-dropdown-basic',
   templateUrl: './clinics.component.html'
 })
+
+/**
+ * Class of component of all clinics details
+ */
 export class ClinicsComponent  implements OnInit {
+
+  //Role of connected user
   currentRole=parseInt(localStorage.getItem("Role")+"");
+
+  //All clinics dertails
   clinics:Clinic[]=[];
+
+  //clinic object to add
   addedClinic:Clinic=new Clinic()
+
+  //Object of an existing clinic to edit 
   edittedClinic:Clinic=new Clinic()
+
+  //Details of clinical supervisors
   supervisors:ClinicalSupervisor[]=[];
+
+  //Specific clinical supervisor
   supervisor:ClinicalSupervisor=new ClinicalSupervisor();
+
+  //Reason to close a modal window
   closeResult=""
 
-  clinicsForm = new FormGroup({
-    clinicName:new FormControl(''),
-    clinicalSupervisor:new FormControl(''),
-    yearFounded:new FormControl('')
 
-	  });
-active:boolean=true;    
-constructor(private dashboardService:DashboardService,private modalService:NgbModal,private router: Router)
+constructor(private httpService:HttpService,private modalService:NgbModal,private router: Router)
 {
   this.getSupervisors();
   this.getAllClinics();
@@ -37,6 +49,7 @@ public ngOnInit(): void {
 }
 
 
+//Getting full name of clinical supervisor
 getFullName(id:number):string
 {
   let supervisor:ClinicalSupervisor= this.supervisors.filter(supervisor=>supervisor.id==id)[0];
@@ -46,7 +59,7 @@ getFullName(id:number):string
   return supervisor.firstName+" "+supervisor.lastName;
 }
 
-	  	//Modal methodd
+//Open modal for adding a new clinic
 openAddModal(content:string) 
 {
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
@@ -58,7 +71,7 @@ openAddModal(content:string)
         
 }
 
-	//Modal methodd
+	//Open modal for editing a clinic
   openEditModal(content:string,clinic:Clinic) 
   {
       this.edittedClinic=Object.create(clinic);
@@ -72,6 +85,7 @@ openAddModal(content:string)
               
   }
 
+  //Open modal for deleting a clinic
   openDeleteModal(content:string) 
   {
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
@@ -83,6 +97,7 @@ openAddModal(content:string)
         
   }
 
+//Get reason for closing modal window
 private getDismissReason(reason: ModalDismissReasons): string 
 {
     if (reason === ModalDismissReasons.ESC) {
@@ -95,10 +110,11 @@ private getDismissReason(reason: ModalDismissReasons): string
   }
     
 
+  //Fetch all clinics
   getAllClinics()
   {
 
-        this.dashboardService.getAllClinic().subscribe(
+        this.httpService.getAllClinic().subscribe(
           data=> {
             //this.clinics=data;
             data.forEach(clinic=>{
@@ -116,9 +132,10 @@ private getDismissReason(reason: ModalDismissReasons): string
 
   }
 
+  //Fetch all clinical supervisors
   getSupervisors()
   {
-    this.dashboardService.getAllSupervisors().subscribe(
+    this.httpService.getAllSupervisors().subscribe(
       data=> {
         this.supervisors=data;
         this.supervisor=this.supervisors[0];
@@ -128,6 +145,7 @@ private getDismissReason(reason: ModalDismissReasons): string
   
         );
   }
+
   getSupervisorNamebyId(id:string):string
   {
     for(let supervisor of this.supervisors)
@@ -136,12 +154,13 @@ private getDismissReason(reason: ModalDismissReasons): string
       if(supervisor.id==parseInt(id))
         return supervisor.firstName+' '+supervisor.lastName;
     }
-return "";    
+    return "";        
 
   }
 
 
-  onSave()
+  //Confirm add new clinic to system
+  onAdd()
 	{
 
      this.addedClinic.clinicalSupervisorId=this.supervisor.id;
@@ -150,7 +169,7 @@ return "";
      this.addedClinic.description="תיאור "+this.addedClinic.clinicName;
   
 
-		 this.dashboardService.addNewClinic(this.addedClinic).subscribe(
+		 this.httpService.addNewClinic(this.addedClinic).subscribe(
        data=>{
          if(this.addedClinic.active)
           this.clinics=[this.addedClinic].concat(this.clinics);
@@ -161,11 +180,24 @@ return "";
 		 )
 	}
 
+  //Checking name of a new clinic is not empty
+  validateClinicNameForNewClinic():boolean
+  {
+    return typeof this.addedClinic.clinicName!="undefined" && this.addedClinic.clinicName.length>2;
+  }
+
+  //Checking description of a new clinic is valid
+  validateClinicDescriptionForeditedClinic():boolean
+  {
+    return this.edittedClinic.description.length>2;
+  }
+
+  //Confirm delete of a clinic
 	onDelete(clinicName:string)
 	{
 		
     
-		this.dashboardService.deleteClinic(clinicName).subscribe(
+		this.httpService.deleteClinic(clinicName).subscribe(
       data=>{
         this.clinics=this.clinics.filter(clinic=>clinic.clinicName!=clinicName)
       }
@@ -173,6 +205,7 @@ return "";
 		);
 	}
 
+  //Confirm edit of clinic
 	onEdit(index:number)
 	{
 
@@ -181,10 +214,9 @@ return "";
     this.edittedClinic.clinicName=this.edittedClinic.clinicName;
     this.edittedClinic.clinicalSupervisorId=this.edittedClinic.clinicalSupervisorId;
     this.edittedClinic.yearFounded=this.edittedClinic.yearFounded;
-    //alert(this.edittedClinic.clinicalSupervisorId)
     
     
-    this.dashboardService.updateClinicDetails(this.edittedClinic).subscribe(
+    this.httpService.updateClinicDetails(this.edittedClinic).subscribe(
       data=>{
         this.clinics[index]=Object.create(this.edittedClinic);
       },
@@ -196,6 +228,7 @@ return "";
     	
 	}
 
+  //Toggle activation of a clinic
   onChangeClinicState(index:number)
   {
     this.edittedClinic=Object.create(this.clinics[index]);
@@ -205,7 +238,7 @@ return "";
     this.edittedClinic.clinicName=this.edittedClinic.clinicName;
     this.edittedClinic.clinicalSupervisorId=this.edittedClinic.clinicalSupervisorId;
     this.edittedClinic.yearFounded=this.edittedClinic.yearFounded;
-    this.dashboardService.updateClinicDetails(this.edittedClinic).subscribe(
+    this.httpService.updateClinicDetails(this.edittedClinic).subscribe(
       data=>{
         
         this.clinics=this.clinics.filter(clinic=>this.edittedClinic.clinicName!=clinic.clinicName);
@@ -221,6 +254,7 @@ return "";
     )
   }
 
+ //Invoked from html when changing a clinical supervisor 
  onChange(content:string)
  {
    this.edittedClinic.clinicalSupervisorId=parseInt(content);
