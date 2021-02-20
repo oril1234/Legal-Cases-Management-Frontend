@@ -20,7 +20,7 @@
           </thead>
           <tbody>
 
-            <tr *ngFor="let supervisor of supervisors">
+            <tr *ngFor="let supervisor of supervisors;let i=index">
               <td>
                 <button class="btn-primary mr-1"><i class="fa fa-edit"
                     (click)="openEditModal(supervisor,editModal)"></i></button>
@@ -96,7 +96,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-outline-dark" [disabled]="!validateEdittedFields()"
-                      (click)="modal.close('Save click');onEdit(supervisor)">ערוך</button>
+                      (click)="modal.close('Save click');onEdit(i)">ערוך</button>
                   </div>
                 </ng-template>
 
@@ -202,7 +202,7 @@
 
     <div class="modal-footer">
       <button type="button" class="btn btn-rounded btn-primary" [disabled]="!validateAddedFields()"
-        (click)="modal.close('Save click');onSave()">הוסף</button>
+        (click)="modal.close('Save click');onAdd()">הוסף</button>
     </div>
   </ng-template>
 

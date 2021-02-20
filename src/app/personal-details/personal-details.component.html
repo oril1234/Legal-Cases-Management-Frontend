@@ -21,7 +21,8 @@
                 <img src="{{person.imgUrl}}" alt="העלה תמונה">
             </div>
             <div class="col-12">
-                <button (click)="resetBooleanFields();editPhoto=true" class="btn btn-primary">עדכן תמונה</button>
+                <button (click)="resetBooleanFields();editPhoto=true;startEdit()" class="btn btn-primary">עדכן
+                    תמונה</button>
             </div>
 
             <div class="col-12">
@@ -33,7 +34,7 @@
                 <b dir="rtl">כתובת תמונה:</b>
             </div>
             <div class="col-5">
-                <input style="padding-left: 0;" type="text" [(ngModel)]="photoUrl">
+                <input style="padding-left: 0;" type="text" [(ngModel)]="personToEdit.imgUrl">
             </div>
             <div class="col-6"></div>
             <div style="margin-top:2% ;" class="col-6">
@@ -84,7 +85,7 @@
                 <p>{{person.phoneNumber}}</p>
             </div>
             <div class="col-4">
-                <button (click)="resetBooleanFields();editPhoneNumber=true" style="font-size: 10pt;"
+                <button (click)="resetBooleanFields();editPhoneNumber=true;startEdit()" style="font-size: 10pt;"
                     class="btn-primary mr-1"><i class="fa fa-edit"></i></button>
             </div>
 
@@ -95,7 +96,7 @@
                 <b>טלפון חדש</b>
             </div>
             <div class="col-5">
-                <input style="padding-left: 0;" type="text" [(ngModel)]="person.phoneNumber">
+                <input style="padding-left: 0;" type="text" [(ngModel)]="personToEdit.phoneNumber">
             </div>
             <div class="col-6"></div>
             <div style="margin-top:2% ;" class="col-6">
@@ -119,7 +120,7 @@
                 <p>{{person.email}}</p>
             </div>
             <div class="col-4">
-                <button (click)="resetBooleanFields();editEmail=true" style="font-size: 10pt;"
+                <button (click)="resetBooleanFields();editEmail=true;startEdit()" style="font-size: 10pt;"
                     class="btn-primary mr-1"><i class="fa fa-edit"></i></button>
             </div>
 
@@ -130,7 +131,7 @@
                 <b>דואר אלקטרוני חדש</b>
             </div>
             <div class="col-6">
-                <input type="text" [(ngModel)]="person.email">
+                <input type="text" [(ngModel)]="personToEdit.email">
             </div>
             <div class="col-6"></div>
             <div style="margin-top:2% ;" class="col-6">

@@ -5,6 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
+
+//This is a class for the calendat component that appears on dashboard
 export class CalendarComponent implements OnInit {
 
   todayCol:number=0;

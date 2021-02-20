@@ -221,10 +221,7 @@ export class LegislativeProposalComponent implements OnInit {
 
 		
 		this.addedProposal.status = "חדש";
-		if(this.currentRole==Roles.SUPERVISOR)
-			this.addedProposal.clinicName = this.clinicName;
-		else
-			this.addedProposal.clinicName==this.chosenClinic.clinicName;	
+		this.addedProposal.clinicName = this.chosenClinic.clinicName;
 
 		this.httpService.addNewProposal(this.addedProposal).subscribe(
 			data =>

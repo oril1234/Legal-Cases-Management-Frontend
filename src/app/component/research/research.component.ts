@@ -4,7 +4,6 @@ import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Clinic } from 'src/app/_models/clinic';
 import jwt_decode from "jwt-decode";
 import {Router } from '@angular/router';
-import { Client } from '../../_models/client'
 import { Roles } from 'src/app/_models/roles.enum';
 import { ClinicalSupervisor } from 'src/app/_models/clinical-supervisor';
 import { NotificationType } from 'src/app/_models/notification-type.enum';
@@ -28,8 +27,6 @@ export class ResearchComponent implements OnInit {
 	closeResult = "";
 	currentStatus = ""
 	clinicName: string = ""
-	currentClient: Client = new Client();
-	newClient: Client = new Client()
 	userId = parseInt(
 		JSON.parse(
 			JSON.stringify(
@@ -38,15 +35,11 @@ export class ResearchComponent implements OnInit {
 		).sub);
 	userFullName: string = ""
 	userDetails:Person=new Person();
-	clients: Client[] = []
 	chosenClinic: Clinic = new Clinic()
 
 	addedResearch: Research = new Research()
 	edittedResearch: Research = new Research()
 
-	defaultCaseType: string = "פלילי"
-	caseTypes: string[] = [`פלילי`, `שכר עבודה בסמכות רשם`, `הטרדה מאיימת וצו הגנה`, `ערעור ביטוח לאומי`,
-		`האזנת סתר`, `עתירה לבג"ץ`, `ביצוע תביעה בהוצאה לפועל`, `ביטול קנס מנהלי`, `תביעה קטנה`,'ערעור מסים']
 
 
 	constructor(private httpService: HttpService, private modalService: NgbModal,private router:Router	)
@@ -104,10 +97,19 @@ export class ResearchComponent implements OnInit {
 					this.clinics = this.clinics.filter(clinic => clinic.clinicalSupervisorId == this.userId);
 					
 				}
+
+				if(this.currentRole==Roles.STUDENT)
+				{
+					this.httpService.getStudentById(this.userId).subscribe(
+						data1=>{
+							this.clinics = this.clinics.filter(clinic => clinic.clinicalSupervisorId == data1.clinicalSupervisorId);
+						}
+					)
+				}
 				this.chosenClinic=this.clinics[0];
 				this.clinicName = this.clinics[0].clinicName;
         
-        
+				
 
 				this.getAllResearches();
 				
@@ -122,10 +124,12 @@ export class ResearchComponent implements OnInit {
 			this.httpService.getAllResearches().subscribe(
 				data =>
 				{
+					
 					this.researches = data;
 					if(this.currentRole!=Roles.SUPERADMIN)
 						this.researches = this.researches.filter(lCase => lCase.clinicName == this.clinics[0].clinicName);
-				},
+					
+					},
 				err=>{
 				}
 			);
@@ -199,7 +203,7 @@ export class ResearchComponent implements OnInit {
 	{
 
 		this.addedResearch.status = "חדש";
-		this.addedResearch.clinicName = this.clinicName
+		this.addedResearch.clinicName = this.chosenClinic.clinicName
 
 		this.httpService.addNewResearch(this.addedResearch).subscribe(
 			data =>

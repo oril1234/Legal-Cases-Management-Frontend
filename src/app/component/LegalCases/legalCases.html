@@ -25,7 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let case of cases">
+                        <tr *ngFor="let case of cases;let i=index">
                             <td style="display: flex;">
                                 <button style="font-size: 10pt;" class="btn-primary mr-1"><i class="fa fa-edit"
                                         (click)="openEditCaseModal(editModal,case)"></i></button>
@@ -129,7 +129,7 @@
                                     <div class="modal-footer">
                                         <button [disabled]="!validateEdittedCaseFields()" type="button"
                                             class="btn btn-primary btn-rounded btn-success mb-2"
-                                            (click)="modal.close('Save click');onEdit(case)">אישור</button>
+                                            (click)="modal.close('Save click');onEdit(i)">אישור</button>
                                     </div>
                                 </ng-template>
 

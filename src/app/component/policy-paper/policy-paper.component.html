@@ -22,10 +22,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let policyPaper of policyPapers">
+                        <tr *ngFor="let policyPaper of policyPapers;let i=index">
                             <td style="display: flex;">
                                 <button style="font-size: 10pt;" class="btn-primary mr-1"><i class="fa fa-edit"
-                                        (click)="open(editModal,'')"></i></button>
+                                        (click)="openEditModal(editModal,policyPaper)"></i></button>
 
                                 <!--Edit Modal -->
 
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-                                            (click)="modal.close('Save click');onEdit(policyPaper)">אשר</button>
+                                            (click)="modal.close('Save click');onEdit(i)">אשר</button>
                                     </div>
                                 </ng-template>
 
@@ -138,7 +138,8 @@
 
 
                 <button *ngIf="currentRole!=0" style="color: white; float: right; font-size: 15;"
-                    class="btn btn-rounded btn-success mb-2" (click)="open(addModal)"> פתיחת נייר מדיניות חדש</button>
+                    class="btn btn-rounded btn-success mb-2" (click)="openAddModal(addModal)"> פתיחת נייר מדיניות
+                    חדש</button>
             </div>
         </div>
 
@@ -159,7 +160,8 @@
                         <div class="col-5"> <label>
                                 מספר נייר מדיניות</label></div>
                         <div class="col-7">
-                            <input style="width: 250px;" type="number" [(ngModel)]="addedPolicyPaper.id" name="id">
+                            <input style="width: 250px;" type="number" [(ngModel)]="addedPolicyPaper.id" name="id"
+                                disabled>
                         </div>
                     </div>
 
@@ -211,11 +213,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-                    (click)="modal.close('Save click');onSave()">הוסף</button>
+                    (click)="modal.close('Save click');onAdd()" [disabled]="!validateNewPaper()">הוסף</button>
             </div>
         </ng-template>
-
-
     </div>
 
 

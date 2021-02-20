@@ -11,17 +11,26 @@ import { Person } from '../_models/person';
   templateUrl: './personal-details.component.html',
   styleUrls: ['./personal-details.component.css']
 })
+
+//Component to display all personal details of connected user
 export class PersonalDetailsComponent implements OnInit {
 
 
+  //Id of connected user
   userId = parseInt(
 		JSON.parse(
 			JSON.stringify(
 				jwt_decode(localStorage.getItem("authenticationToken") + "")
 			)
 		).sub);
+
+    //Details of connected iser
     person:Person=new Person();
-    personToEdit=new Person()
+
+    //Existing person to edit details for
+    personToEdit:Person=new Person()
+
+
     editPhoneNumber:boolean=false;
     editEmail:boolean=false
     editPassword:boolean=false;
@@ -55,8 +64,8 @@ export class PersonalDetailsComponent implements OnInit {
       data=>{
         
         this.person=data;
-        this.personToEdit=data;
-        console.log(data)
+        console.log(this.person)
+        
       },
       err=>
       {
@@ -65,12 +74,28 @@ export class PersonalDetailsComponent implements OnInit {
     )
   }
 
+  startEdit()
+  {
+    this.personToEdit=Object.create(this.person);
+    
+  }
+
 
   editPerson()
   {
-    this.resetBooleanFields();
-    this.httpService.editPerson(this.person).subscribe(
+    this.personToEdit.email=this.personToEdit.email;
+    this.personToEdit.firstName=this.personToEdit.firstName;
+    this.personToEdit.id=this.personToEdit.id;
+    this.personToEdit.imgUrl=this.personToEdit.imgUrl;
+    this.personToEdit.lastName=this.personToEdit.lastName;
+    this.personToEdit.password=this.personToEdit.password;
+    this.personToEdit.phoneNumber=this.personToEdit.phoneNumber;
+    this.personToEdit.role=this.personToEdit.role;
+    this.httpService.editPerson(this.personToEdit).subscribe(
       data=>{
+
+        this.person=Object.create(this.personToEdit);
+        
         this.resetBooleanFields()
       },
       err=>{
@@ -86,8 +111,6 @@ export class PersonalDetailsComponent implements OnInit {
     this.editPassword=false;
     this.editPhoto=false;
 
-    this.person.phoneNumber=this.personToEdit.phoneNumber;
-    this.person.email=this.personToEdit.email;
 
     this.currentPassword=""
     this.newPassword=""
@@ -98,11 +121,6 @@ export class PersonalDetailsComponent implements OnInit {
   checkValidPassword():boolean
   {
     return  this.currentPassword!="" && this.newPassword!="" && this.newPasswordRetyped!="";
-  }
-
-  updatePhoto()
-  {
-    
   }
 
 }

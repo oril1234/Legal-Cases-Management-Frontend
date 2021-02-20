@@ -6,10 +6,22 @@ import { HttpService } from 'src/app/http.service';
   templateUrl: './super-admin-dashboard.component.html',
   styleUrls: ['./super-admin-dashboard.component.css']
 })
+
+/**
+ * Component of displayed for connected user which is admin
+ */
 export class SuperAdminDashboardComponent implements OnInit {
+
+//Total number of students  
 studentsNumber:number=0;
+
+//Total number of active clinics
 activeClinicsNumber:number=0;
+
+//Total number of clinical supervisors
 supervisorsNumber:number=0;
+
+//Total number of cases received this
 casesReceivedThisYearNumber:number=0
   constructor(private httpService:HttpService) { 
 

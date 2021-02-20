@@ -13,20 +13,38 @@ import { BetweenDates } from 'src/app/_models/between-dates';
 @Component({
   selector: 'app-supervisor-dashboard',
   templateUrl: './supervisor-dashboard.component.html',
-  styleUrls: ['./supervisor-dashboard.component.css']
 })
+
+/**
+ * Component displayed when connected user is a clinical supervisor
+ */
 export class SupervisorDashboardComponent implements OnInit {
+  
+  //Reason to close modal window
   closeResult=""
+
+  //Start date in a range of 2 dates
   startDate=new Date('2020-1-1');
+
+  //End date in a range of 2 dates
   endDate=new Date('2021-1-1');
 
+  //Id of connected user
   id:number=0;
+
+  //Total number of students in clinic of clinical supervisor
   studentsNumber:number=0;
-  activeClinicsNumber:number=0;
-  supervisorsNumber:number=0;
+
+  //Total number of cases received this year
   casesReceivedThisYearNumber:number=0
+
+  //Clinic name of clinical supervisor
   clinicName=""
+
+  //Total number of researches in the clinic
   researchesNumber:number=0;
+
+  //Total number of cases handled in court right now
   casesInCourtNumber:number=0
   private pickerOptions: Object = {
     'showDropdowns': true,
@@ -73,7 +91,7 @@ export class SupervisorDashboardComponent implements OnInit {
     )
   }
 
-  	//Modal methodd
+  //Modal methodd
 	open(content:string,String:string) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -84,6 +102,7 @@ export class SupervisorDashboardComponent implements OnInit {
 		
 	}
 
+  //Get reason to close modal window
   private getDismissReason(reason: ModalDismissReasons): string {
 		if (reason === ModalDismissReasons.ESC) {
 			return 'by pressing ESC';
@@ -100,21 +119,10 @@ export class SupervisorDashboardComponent implements OnInit {
     between.startDate=this.startDate;
     between.endDate=this.endDate;
 
-    // numberOfCasesToCourtInChosenClinicBetween2Dates(clinic, dates)
 
     this.httpService.numberOfCasesToCourtInChosenClinicBetween2Dates(this.clinicName, between).subscribe(
       data=>{
         this.casesInCourtNumber = data;
-        // console.log(data);
-        // let cases:LegalCase[]=data;
-        // cases=cases.filter(lCase=>lCase.clinicName==this.clinicName);
-        // let start:Date=new Date(this.startDate+"");
-        // let end:Date=new Date(this.endDate+"");
-        // cases=cases.filter(lCase=>{
-        //   let formatted=new Date(lCase.dateAdded+"")
-        // return formatted>start && formatted<end;
-        //   });
-        // this.casesInCourtNumber=cases.length;            
 
       },
       err=>
@@ -122,19 +130,6 @@ export class SupervisorDashboardComponent implements OnInit {
       }
 
     )
-  }
-
-
-  numberOfClinicsToCourt2Dates()
-  {
-    /*
-    this.httpService.numberOfCasesToCourtInChosenClinicBetween2Dates().subscribe(
-      data=>{
-      },
-      error=>{
-      }
-    )
-    */
   }
 
 

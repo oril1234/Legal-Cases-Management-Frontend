@@ -105,6 +105,9 @@ export class PolicyPaperComponent implements OnInit {
 
 				this.getAllPolicyPapers();
 				
+			},
+			err=>{
+				
 			}
 		)
 
@@ -127,8 +130,13 @@ export class PolicyPaperComponent implements OnInit {
 	}
 
 	//Modal methodd
-	open(content: string)
+	openAddModal(content: string)
 	{
+		this.httpService.getLegalCaseGeneratedId().subscribe(
+			data=>{
+				this.addedPolicyPaper.id=data;
+			}
+		)
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
 		{
 			this.closeResult = `Closed with: ${result}`;
@@ -138,6 +146,28 @@ export class PolicyPaperComponent implements OnInit {
 
 		});
 
+	}
+
+	openEditModal(content: string,policyPaper:PolicyPaper)
+	{
+
+		this.edittedPaper=Object.create(policyPaper);
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+		});
+
+	}
+
+	//Validate fields of new policy paper
+	validateNewPaper():boolean
+	{
+		return typeof this.addedPolicyPaper.subject!="undefined" && this.addedPolicyPaper.subject!=""
+		&& typeof this.addedPolicyPaper.policyPaperType!="undefined" && this.addedPolicyPaper.policyPaperType!="";
 	}
 
 	openDeleteModal(firstName: string, lastName: string, id: string)
@@ -162,11 +192,12 @@ export class PolicyPaperComponent implements OnInit {
 
 
 	//Invoked when adding new case
-	onSave()
+	onAdd()
 	{
 
 		this.addedPolicyPaper.status = "חדש";
 		this.addedPolicyPaper.clinicName = this.clinicName
+		alert("The name is "+this.addedPolicyPaper.clinicName)
 
 		this.httpService.addNewPolicyPaper(this.addedPolicyPaper).subscribe(
 			data =>
@@ -184,41 +215,6 @@ export class PolicyPaperComponent implements OnInit {
 
 	}
 
-  /*
-	validateFields(): boolean
-	{
-		if (this.addedProposal.id == 0)
-		{
-			alert("מספר תיק חסר ")
-			return false
-		}
-		if (this.currentRole == Roles.SUPERADMIN &&
-			typeof this.addedProposal.clinicName == undefined || this.addedProposal.clinicName == '')
-		{
-			alert("יש להוסיף שם קליניקה")
-			return false
-		}
-		if (typeof this.addedProposal.subject == undefined || this.addedProposal.subject == '')
-		{
-			alert("יש להגדיר נושא לתיק")
-			return false
-		}
-
-		if (typeof this.addedProposal.caseType == undefined || this.addedProposal.caseType == '')
-		{
-			alert("יש להגדיר את סוג התיק")
-			return false
-		}
-
-		if (typeof this.addedProposal.clientId == undefined || this.addedProposal.clientId == 0)
-		{
-			alert("יש להוסף לקוח לתיק")
-			return false
-		}
-
-		return true;
-	}
-  */
 
 	//Invoked for deleting case
 	onDelete(id: number)
@@ -234,12 +230,13 @@ export class PolicyPaperComponent implements OnInit {
 
 
 	//Invoked for updating a case
-	onEdit(policyPaper: PolicyPaper)
+	onEdit(index:number)
 	{
-		this.httpService.editPolicyPaper(policyPaper).subscribe(
+		this.httpService.editPolicyPaper(this.edittedPaper).subscribe(
 			data =>
 			{
-				this.createNotification(NotificationType.EDIT,policyPaper.id)	
+				this.policyPapers[index]=Object.create(this.edittedPaper);
+				this.createNotification(NotificationType.EDIT,this.edittedPaper.id)	
 			},
 			err =>
 			{

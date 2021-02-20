@@ -12,7 +12,7 @@
                     <thead style="position: sticky; top: 0">
                         <tr>
 
-                            <th style="text-align:right;" scope="col"> </th>
+                            <th *ngIf="this.currentRole!=0" style="text-align:right;" scope="col"> </th>
                             <th style="text-align:right;" scope="col">סיווג </th>
                             <th style="text-align:right;" scope="col">קליניקה</th>
                             <th style="text-align:right;" scope="col">סטטוס</th>
@@ -23,7 +23,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let research of researches;let i=index">
-                            <td style="display: flex;">
+                            <td *ngIf="this.currentRole!=0" style="display: flex;">
                                 <button style="font-size: 10pt;" class="btn-primary mr-1"><i class="fa fa-edit"
                                         (click)="openEditModal(editModal,research)"></i></button>
 

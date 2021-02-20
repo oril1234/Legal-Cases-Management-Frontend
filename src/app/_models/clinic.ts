@@ -1,3 +1,8 @@
+
+
+/**
+ * This is a class of a legal clinic
+ */
 export class Clinic {
 
     clinicName!:string;

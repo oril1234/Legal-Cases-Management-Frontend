@@ -1,3 +1,7 @@
+/**
+ * Class of clinical supervisor
+ */
+
 export class ClinicalSupervisor {
     id!: number;
     firstName!: string;
@@ -6,7 +10,11 @@ export class ClinicalSupervisor {
     phoneNumber!: string;
     lastName!: string;
     role!:string;
+
+    //The year the clinical supervisor started his job
     sinceYear!:number;
+
+    //Url of profile image of clinical supervisor
     imgUrl:string
 
     constructor(init?:Partial<ClinicalSupervisor>) {

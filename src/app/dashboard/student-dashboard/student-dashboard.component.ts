@@ -1,20 +1,25 @@
 import { Component, OnInit } from "@angular/core";
-import { ThemeService } from "ng2-charts";
 import { HttpService } from "src/app/http.service";
 import jwt_decode from "jwt-decode";
 import { ClinicalSupervisor } from "src/app/_models/clinical-supervisor";
-import { LegalCaseCounter } from "src/app/_models/legal-case-counter";
 import { LegalCase } from "src/app/_models/legal-case";
 
 @Component({
   selector: "app-student-dashboard",
   templateUrl:'./student-dashboard.component.html',
-  styleUrls: ["./student-dashboard.component.css"],
 })
+
+//Component of dashboard of connected user which is student
 export class StudentDashboardComponent implements OnInit {
+
+  //Number of case that are assigned to students
   casesAssignedStudentNumber: number = 0;
+
+  //All legal cases in clinic
   totalCasesInClinic:number=0
-  supervisor!: ClinicalSupervisor;
+
+  //Clinical supervisor of student
+  supervisor: ClinicalSupervisor=new ClinicalSupervisor();
 
   constructor(private httpService: HttpService) {
     this.getAllMyCases();
@@ -24,6 +29,7 @@ export class StudentDashboardComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  //Get all legal cases
   getAllMyCases() {
     let id = JSON.parse(
       JSON.stringify(
@@ -41,6 +47,7 @@ export class StudentDashboardComponent implements OnInit {
 
   getNumberOfCasesByChosenClinic() {}
 
+  //Get details of clinical supervisor of student
   getClinicalSupervisor() {
     let id = JSON.parse(
       JSON.stringify(

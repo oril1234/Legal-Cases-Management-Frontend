@@ -23,7 +23,7 @@
 					</thead>
 					<tbody>
 
-						<tr *ngFor="let student of students">
+						<tr *ngFor="let student of students;let i=index">
 							<td *ngIf="currentRole!=0" style="display: flex;">
 								<button class="btn-primary mr-1" (click)="openEditModal(editModal,student)"><i
 										class="fa fa-edit"></i></button>
@@ -99,7 +99,7 @@
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-											(click)="modal.close('Save click');onEdit(student)"
+											(click)="modal.close('Save click');onEdit(i)"
 											[disabled]="!validateEdittedFields()">ערוך</button>
 									</div>
 								</ng-template>
@@ -226,7 +226,7 @@
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-primary btn-rounded btn-success mb-2"
-				(click)="modal.close('Save click');onSave()" [disabled]="!validateAddedFields()">הוסף</button>
+				(click)="modal.close('Save click');onAdd()" [disabled]="!validateAddedFields()">הוסף</button>
 		</div>
 	</ng-template>
 

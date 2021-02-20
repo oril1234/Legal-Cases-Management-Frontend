@@ -31,22 +31,28 @@ NotificationManager
 @Injectable({
   providedIn: 'root'
 })
+
+//This is a service class for http calls 
 export class HttpService {
 
   constructor(private http:HttpClient) { }
 
+  
+  //Get number of cases that were closed in the passed year
   getNumberOfClosedCasesPassedYear(){
     let myUrl=BASE_URL + "/api/v1/legalcase/closedCases"
     return this.http.get<number>(`${myUrl}`); 
 
   }
 
+  //Get number of cases that were received last year
   numberOfCasesReceivedThisPastYear()
   {
     let myUrl=BASE_URL + "/api/v1/legalcase/total";
     return this.http.get<number>(`${myUrl}`);
   }
 
+  //Get number of cases that were received last year for a pecific clinic
 numberOfCasesReceivedThisPastYearByClinic(clinicName: string)
 {
   let myUrl=BASE_URL + `/api/v1/legalcase/total/clinic/${clinicName}`;
@@ -54,18 +60,13 @@ numberOfCasesReceivedThisPastYearByClinic(clinicName: string)
 
 }
 
-//in superadmin dashboard- The number of cases between 2 dates in all the clinic
-//TODO:
- 
-
+//Number of cases that were handled by court in all clinics in a range of dates
 numberOfCasesToCourtInAllClinicsBetween2Dates(range: BetweenDates)
 {
-
-
   return this.http.post<number>(BASE_URL + "/api/v1/legalcase/casesBetween",range);
 }
 
-
+//Number of cases that were handled by court in a specific clinic in a range of dates
 numberOfCasesToCourtInChosenClinicBetween2Dates(clinicName: string, range: BetweenDates)
 {
   let myUrl=BASE_URL + `/api/v1/legalcase/casesBetween/${clinicName}`;
@@ -95,7 +96,6 @@ editPerson(person:Person)
 }
 
 
-
   getAllStudents()
   {
     let myUrl=BASE_URL + "/api/v1/student"
@@ -103,6 +103,7 @@ editPerson(person:Person)
 
   }
 
+  //Get the full name of a person according to his id
   getPersonFullNameById(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/person/fullName/${id}`
@@ -110,6 +111,7 @@ editPerson(person:Person)
 
   }
 
+  //Get all students that belong to a specific clinic
   getAllStudentsInMyClinic(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/student/clinic/${id}/getall`
@@ -117,11 +119,7 @@ editPerson(person:Person)
 
   }
 
-  getNumberOfStudentsInMyClinic()
-  {
-
-  }
-
+  //Get total number of students in the system
   getStudentsNum()
   {
     let myUrl=BASE_URL + "/api/v1/student/total";
@@ -151,6 +149,7 @@ editPerson(person:Person)
     return this.http.post<number>(`${myUrl}`,clinicName); 
   }        
   
+
   getStudentById(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/student/${id}`
@@ -166,12 +165,14 @@ editPerson(person:Person)
 
   }
 
+  //Delete a stuudent according to his id
   deleteStudent(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/student/${id}`  
     return this.http.delete<ClinicalSupervisor[]>(`${myUrl}`); 
 
   }
+
 
   editStudent(student:Student)
   {
@@ -180,15 +181,14 @@ editPerson(person:Person)
 
   }
 
-
-
-
+  //Get all clinical supervisors
   getAllSupervisors()
   {
     let myUrl=BASE_URL + "/api/v1/clinicalSupervisor"
     return this.http.get<ClinicalSupervisor[]>(`${myUrl}`); 
 
   }
+
 
   getClinicalSupervisorById(id:number)
   {
@@ -215,8 +215,7 @@ editPerson(person:Person)
     return this.http.put<any>(`${myUrl}`,supervisor); 
   }
 
-
-
+  //Get all legal cases
   getAllCases()
   {
     let myUrl=BASE_URL + "/api/v1/legalcase"
@@ -224,6 +223,7 @@ editPerson(person:Person)
 
   }
 
+  //Get a specific legal case according to its id number
   getCaseById(id:number)
   {
     
@@ -232,6 +232,7 @@ editPerson(person:Person)
 
   }
 
+  //Add a new legal case
   addNewCase(legalcase:LegalCase)
   {
     let myUrl=BASE_URL + "/api/v1/legalcase"
@@ -239,6 +240,7 @@ editPerson(person:Person)
 
   }
 
+  //Generate random number for a legal case
   getLegalCaseGeneratedId()
   {
     let myUrl=BASE_URL + "/api/v1/legalcase/generateId"
@@ -259,7 +261,7 @@ editPerson(person:Person)
     return this.http.put(`${myUrl}`,legalCase); 
   }
 
-  
+  //Get all cases that were assigned to students
   getAllAssignedCases()
   {
     let myUrl=BASE_URL + `/api/v1/caseAssigned`
@@ -267,6 +269,7 @@ editPerson(person:Person)
 
   }
 
+  //Get details of all cases assigned by a clinical supervisor according to his id number
   getAllAssignedCasesBySupervisor(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/caseAssigned/allCasesAssigedToStudents/${id}`
@@ -274,6 +277,7 @@ editPerson(person:Person)
 
   }
 
+  //Add assignment of a legal case to a student
   addNewCaseAssignment(assignedCase:AssignedCase)
   {
     let myUrl=BASE_URL + "/api/v1/caseAssigned"
@@ -281,6 +285,7 @@ editPerson(person:Person)
 
   }
 
+  //Casncel assignment of a legal case to a student according to his id number and case number
   deleteCaseAssignmentByStudentIdAndCase(studentId:number,caseId:number)
   {
     
@@ -289,6 +294,7 @@ editPerson(person:Person)
   }
 
 
+  //Get all legislative proposals
   getAllProposal()
   {
     let myUrl=BASE_URL + "/api/v1/legProposal"
@@ -296,6 +302,7 @@ editPerson(person:Person)
 
   }
 
+  //Add new legislative proposal
   addNewProposal(proposal:LegislativeProposal)
   {
     let myUrl=BASE_URL + `/api/v1/legProposal`
@@ -368,6 +375,7 @@ editPerson(person:Person)
     return this.http.delete<any>(`${myUrl}`); 
   }
 
+  //Get all clinics
   getAllClinic()
   {
     let myUrl=BASE_URL + "/api/v1/clinic"
@@ -375,6 +383,7 @@ editPerson(person:Person)
 
   }
 
+  //Get the clinical supervisor of student according to student id number
   getClinicalSupervisorByStudentId(id:number)
   {
     
@@ -391,6 +400,7 @@ editPerson(person:Person)
 
   }
 
+  //Get the name of clinic of clinical supervisor according to his id
   getClinicNameBySupervisorId(id:number)
   {
     let myUrl=BASE_URL + `/api/v1/clinic/name/${id}`
@@ -432,6 +442,7 @@ editPerson(person:Person)
 
   }
 
+  //Get number of legal cases received to a specific clinic
   getNumberOfCasesByClinicName(clinicName:string)
   {
     
@@ -467,6 +478,7 @@ getNumberOfCasesPerStudentBySupervisorId(id:number)
   return this.http.get<LegalCaseCounter[]>(`${myUrl}`);
 }
 
+//All cases assigned to student
 getAllCasesAssignedToStudennt(id:number)
 {
   let myUrl=BASE_URL + `/api/v1/caseAssigned/student/${id}`;
@@ -474,6 +486,7 @@ getAllCasesAssignedToStudennt(id:number)
 
 }
 
+//Get total number of legal cases assigned to student
 getNumberOfCasesAssignedToStudent(id:number)
 {
   let myUrl=BASE_URL + `/api/v1/caseAssigned/total/student/${id}`;
@@ -481,28 +494,28 @@ getNumberOfCasesAssignedToStudent(id:number)
 
 }
 
-
+//get number of legal cases in a specific clinic
 getNumberOfCasesByChosenClinic(clinicName:string)
 {
   let myUrl=BASE_URL + `/api/v1/legalcase/clinic/${clinicName}`;
   return this.http.get<number>(`${myUrl}`);
 }
 
+//Get all legal cases that are currently handled by court
 selectAllLegalCasesInCourt()
 {
   let myUrl=BASE_URL + `/api/v1/legalcase/allInCourt`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
 }
 
-
-
-
+//Get all legal cases that are currently handled by court from specific clinic
 selectAllLegalCasesInCourtBelongingToClinic(clinicName:string)
 {
   let myUrl=BASE_URL + `/api/v1/legalcase/allInCourt/${clinicName}`;
   return this.http.get<LegalCase[]>(`${myUrl}`);
 }
 
+//Get all legal cases that are currently not handled by court
 selectAllLegalCasesNotInCourt()
 {
   let myUrl=BASE_URL + `/api/v1/legalcase/notInCourt`;
@@ -510,7 +523,7 @@ selectAllLegalCasesNotInCourt()
 
 }
 
-
+//Get all legal cases that are currently not handled by court from specific clinic
 selectAllLegalCasesNotInCourtBelongingToClinic(clinicName:string)
 {
   let myUrl=BASE_URL + `/api/v1/legalcase/notInCourt/${clinicName}`;
@@ -518,11 +531,13 @@ selectAllLegalCasesNotInCourtBelongingToClinic(clinicName:string)
 
 }
 
+//Get total number of clinical supervisors
 getNumberOfClinicalSupervisors()
 {
   let myUrl=BASE_URL + `/api/v1/clinicalSupervisor/total`;
   return this.http.get<number>(`${myUrl}`);
 }
+
 
 getNumberOfResearchesInAChosenClinic(clinicName:string)
 {
@@ -533,6 +548,8 @@ getNumberOfResearchesInAChosenClinic(clinicName:string)
 
 ///////////////////////Notifications////////////////////////
 
+
+//Get total number notification addressed to specific person
 getNotificationsNumberByPersonID(id:number)
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager/total/${id}`;
@@ -540,6 +557,7 @@ getNotificationsNumberByPersonID(id:number)
 
 }
 
+//Get all notifications in system
 getAllNotifications()
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager`;
@@ -547,6 +565,7 @@ getAllNotifications()
 
 }
 
+//Get all notification of a specific person according to his id number
 getNotificationsByPersonID(id:number)
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager/${id}`;
@@ -554,26 +573,29 @@ getNotificationsByPersonID(id:number)
 
 }
 
+//Mark read all notifications of connected user 
 readAllNotificationsOfPerson(notificationId:number)
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager/markAsRead`;
   return this.http.put<number>(`${myUrl}`,notificationId+"");
 }
 
+//Create new notification
 addNotification(notification:NotificationtsToUsers){
   
   let myUrl=BASE_URL + `/api/v1/notification`;
   return this.http.post<string[]>(`${myUrl}`,notification);
 
-
 }
 
+//Get all the references of notifications to specific persons
 getNotificationManagerObjects()
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager/all`;
   return this.http.get<NotificationManager[]>(`${myUrl}`);
 }
 
+//create a reference of a notification to a specific person
 mapNotificationToUser(notifictionManager:NotificationManager)
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager`;
@@ -581,12 +603,14 @@ mapNotificationToUser(notifictionManager:NotificationManager)
 
 }
 
+//Delete a reference of a notificationfor specific person
 deleteNotificationManagerByIdAndReceiverId(notificationId:string,userId:number)
 {
   let myUrl=BASE_URL + `/api/v1/notificationManager/${notificationId}/${userId}`;
   return this.http.delete(`${myUrl}`);
 }
 
+//Using id of notification in order to delete it
 deleteNotificationById(id:string)
 {
   let myUrl=BASE_URL + `/api/v1/notification/${id}`;
@@ -597,13 +621,14 @@ deleteNotificationById(id:string)
 
 /////////////////End Notifications///////////////////////////
 
-
+//Get all clients for whom cases were created
 getAllClients()
 {
   let myUrl=BASE_URL + `/api/v1/client`;
   return this.http.get<Client[]>(`${myUrl}`);
 
 }
+
 
 getClientById(id:number)
 {

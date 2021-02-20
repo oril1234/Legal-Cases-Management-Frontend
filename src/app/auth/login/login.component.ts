@@ -15,9 +15,16 @@ import { Roles } from 'src/app/_models/roles.enum';
 
 export class LoginComponent implements OnInit {
 
+  //Form of login to system
   loginForm: FormGroup;
+
+  //Credentials to connect to system
   loginRequestPayload: LoginRequestPayload;
+
+  //Success message of login
   registerSuccessMessage: string="";
+
+  //True if login did not succeed
   isError: boolean=false;
 
   constructor(private authService: AuthService, private activatedRoute: ActivatedRoute,
@@ -47,6 +54,7 @@ export class LoginComponent implements OnInit {
       });
   }
 
+  //Method to send http login request
   login() {
     this.loginRequestPayload.username = this.loginForm.get('username')!.value;
     this.loginRequestPayload.password = this.loginForm.get('password')!.value;
@@ -56,7 +64,7 @@ export class LoginComponent implements OnInit {
         this.authService.getRole( this.loginRequestPayload.username).subscribe(
           data=>{
             
-            //Assign role according to result
+            //Assign role according to details of connected user
             switch(data[0])
             {
               case "Student":

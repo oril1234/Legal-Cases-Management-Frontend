@@ -10,20 +10,26 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.css']
 })
+
+//Component to display all notification details of connected user
 export class NotificationsComponent implements OnInit {
 
-  userNotifications:NotificationtsToUsers[]=[];
-  notificationManagerObjects:NotificationManager[]=[]
- userId = parseInt(
+//All notifications in system
+userNotifications:NotificationtsToUsers[]=[];
+
+//All references to notifications
+notificationManagerObjects:NotificationManager[]=[]
+
+//Id of connected user
+userId = parseInt(
     JSON.parse(
       JSON.stringify(
         jwt_decode(localStorage.getItem("authenticationToken") + "")
       )
     ).sub);
 
-  constructor(private httpService: HttpService,private notificationsService: NotificationsService,
+constructor(private httpService: HttpService,private notificationsService: NotificationsService,
     private router:Router) {
     this.getNotifications();
     this.getNotificationManagerObjects();
@@ -66,7 +72,6 @@ export class NotificationsComponent implements OnInit {
         this.notificationManagerObjects=data;
       },
       err=>{
-        //alert("There was an error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
       }
     )
   }
@@ -91,7 +96,6 @@ export class NotificationsComponent implements OnInit {
     tmpNManager=tmpNManager.filter(nManager=>nManager.notificationId==id);
     let currentLength:number=tmpNManager.length;
     
-    /*
     this.httpService.deleteNotificationManagerByIdAndReceiverId(id,this.userId).subscribe(
       data=>{
         
@@ -118,7 +122,6 @@ export class NotificationsComponent implements OnInit {
         alert("NO DELETE!!!!")
       }
     )
-    */
   }
 
 }

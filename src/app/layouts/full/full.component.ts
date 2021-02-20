@@ -15,6 +15,8 @@ declare var $: any;
   templateUrl: './full.component.html',
   styleUrls: ['./full.component.scss']
 })
+
+//Super component which contains sub components, including dashboard and sidebar
 export class FullComponent implements OnInit {
 
 	public config: PerfectScrollbarConfigInterface = {};
@@ -56,7 +58,6 @@ export class FullComponent implements OnInit {
 
   ngOnInit() {
     
-    //this.getNotifications();
     if (this.router.url === '/') {
       this.router.navigate(['/starter']);
      

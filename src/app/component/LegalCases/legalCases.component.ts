@@ -422,15 +422,24 @@ export class LegalCasesComponent implements OnInit
 
 
 	//Invoked for updating a case
-	onEdit(lcase: LegalCase)
+	onEdit(index:number)
 	{
+		this.edittedCase.caseType=this.edittedCase.caseType;
+		this.edittedCase.clientId=this.edittedCase.clientId;
+		this.edittedCase.clinicName=this.edittedCase.clinicName;
+		this.edittedCase.courtCaseId=this.edittedCase.courtCaseId;
+		this.edittedCase.dateAdded=this.edittedCase.dateAdded;
+		this.edittedCase.id=this.edittedCase.id;
+		this.edittedCase.status=this.edittedCase.status;
+		this.edittedCase.subject=this.edittedCase.subject;
+	
 
-
-		this.httpService.editCase(lcase).subscribe(
+		this.httpService.editCase(this.edittedCase).subscribe(
 			data =>
 			{
+				this.cases[index]=Object.create(this.edittedCase);
 				if (this.currentRole == Roles.STUDENT)
-					this.createNotification(NotificationType.EDIT, lcase.id)
+					this.createNotification(NotificationType.EDIT, this.edittedCase.id)
 
 			},
 			err =>

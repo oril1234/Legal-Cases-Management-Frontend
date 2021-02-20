@@ -40,10 +40,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { ToastrModule } from 'ngx-toastr';
 import { IgxDatePickerModule } from "igniteui-angular";
 import { NotificationsComponent } from './notifications/notifications.component';
-5
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';  
-import { from } from 'rxjs';
-import { NwCalendarModule } from 'nw-calendar';
+
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { PersonalDetailsComponent } from './personal-details/personal-details.component';
 

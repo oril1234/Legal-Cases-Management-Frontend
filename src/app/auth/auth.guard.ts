@@ -6,6 +6,8 @@ import { AuthService } from './shared/auth.service';
 @Injectable({
   providedIn: 'root'
 })
+
+//This class is a route guard to prevent users that are not authenticated to route to specific pages
 export class AuthGuard implements CanActivate {
 
   constructor(private authService: AuthService, private router: Router) { }

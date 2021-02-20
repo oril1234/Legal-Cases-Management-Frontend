@@ -24,6 +24,8 @@ export class StudentsStatisticsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  //Get all clinics details so bar chart can be filled
   getAllClinics()
   {
     let id:number=parseInt(JSON.parse(JSON.stringify(jwt_decode(localStorage.getItem("authenticationToken")+""))).sub);

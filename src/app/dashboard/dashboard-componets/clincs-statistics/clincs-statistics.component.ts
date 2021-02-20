@@ -9,19 +9,26 @@ import { BetweenDates } from 'src/app/_models/between-dates';
 @Component({
   selector: 'app-clincs-statistics',
   templateUrl: './clincs-statistics.component.html',
-  styleUrls: ['./clincs-statistics.component.css']
 })
+
+//Component of statistics of clinics 
 export class ClincsStatisticsComponent implements OnInit {
 
+  //All clinics
   clinics!:Clinic[];
-  //casesNumber:casesNumByClinic[]=[];
+
   casesNumber: Array<any> = [];
   
   //Bar charts of clinic
   clinicChart!:Chart
 
+  //Reason to close modal window
   closeResult=""
+
+  //The start date of the range of dates from which data will be fetched
   startDate=new Date('2020-1-1');
+
+  //The end date of the range of dates from which data will be fetched
   endDate=new Date('2021-1-1');
 
   
@@ -39,6 +46,7 @@ export class ClincsStatisticsComponent implements OnInit {
   }
 
 
+  //Open modal window
   open(content:string,empty:string) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -49,6 +57,7 @@ export class ClincsStatisticsComponent implements OnInit {
 		
 	}
 
+  //Reason to close modal window
   private getDismissReason(reason: ModalDismissReasons): string {
 		if (reason === ModalDismissReasons.ESC) {
 			return 'by pressing ESC';
@@ -60,6 +69,7 @@ export class ClincsStatisticsComponent implements OnInit {
 	}
 
 
+  //Get all clinics in system in order to create bar chart
   getAllClinics()
   {
     this.httpService.getAllClinic().subscribe(

@@ -6,23 +6,32 @@ import { BetweenDates } from 'src/app/_models/between-dates';
 @Component({
   selector: 'app-case-in-court',
   templateUrl: './case-in-court.component.html',
-  styleUrls: ['./case-in-court.component.css']
 })
+
+//This is a component of cases handled by court
 export class CaseInCourtComponent implements OnInit {
 
+  //Number of cases handled by court
   caseInCourtNumber:number=0;
+
+  //Close result of a modal window
   closeResult="" 
+  
+  //Initial date to display results from
   startDate=new Date('2020-1-1');
+
+  //End date to display results
   endDate=new Date('2021-1-1');
 
   constructor(private httpService:HttpService,private modalService:NgbModal) {
-this.getNumberOfCasesInCouret();
+this.getNumberOfCasesInCourt();
    }
 
   ngOnInit(): void {
   }
 
-  getNumberOfCasesInCouret()
+  //Get number of all case handled by court
+  getNumberOfCasesInCourt()
   {
     let between=new BetweenDates();
     between.startDate=this.startDate;
@@ -39,6 +48,7 @@ this.getNumberOfCasesInCouret();
     )
   }
 
+  //Open modal method
   open(content:string,empty:string) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -49,6 +59,7 @@ this.getNumberOfCasesInCouret();
 		
 	}
 
+  //Reason for closing modal window
   private getDismissReason(reason: ModalDismissReasons): string {
 		if (reason === ModalDismissReasons.ESC) {
 			return 'by pressing ESC';

@@ -22,15 +22,21 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   }
 `]
 })
-export class SupervisorsComponent implements OnInit {
-  // this is for the Closeable Alert
 
+//Component fot clinical supervisors details
+export class SupervisorsComponent implements OnInit {
+
+  //All clinical supevisors 		
   public supervisors!:ClinicalSupervisor[];
 
+  //Clinical supervisor to add
   addedSupervisor:ClinicalSupervisor=new ClinicalSupervisor()
+
+  //Clinical supervisor to edit
   edittedSupervisor:ClinicalSupervisor=new ClinicalSupervisor()
 
-    closeResult=""
+  //Reason to close modal window
+closeResult=""
 
 
   constructor(private httpService:HttpService,private modalService: NgbModal) {
@@ -51,7 +57,7 @@ this.getAllSupervisors();
         );
   }
 
-  	//Modal methodd
+  	//Open add modal window
 	openAddModal(content:string) {
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -63,6 +69,7 @@ this.getAllSupervisors();
 		
 	}
 
+	//Open edit modal window
 	openEditModal(supervisor:ClinicalSupervisor,content:string) {
 		this.edittedSupervisor=Object.create(supervisor);
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
@@ -75,6 +82,7 @@ this.getAllSupervisors();
 		
 	}
 
+	//Open delete modal window
 	openDeleteModal(content:string)
 	{
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal'}).result.then((result) => {
@@ -85,6 +93,8 @@ this.getAllSupervisors();
 
 		});
 	}
+
+	//Get reason to close modal window
 	private getDismissReason(reason: ModalDismissReasons): string {
 		if (reason === ModalDismissReasons.ESC) {
 			return 'by pressing ESC';
@@ -95,7 +105,8 @@ this.getAllSupervisors();
 		}
 	}
 
-	private onSave()
+	//Confirm add new clinical supervisor
+	private onAdd()
 	{
 
 		this.addedSupervisor.sinceYear=new Date().getFullYear();
@@ -108,6 +119,7 @@ this.getAllSupervisors();
 	}
 
   
+	//Confirm delete clinical supervisor by id
 	onDelete(id:number)
 	{
 		this.httpService.deleteSupervisor(id).subscribe(
@@ -118,7 +130,8 @@ this.getAllSupervisors();
 		);
 	}
 
-	onEdit(supervisor:ClinicalSupervisor)
+	//Confirm edit clinical supervisor
+	onEdit(index:number)
 	{
 
 		
@@ -131,17 +144,20 @@ this.getAllSupervisors();
         this.edittedSupervisor.password=this.edittedSupervisor.password;
 		this.edittedSupervisor.role=this.edittedSupervisor.role;
 		this.edittedSupervisor.sinceYear=this.edittedSupervisor.sinceYear;
+		if(this.edittedSupervisor.password==null)
+		this.edittedSupervisor.password="password";
 		 this.httpService.editSupervisor(this.edittedSupervisor).subscribe(
 			data=>{
-				supervisor=Object.create(this.edittedSupervisor)
+				this.supervisors[index]=Object.create(this.edittedSupervisor)
 			},
 		 )
 		 
 	}
 
+	//Validate new clinical supervisor fields
 	validateAddedFields():boolean
 	{
-	  let isValidated=typeof this.addedSupervisor.id !== 'undefined';
+	  let isValidated=typeof this.addedSupervisor.id != 'undefined' && this.addedSupervisor.id!=null;
 	  isValidated=isValidated && typeof this.addedSupervisor.firstName !== 'undefined' && this.addedSupervisor.firstName!="";
 	  isValidated=isValidated && typeof this.addedSupervisor.lastName !== 'undefined' && this.addedSupervisor.lastName!="";
 	  isValidated=isValidated && typeof this.addedSupervisor.email !== 'undefined' && this.validateEmail(this.addedSupervisor.email)
@@ -150,6 +166,7 @@ this.getAllSupervisors();
 	  return isValidated;
 	}
   
+	//Validate edited clinical supervisor fields
 	validateEdittedFields():boolean
 	{
 	  let isValidated=typeof this.edittedSupervisor.id !== 'undefined';
