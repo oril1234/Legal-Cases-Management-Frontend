@@ -113,7 +113,7 @@ export const ROUTES: RouteInfo[] = [
     showSub:false
   },
   {
-    path: '/component/assignedCases',
+    path: '/component/legalCases',
     title: 'תיקים שלי',
     icon: 'mdi mdi-view-carousel',
     class: '',

@@ -167,12 +167,19 @@ export class PolicyPaperComponent implements OnInit {
 	validateNewPaper():boolean
 	{
 		return typeof this.addedPolicyPaper.subject!="undefined" && this.addedPolicyPaper.subject!=""
-		&& typeof this.addedPolicyPaper.policyPaperType!="undefined" && this.addedPolicyPaper.policyPaperType!="";
+		&& typeof this.addedPolicyPaper.policyType!="undefined" && this.addedPolicyPaper.policyType!="";
 	}
 
-	openDeleteModal(firstName: string, lastName: string, id: string)
+	openDeleteModal(content:string)
 	{
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'dark-modal' }).result.then((result) =>
+		{
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) =>
+		{
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 
+		});
 	}
 	private getDismissReason(reason: ModalDismissReasons): string
 	{
@@ -196,13 +203,15 @@ export class PolicyPaperComponent implements OnInit {
 	{
 
 		this.addedPolicyPaper.status = "חדש";
-		this.addedPolicyPaper.clinicName = this.clinicName
-		alert("The name is "+this.addedPolicyPaper.clinicName)
+		this.addedPolicyPaper.clinicName = this.chosenClinic.clinicName
+		this.addedPolicyPaper.policyType=this.addedPolicyPaper.policyType;
+		this.addedPolicyPaper.subject=this.addedPolicyPaper.subject;
 
+		console.log(this.addedPolicyPaper)
 		this.httpService.addNewPolicyPaper(this.addedPolicyPaper).subscribe(
 			data =>
 			{
-				this.policyPapers.push(this.addedPolicyPaper);
+				this.getAllPolicyPapers();
 				this.createNotification(NotificationType.ADD,this.addedPolicyPaper.id)
 				this.addedPolicyPaper=new PolicyPaper()
 			},

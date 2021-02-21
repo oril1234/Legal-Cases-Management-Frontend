@@ -13,7 +13,7 @@ export class PolicyPaper {
     subject!:string
 
     //Type of policy paper
-    policyPaperType:string
+    policyType:string
 
     //Status of policy paper
     status!:string

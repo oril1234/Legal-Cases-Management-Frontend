@@ -68,7 +68,6 @@ constructor(private httpService: HttpService,private notificationsService: Notif
   {
     this.httpService.getNotificationManagerObjects().subscribe(
       data=>{
-        //alert("The length of data is "+data.length)
         this.notificationManagerObjects=data;
       },
       err=>{
@@ -103,23 +102,19 @@ constructor(private httpService: HttpService,private notificationsService: Notif
         this.userNotifications=this.userNotifications.filter(n=>n.id!=id);
         if(currentLength<=1)
         {
-          alert("WE ARE GOING TO DELETE! The length is "+currentLength)
           this.httpService.deleteNotificationById(id).subscribe(
             data1=>{
-              alert("DELETE!!!")
             },
             err=>
             {
-              alert("Not deleted!!!")
             }
           )
         }
-        else
-        alert("NO DELETE! The length is "+tmpNManager.length)
+
 
       },
       err=>{
-        alert("NO DELETE!!!!")
+
       }
     )
   }

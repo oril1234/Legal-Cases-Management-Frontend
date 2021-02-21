@@ -591,7 +591,7 @@ addNotification(notification:NotificationtsToUsers){
 //Get all the references of notifications to specific persons
 getNotificationManagerObjects()
 {
-  let myUrl=BASE_URL + `/api/v1/notificationManager/all`;
+  let myUrl=BASE_URL + `/api/v1/notificationManager/allNotificationManagers`;
   return this.http.get<NotificationManager[]>(`${myUrl}`);
 }
 

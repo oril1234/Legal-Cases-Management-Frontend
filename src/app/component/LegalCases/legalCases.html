@@ -15,7 +15,9 @@
 
                             <th style="text-align:right;" scope="col">סיווג תיק</th>
                             <th style="text-align:right;" scope="col">פרטי לקוח</th>
-                            <th style="text-align:right;" scope="col">קליניקה</th>
+                            <th *ngIf="currentRole!=0" style="text-align:right;" scope="col">קליניקה</th>
+                            <th *ngIf="currentRole==0" style="text-align:right;" scope="col">תיאור משימה</th>
+                            <th *ngIf="currentRole==0" style="text-align:right;" scope="col">תאריך יעד</th>
                             <th style="text-align:right;" scope="col">מספר תיק בבית משפט</th>
                             <th style="text-align:right;" scope="col">סטטוס טיפול</th>
                             <th style="text-align:right;" scope="col">נושא</th>
@@ -165,7 +167,9 @@
                                     (click)="openClientDetailsModal(detailsModal);showDetails(case.clientId)">הצג</button>
                             </td>
 
-                            <td style="text-align:right;">{{case.clinicName}}</td>
+                            <td *ngIf="currentRole!=0" style="text-align:right;">{{case.clinicName}}</td>
+                            <td *ngIf="currentRole==0" style="text-align:right;">{{showTaskByCase(case)}}</td>
+                            <td *ngIf="currentRole==0" style="text-align:right;">{{showDueDateByCase(case)}}</td>
                             <td style="text-align:right;">{{case.courtCaseId}}</td>
                             <td style="text-align:right;">{{case.status}}</td>
                             <td style="text-align:right;">{{case.subject}}</td>

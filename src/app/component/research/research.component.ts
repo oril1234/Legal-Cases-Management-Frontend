@@ -204,11 +204,13 @@ export class ResearchComponent implements OnInit {
 
 		this.addedResearch.status = "חדש";
 		this.addedResearch.clinicName = this.chosenClinic.clinicName
+		this.addedResearch.researchType=this.addedResearch.researchType;
+		this.addedResearch.subject=this.addedResearch.subject;
 
 		this.httpService.addNewResearch(this.addedResearch).subscribe(
 			data =>
 			{
-				this.researches.push(this.addedResearch);
+				this.getAllResearches();
 				this.createNotification(NotificationType.ADD,this.addedResearch.id)
 				this.addedResearch=new Research()
 			},

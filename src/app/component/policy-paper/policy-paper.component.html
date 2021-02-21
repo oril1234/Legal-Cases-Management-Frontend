@@ -73,9 +73,8 @@
                                                 <div class="col-5"> <label>
                                                         סיווג נייר מדיניות</label></div>
                                                 <div class="col-7">
-                                                    <input style="width: 250px;"
-                                                        [(ngModel)]="policyPaper.policyPaperType" type="text"
-                                                        name="policyPaperType">
+                                                    <input style="width: 250px;" [(ngModel)]="policyPaper.policyType"
+                                                        type="text" name="policyType">
                                                 </div>
                                             </div>
 
@@ -99,7 +98,7 @@
                                 </ng-template>
 
                                 <button *ngIf="currentRole!=0" class="btn btn-sm btn-danger btn-delete-account"
-                                    (click)="open(deleteModal,'')">
+                                    (click)="openDeleteModal(deleteModal,'')">
                                     <span style="font-size: 10pt;" class="spinner-border spinner-border-sm"><i
                                             class="fa fa-trash-alt"></i></span>
                                 </button>
@@ -125,7 +124,7 @@
                                 </ng-template>
                             </td>
 
-                            <td style="text-align:right;">{{policyPaper.policyPaperType}}</td>
+                            <td style="text-align:right;">{{policyPaper.policyType}}</td>
 
                             <td style="text-align:right;">{{policyPaper.clinicName}}</td>
                             <td style="text-align:right;">{{policyPaper.status}}</td>
@@ -194,7 +193,7 @@
                         <div class="col-5"> <label>
                                 סיווג נייר מדיניות</label></div>
                         <div class="col-7">
-                            <input style="width: 250px;" [(ngModel)]="addedPolicyPaper.policyPaperType" type="text"
+                            <input style="width: 250px;" [(ngModel)]="addedPolicyPaper.policyType" type="text"
                                 name="proposalType">
                         </div>
                     </div>

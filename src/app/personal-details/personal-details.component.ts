@@ -3,7 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import jwt_decode from "jwt-decode";
 import { HttpService } from '../http.service';
+import { ClinicalSupervisor } from '../_models/clinical-supervisor';
 import { Person } from '../_models/person';
+import { Roles } from '../_models/roles.enum';
+import { Student } from '../_models/student';
 
 
 @Component({
@@ -23,6 +26,9 @@ export class PersonalDetailsComponent implements OnInit {
 				jwt_decode(localStorage.getItem("authenticationToken") + "")
 			)
 		).sub);
+
+    //Role of current user
+	  currentRole=parseInt(localStorage.getItem('Role')+"");
 
     //Details of connected iser
     person:Person=new Person();
@@ -60,8 +66,10 @@ export class PersonalDetailsComponent implements OnInit {
 
   getPersonDetails()
   {
+
     this.httpService.getPersonById(this.userId).subscribe(
       data=>{
+        
         
         this.person=data;
         console.log(this.person)
@@ -83,25 +91,62 @@ export class PersonalDetailsComponent implements OnInit {
 
   editPerson()
   {
-    this.personToEdit.email=this.personToEdit.email;
-    this.personToEdit.firstName=this.personToEdit.firstName;
-    this.personToEdit.id=this.personToEdit.id;
-    this.personToEdit.imgUrl=this.personToEdit.imgUrl;
-    this.personToEdit.lastName=this.personToEdit.lastName;
-    this.personToEdit.password=this.personToEdit.password;
-    this.personToEdit.phoneNumber=this.personToEdit.phoneNumber;
-    this.personToEdit.role=this.personToEdit.role;
-    this.httpService.editPerson(this.personToEdit).subscribe(
-      data=>{
 
-        this.person=Object.create(this.personToEdit);
-        
-        this.resetBooleanFields()
-      },
-      err=>{
-        this.resetBooleanFields()
-      }
-    )
+    if(this.currentRole==Roles.STUDENT)
+    {
+      this.httpService.getStudentById(this.userId).subscribe(
+        data=>{
+
+          let studentToUpdate:Student=new Student();
+          studentToUpdate.email=this.personToEdit.email;
+          studentToUpdate.firstName=this.personToEdit.firstName;
+          studentToUpdate.id=this.personToEdit.id;
+          studentToUpdate.imgUrl=this.personToEdit.imgUrl;
+          studentToUpdate.lastName=this.personToEdit.lastName;
+          studentToUpdate.password=this.newPassword;
+          studentToUpdate.phoneNumber=this.personToEdit.phoneNumber;
+          studentToUpdate.role=this.personToEdit.role;
+          studentToUpdate.clinicalSupervisorId=data.clinicalSupervisorId;
+          this.httpService.editStudent(studentToUpdate).subscribe(
+            response=>{
+              this.person=Object.create(this.personToEdit);
+              this.resetBooleanFields()
+            }
+          )
+
+          
+        }
+      )
+
+    }
+
+    else
+    {
+      this.httpService.getClinicalSupervisorById(this.userId).subscribe(
+        data=>{
+
+          let supervisorToUpdate:ClinicalSupervisor=new ClinicalSupervisor();
+          supervisorToUpdate.email=this.personToEdit.email;
+          supervisorToUpdate.firstName=this.personToEdit.firstName;
+          supervisorToUpdate.id=this.personToEdit.id;
+          supervisorToUpdate.imgUrl=this.personToEdit.imgUrl;
+          supervisorToUpdate.lastName=this.personToEdit.lastName;
+          supervisorToUpdate.password=this.personToEdit.password;
+          supervisorToUpdate.phoneNumber=this.personToEdit.phoneNumber;
+          supervisorToUpdate.role=this.personToEdit.role;
+          supervisorToUpdate.sinceYear=data.sinceYear;
+          this.httpService.editSupervisor(supervisorToUpdate).subscribe(
+            response=>{
+              this.person=Object.create(this.personToEdit);
+              this.resetBooleanFields()
+            }
+          )
+
+          
+        }
+      )
+    }
+
   }
 
   resetBooleanFields()
@@ -120,7 +165,7 @@ export class PersonalDetailsComponent implements OnInit {
 
   checkValidPassword():boolean
   {
-    return  this.currentPassword!="" && this.newPassword!="" && this.newPasswordRetyped!="";
+    return  this.newPassword!="" && this.newPasswordRetyped!="" && this.newPassword==this.newPasswordRetyped;
   }
 
 }

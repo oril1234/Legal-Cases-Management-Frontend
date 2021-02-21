@@ -222,11 +222,14 @@ export class LegislativeProposalComponent implements OnInit {
 		
 		this.addedProposal.status = "חדש";
 		this.addedProposal.clinicName = this.chosenClinic.clinicName;
+		this.addedProposal.subject=this.addedProposal.subject;
+		this.addedProposal.proposalType=this.addedProposal.proposalType;
+
 
 		this.httpService.addNewProposal(this.addedProposal).subscribe(
 			data =>
 			{
-				this.proposals.push(this.addedProposal);
+				this.getAllProposals();
 				this.createNotification(NotificationType.ADD,this.addedProposal.id)
 				this.addedProposal=new LegislativeProposal()
 				

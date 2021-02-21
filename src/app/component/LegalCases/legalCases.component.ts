@@ -14,6 +14,7 @@ import { NotificationtsToUsers } from 'src/app/_models/notification';
 import { NotificationManager } from 'src/app/_models/notification-manager';
 import { Person } from 'src/app/_models/person';
 import { AssignedCase } from 'src/app/_models/assigned-case';
+import { access } from 'fs';
 @Component({
 	selector: 'app-ngbd-buttons-radio',
 	templateUrl: './legalCases.html',
@@ -150,6 +151,7 @@ export class LegalCasesComponent implements OnInit
 				data =>
 				{
 					this.currentSuperVisor = data;
+					this.title="תיקים מוקצים"
 				}
 			)
 		}
@@ -245,6 +247,23 @@ export class LegalCasesComponent implements OnInit
 			);
 		}
 
+		else if (this.currentRole == Roles.STUDENT)
+		{
+			this.httpService.getAllCasesAssignedToStudennt(this.userId).subscribe(
+				data =>
+				{
+					this.cases = data;
+					this.httpService.getAllAssignedCases().subscribe(
+						response=>{
+							this.assignedCases=response
+							this.assignedCases=this.assignedCases.filter(aCase=>aCase.studentId==this.userId)
+							
+						}
+					)
+				}
+			)
+		}
+
 
 
 	}
@@ -259,6 +278,20 @@ export class LegalCasesComponent implements OnInit
 			}
 		)
 	}
+
+	showTaskByCase(lCase:LegalCase):string
+	{
+		let result=this.assignedCases.filter(aCase=>aCase.legalCaseId==lCase.id)[0];
+		
+		return result.taskDescription;
+	}
+
+	showDueDateByCase(lCase:LegalCase):string
+	{
+		let result=this.assignedCases.filter(aCase=>aCase.legalCaseId==lCase.id)[0];
+		return result.dueDate+"";
+	}
+
 
 	
 

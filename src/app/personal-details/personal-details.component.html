@@ -148,24 +148,17 @@
         </div>
         <div class="row" *ngIf="!editPassword">
             <div class="col-12">
-                <button (click)="resetBooleanFields();editPassword=true" class="btn btn-primary">שנה סיסמא</button>
+                <button (click)="resetBooleanFields();editPassword=true;startEdit()" class="btn btn-primary">שנה
+                    סיסמא</button>
             </div>
         </div>
         <div style="background-color: #EAEDED;padding-top: 3%;" *ngIf="editPassword" class="row">
-            <div class="col-6">
-                <b>סיסמא נוכחית</b>
-            </div>
-            <div class="col-6">
-                <input type="text" [(ngModel)]="currentPassword">
-            </div>
-            <div class="col-12">
-                <hr>
-            </div>
+
             <div class="col-6">
                 <b>סיסמא חדשה</b>
             </div>
             <div class="col-6">
-                <input type="text" [(ngModel)]="newPassword">
+                <input type="password" [(ngModel)]="newPassword">
             </div>
             <div class="col-12">
                 <hr>
@@ -174,7 +167,7 @@
                 <b>וידוא סיסמא חדשה</b>
             </div>
             <div class="col-6">
-                <input type="text" [(ngModel)]="newPasswordRetyped">
+                <input type="password" [(ngModel)]="newPasswordRetyped">
             </div>
             <div class="col-12">
                 <hr>
