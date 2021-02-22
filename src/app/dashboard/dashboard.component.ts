@@ -90,7 +90,6 @@ export class DashboardComponent implements AfterViewInit {
     this.dashservice.getNumberOfClinicalSupervisors().subscribe(
       data=>
       {
-        console.log("There is an answer");
         this.supervisorsNum=data;
       }
     )

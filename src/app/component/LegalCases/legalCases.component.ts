@@ -15,6 +15,7 @@ import { NotificationManager } from 'src/app/_models/notification-manager';
 import { Person } from 'src/app/_models/person';
 import { AssignedCase } from 'src/app/_models/assigned-case';
 import { access } from 'fs';
+import { Student } from 'src/app/_models/student';
 @Component({
 	selector: 'app-ngbd-buttons-radio',
 	templateUrl: './legalCases.html',
@@ -75,8 +76,12 @@ export class LegalCasesComponent implements OnInit
 	//Full name of connected user	
 	userFullName: string = ""
 
-	//Details of connected user
-	userDetails: Person = new Person();
+
+	//Details of connected user if he's a student
+	studentDetails:Student=new Student()
+
+	//Details of connected user if he's a clinical supervisor
+	supervisorDetails:ClinicalSupervisor=new ClinicalSupervisor()
 
 	//All clients details
 	clients: Client[] = []
@@ -123,8 +128,7 @@ export class LegalCasesComponent implements OnInit
 		else
 			this.getAllCases();
 		this.getClients()
-		if(this.currentRole==Roles.SUPERVISOR)
-			this.getAdminDetails();
+		this.getAdminDetails();
 
 	}
 	public ngOnInit(): void
@@ -136,17 +140,16 @@ export class LegalCasesComponent implements OnInit
 	//Fetching details of connected user
 	getPersonDetails()
 	{
-		this.httpService.getPersonById(this.userId).subscribe(
-			data =>
-			{
-				this.userDetails = data;
-			}
-		)
-
-
-		//Clinical supervisor's details are fetched if connected user is student
-		if (this.currentRole == Roles.STUDENT)
+		if(this.currentRole==Roles.STUDENT)
 		{
+			this.httpService.getStudentById(this.userId).subscribe(
+				data =>
+				{
+					this.studentDetails = data;
+				}
+			)
+
+			//Clinical supervisor's details are fetched if connected user is student	
 			this.httpService.getStudentsClinicalSupervisorDetails(this.userId).subscribe(
 				data =>
 				{
@@ -155,7 +158,15 @@ export class LegalCasesComponent implements OnInit
 				}
 			)
 		}
-
+		else
+		{
+			this.httpService.getClinicalSupervisorById(this.userId).subscribe(
+				data =>
+				{
+					this.supervisorDetails = data;
+				}
+			)	
+		}
 
 	}
 
@@ -283,12 +294,18 @@ export class LegalCasesComponent implements OnInit
 	{
 		let result=this.assignedCases.filter(aCase=>aCase.legalCaseId==lCase.id)[0];
 		
+		if(typeof result== "undefined")
+			return ""; 
 		return result.taskDescription;
 	}
 
 	showDueDateByCase(lCase:LegalCase):string
 	{
+
 		let result=this.assignedCases.filter(aCase=>aCase.legalCaseId==lCase.id)[0];
+
+		if(typeof result== "undefined")
+			return ""; 
 		return result.dueDate+"";
 	}
 
@@ -470,9 +487,10 @@ export class LegalCasesComponent implements OnInit
 		this.httpService.editCase(this.edittedCase).subscribe(
 			data =>
 			{
+				
 				this.cases[index]=Object.create(this.edittedCase);
-				if (this.currentRole == Roles.STUDENT)
-					this.createNotification(NotificationType.EDIT, this.edittedCase.id)
+				
+				this.createNotification(NotificationType.EDIT, this.edittedCase.id)
 
 			},
 			err =>
@@ -496,15 +514,21 @@ export class LegalCasesComponent implements OnInit
 
 	createNotification(type: NotificationType, caseId: number)
 	{
-
-		let relevantCase:LegalCase=this.cases.filter(lCase=>lCase.id==caseId)[0];
-		let relevantClinic:Clinic=this.clinics.filter(clinic=>clinic.clinicName==relevantCase.clinicName)[0];
-		let relevantSupervisorId=relevantClinic.clinicalSupervisorId;
+		if(this.currentRole==Roles.STUDENT)
+		{
+			this.createNotificationForSupervisor(type,caseId,this.currentSuperVisor.id);
+			return;
+		}
+		
+		let relevantCase:LegalCase=this.cases.filter(lCase=>lCase.id=caseId)[0];
+		let relevantClinic=relevantCase.clinicName;
+		let relevantSupervisorId=this.clinics.filter(clinic=>clinic.clinicName==relevantClinic)[0].clinicalSupervisorId;
 		
 		this.createNotificationForStudnets(caseId);
-		if(this.admin.id!=relevantSupervisorId && this.userId==this.admin.id)
+		if((this.admin.id!=relevantSupervisorId && this.userId==this.admin.id) )
 		{
-			this.createNotificationForSupervisorFromAdmin(type,caseId,relevantSupervisorId);
+			
+			this.createNotificationForSupervisor(type,caseId,relevantSupervisorId);
 		}
 
 
@@ -514,7 +538,7 @@ export class LegalCasesComponent implements OnInit
 	If connected user is a admin, this method will be invoked to send notification to clinical supervisor
 	of a clinic in which the admin made an action (Add/delete/edit legal case)
 	*/ 
-	createNotificationForSupervisorFromAdmin(type: NotificationType, caseId: number,supervisorId:number)
+	createNotificationForSupervisor(type: NotificationType, caseId: number,supervisorId:number)
 	{
 		let n: NotificationtsToUsers = new NotificationtsToUsers();
 		n.dateTime = new Date();
@@ -522,17 +546,33 @@ export class LegalCasesComponent implements OnInit
 
 		if(type==NotificationType.EDIT)
 		{
-			n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+			if(this.currentRole==Roles.STUDENT)
+			{
+				n.details = "הסטודנט שלך, "+
+				this.studentDetails.firstName + " " + this.studentDetails.lastName +
+				" ערך את פרטי התיק " + caseId + " בקליניקה שלך";
+			}
+			else
+			{
+			n.details = 
+			"מנהל הקליניקות, "+	
+			this.supervisorDetails.firstName + " " + this.supervisorDetails.lastName +
 			" ערך את פרטי התיק " + caseId + " בקליניקה שלך";
+
+			}
 		}
 		else if(type==NotificationType.ADD)
 		{
-			n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+			n.details = 
+			"מנהל הקליניקות, "+	
+			this.supervisorDetails.firstName + " " + this.supervisorDetails.lastName +
 			" הוסיף את תיק מספר " + caseId + " לקליניקה שלך";
 		}
 		else
 		{
-			n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+			n.details = 
+			"מנהל הקליניקות, "+	
+			this.supervisorDetails.firstName + " " + this.supervisorDetails.lastName +
 			" מחר את תיק מסםר " + caseId + " מהקליניקה שלך"
 		}
 
@@ -554,12 +594,13 @@ export class LegalCasesComponent implements OnInit
 	createNotificationForStudnets(caseId: number)
 	{
 		let assignedCases=this.assignedCases.filter(aCase=>aCase.legalCaseId==caseId);
+		
 		if(assignedCases.length==0)
 			return;
 		let n: NotificationtsToUsers = new NotificationtsToUsers();
 		n.dateTime = new Date();
 		n.sourceId = this.userId;
-		n.details = this.userDetails.firstName + " " + this.userDetails.lastName +
+		n.details = this.supervisorDetails.firstName + " " + this.supervisorDetails.lastName +
 		" ערך את פרטי התיק " + caseId + " המוקצה עבורך";	
 		
 		this.httpService.addNotification(n).subscribe(

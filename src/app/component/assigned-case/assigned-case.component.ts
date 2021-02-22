@@ -324,6 +324,7 @@ onAdd()
 							data1.status="בטיפול סטודנט";
 							newItem.subject=data1.subject;
 							newItem.taskDescription=assigned.taskDescription;
+							newItem.dueDate=assigned.dueDate
 							let student:Student=this.students.filter(aStudent=>aStudent.id==assigned.studentId)[0];
 							newItem.studentName=student.firstName+" "+student.lastName;
 							this.caseAssignedBySupervisor.push(newItem);
