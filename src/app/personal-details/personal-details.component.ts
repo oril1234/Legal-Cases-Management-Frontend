@@ -12,7 +12,6 @@ import { Student } from '../_models/student';
 @Component({
   selector: 'app-personal-details',
   templateUrl: './personal-details.component.html',
-  styleUrls: ['./personal-details.component.css']
 })
 
 //Component to display all personal details of connected user
